@@ -31,3 +31,5 @@ Yeni kapsamın doğrulanan kod teslimi: 45308ef; origin/main push ve hash teyidi
 - Eski premium maliyet raporu arşivlendi, EAS ücretsiz planı ile ekonomik tablo yazıldı.
 
 Son kullanıcı kararı: APK demosu için Gemini 3.8 Flash + Sonnet 5.5 normal varsayılan yapıldı; ekonomik sunucu ayrı komutla korundu. 2–3 deneme ve 20000 tam çift gideri ayrı raporlandı.
+
+Son demo/ekonomi kodu 69dc08a ile origin/main’e push edildi; 74 birim/HTTP, 11 ekran ve tüm platform/API derlemeleri geçti.

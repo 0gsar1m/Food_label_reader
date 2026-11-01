@@ -52,10 +52,12 @@ Sonraki kod dışı kabul: gerçek iki sağlayıcı çağrısı, 20 etiket/sağl
 ## Son yönlendirme: maliyet ve sıfır token
 Kullanıcı pahalı Opus senaryosunu reddetti. Gemini 3.1 Flash-Lite + yerel kurallı yorum varsayılan; bulut Haiku isteğe bağlı.
 Yerel yorum gerçek LLM diye etiketlenmez; tam fotoğraf akışı sıfır maliyetli diye sunulmaz. Profil bağlamı cihazda ücretsizdir.
-Yeni maliyetler INVESTOR_COSTS.md; eski Opus tablosu INVESTOR_COSTS_PREMIUM.md. 74 birim/HTTP, 11 ekran testi ve üç platform/API derlemesi geçti; push son adım.
+Yeni maliyetler INVESTOR_COSTS.md; eski Opus tablosu INVESTOR_COSTS_PREMIUM.md. 74 birim/HTTP, 11 ekran testi ve üç platform/API derlemesi geçti; 69dc08a main dalına push edildi, uzak hash teyit edildi.
 
 ## Son karar: APK demo Vision + Sonnet
 Kullanıcı 2–3 deneme için güçlü Vision + Sonnet istedi ve 20000 okuma giderini ayrı sunmayı kabul etti.
 Normal API varsayılanı Gemini 3.8 Flash + Sonnet 5.5; api:economy açıkça Lite + Haiku seçer.
 3 demo çifti ~$0,125; 20000 Vision+20000 Sonnet ~$835 API tüketimi (aynı token varsayımlarıyla, paylar hariç).
-Yerel kurallı yorum ücretsiz kalır. Nihai verify geçti (74 test, üç platform/API paketleri); tek sıra 11 ekran kabulü geçti, push son adım.
+Yerel kurallı yorum ücretsiz kalır. Nihai verify geçti (74 test, üç platform/API paketleri); tek sıra 11 ekran kabulü geçti, 69dc08a main dalına push edildi, uzak hash teyit edildi.
+
+Son kaynak kod teslimi: 69dc08a (yerel yorum + güçlü Vision/Sonnet demo). Hesap/anahtar ve fiziksel APK kabul sınırları değişmedi.
