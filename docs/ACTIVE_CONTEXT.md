@@ -3,7 +3,7 @@
 1 Kasım 2026. Etiket: Expo SDK 58 React Native Android/iOS + web kabul önizlemesi, Node API.
 Kullanıcı tüm fazların soru sormadan uygulanmasını, test edilmesini ve GitHub push istedi.
 Son ek direktif: Gmail adresiyle Google hesabından kayıt/giriş. Uygulandı; gerçek OAuth kabulü için client ID yok.
-Etkin faz: 08–12 kod ve yerel kabul tamamlandı; GitHub teslimi.
+Etkin faz: 08–12 kod ve yerel kabul tamamlandı, GitHub teslimi doğrulandı.
 
 ## Başlangıç belgeleri
 AGENTS.md → MASTER_PLAN.md → PHASE_STATUS.md. Tasarım: AI_SLOP_AVOIDANCE.md.
@@ -45,6 +45,6 @@ DEMO_SCRIPT.md beş dakikalık akış. npm run costs senaryoları tekrar üretir
 Bunlar token/hacim varsayımlarıdır; gerçek fatura değildir. Gemini 2027 fiyat değişimi ayrı hesaplandı.
 
 ## Son teslim işlemi
-Repo https://github.com/0gsar1m/Food_label_reader. Önceki plan commit'i cbe8d27.
-Yeni kapsam son doğrulamadan sonra normal commit/push ile gönderilecek; force push yok.
+Repo https://github.com/0gsar1m/Food_label_reader. Doğrulanan yeni kapsam kod commit'i 45308ef.
+origin/main push başarılı ve uzak hash eşleşti. Bu teslim kaydı ayrı docs commit'iyle gönderilir.
 Sonraki kod dışı kabul: gerçek iki sağlayıcı çağrısı, 20 etiket/sağlık senaryosu ve native OAuth/erişilebilirlik.

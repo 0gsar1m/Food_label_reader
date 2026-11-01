@@ -20,3 +20,6 @@
 Kişiselleştirme fazları ve Google giriş kapsamı uygulandı. Canlı model ve gerçek Google OAuth kabulü için hesap/anahtar gerekiyor.
 Kaynak kod ve yerel kabul teslimidir. Fiziksel cihaz, canlı model, HTTPS barındırma, imzalı APK ve mağaza yayını ayrıca gerekir.
 Eksik hesaplar/anahtarlar varmış gibi tamamlanmış gösterilmez. Ayrıntı: VERIFICATION.md ve RELEASE_RUNBOOK.md.
+
+## Yeni kapsam teslimi
+Profil/kişiselleştirme, maliyet modeli ve Google giriş kodu 45308ef ile main dalına push edildi; uzak hash eşleşmesi doğrulandı. Canlı sağlayıcı/OAuth ve native kabul sınırları değişmedi.
