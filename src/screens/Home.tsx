@@ -11,6 +11,11 @@ export function Home({
   onAccount,
   onProfile,
   onDiary,
+  onInsights,
+  onRestaurant,
+  onFoodPhoto,
+  onBarcode,
+  pending,
   onCamera,
   onGallery,
   onDemo,
@@ -20,6 +25,11 @@ export function Home({
   onAccount: () => void;
   onProfile: () => void;
   onDiary: () => void;
+  onInsights: () => void;
+  onRestaurant: () => void;
+  onFoodPhoto: () => void;
+  onBarcode: () => void;
+  pending: number;
   onCamera: () => void;
   onGallery: () => void;
   onDemo: () => void;
@@ -55,6 +65,7 @@ export function Home({
       <View style={{ gap: 10 }}>
         <Button label={copy.scan} icon="scan" onPress={onCamera} />
         <Button label={copy.gallery} icon="gallery" secondary onPress={onGallery} />
+        <Button label="Barkoddan ürün bul" secondary onPress={onBarcode} />
       </View>
       <Pressable
         accessibilityRole="button"
@@ -71,6 +82,18 @@ export function Home({
       <Button label="Hesabım" secondary onPress={onAccount} />
       <Button label="Kullanım profilim" secondary onPress={onProfile} />
       <Button label="Öğün ve belirti günlüğüm" secondary onPress={onDiary} />
+      <View style={{ gap: 14, borderTopWidth: 1, borderColor: theme.color.line, paddingTop: 20 }}>
+        <Text style={ui.eyebrow}>YEMEKTEN SONRA</Text>
+        <Text style={ui.h2}>Bugün nasıl hissettin?</Text>
+        <Text style={ui.body}>
+          {pending
+            ? `${pending} öğünün için kontrol bekliyor.`
+            : 'Öğününü kaydet. Ardından belirtili ve belirtisiz deneyimlerini takip et.'}
+        </Text>
+        <Button label="Gözlemlerim" secondary onPress={onInsights} />
+        <Button label="Dışarıda yemek / restoran kartım" secondary onPress={onRestaurant} />
+        <Button label="Menü ve tabak incele" secondary onPress={onFoodPhoto} />
+      </View>
       {recent && (
         <Pressable accessibilityRole="button" onPress={() => onRecent(recent)} style={{ gap: 8 }}>
           <Text style={ui.eyebrow}>SON OKUMAN</Text>

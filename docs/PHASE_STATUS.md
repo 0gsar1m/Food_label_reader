@@ -29,3 +29,11 @@ Profil/kişiselleştirme, maliyet modeli ve Google giriş kodu 45308ef ile main 
 | Faz | Durum | Kanıt |
 |---|---|---|
 | 13 Yerel yorum / demo | Kod ve kabul tamamlandı | API’siz yerel yorum ve ayrı ekonomi modu; son demo kararı güçlü Flash + Sonnet, giderler ayrı |
+
+## Faz 14: My GutIQ uyarlaması
+
+| Faz | Durum | Kanıt |
+|---|---|---|
+| 14 Araştırma ve Türkçe takip döngüsü | Kod ve yerel kabul tamamlandı | Resmi kaynak/web giriş/görsel araştırma; menü/tabak/barkod, bekleyen kontroller, 7/30 gün gözlemleri, restoran kartı ve rapor. verify87 test/üç platform/API; e2e14/14; expo-doctor20/20. Canlı model/katalog/native PDF-kamera ve imzalı APK ayrı kabul bekler. |
+
+Kaynak: GUTIQ_RESEARCH.md. Bu faz tam rakip klonu veya klinik doğrulama iddiası değildir; parite dışı alanlar ve test sınırları belgede açıkça listelidir.

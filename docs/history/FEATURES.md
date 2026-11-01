@@ -33,3 +33,12 @@ Yeni kapsamın doğrulanan kod teslimi: 45308ef; origin/main push ve hash teyidi
 Son kullanıcı kararı: APK demosu için Gemini 3.8 Flash + Sonnet 5.5 normal varsayılan yapıldı; ekonomik sunucu ayrı komutla korundu. 2–3 deneme ve 20000 tam çift gideri ayrı raporlandı.
 
 Son demo/ekonomi kodu 69dc08a ile origin/main’e push edildi; 74 birim/HTTP, 11 ekran ve tüm platform/API derlemeleri geçti.
+
+## Faz 14 / My GutIQ yönü
+- Kamuya açık ürün/mağaza/gizlilik/web giriş araştırması ve görsel referanslar GUTIQ_RESEARCH.md içine kaydedildi; yorum hacminin yetersizliği açıklandı.
+- Menü/tabak için ayrı sözleşme ve Vision API; kullanıcı tüketim teyidi, görünmeyen içerik belirsizliği ve mutfağa sorular.
+- EAN8/EAN13/UPC-A kamera veya elle barkod, GTIN basamağı, LLM'siz Open Food Facts sorgusu ve fotoğraf alternatifi.
+- Tarama bağlı öğün; pending/belirtisiz/belirtili sonuç, şiddet, gecikme, teyitli bileşenler, bağlam ve isteğe bağlı Bristol tipi.
+- 7/30 gün yerel gözlemler, örnek/pending ayrımı ve paydalı bileşen sayıları; alt menüden erişim.
+- Tanı paylaşmayan restoran kartı; yerel metin/PDF görüşme raporu, HTML kaçışı ve native geçici dosya temizliği.
+- Son güçlü demo kararı korundu; düşük giderli yerel takip ve %10 Sonnet senaryoları yatırımcı maliyet belgesine işlendi.

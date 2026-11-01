@@ -30,3 +30,6 @@ Ekranlar: Google/hesapsız giriş, altı adımlı kullanım profili, tara, öniz
 Önce ana ekranın görsel yönünü kur, telefon ve geniş önizlemede çalıştırıp incele, sonra diğer ekranları aynı token'larla genişlet.
 360px satır kırılması, 320px sınır, büyük font, kontrast, alt güvenli alan, uzun Türkçe adlar ve ana akış kontrol edilir.
 Yalnız gerçekten çalıştırılan testleri raporla; fiziksel telefon, canlı Gemini ve imzalı APK testlerini ayrı yaz.
+
+## My GutIQ uyarlaması
+Gözlemler alt menüde erişilir; sayılar paydalarıyla gösterilir. Restoran kartı ve menü/tabak ekranları aynı tipografi/renkleri kullanır. Rakibin marka varlıkları, dekoratif daireleri, güven yüzdeleri ve güvenli/kaçın sınıflaması aktarılmaz. Referans ekran görüntüleri docs içinde yalnız araştırma belgesine aittir; uygulama bundle'ına girmez. Yeni uzun Türkçe düğmeler satır kırabilir, 7/30 gün seçicisi dar ekranda sarar.

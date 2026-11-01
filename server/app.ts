@@ -8,7 +8,10 @@ import { googleConfigured, googleUser, issueSession, verifySession, type AuthCon
 import { personalRequestSchema } from '../shared/profile';
 import { personalize, type PersonalConfig } from './personal';
 import { scanRequestSchema } from '../shared/analysis';
-import { analyzeImage, ProviderError, type VisionConfig } from './provider';
+import { analyzeImage, analyzeFood, ProviderError, type VisionConfig } from './provider';
+import { foodRequestSchema } from '../shared/foodContext';
+import { lookupBarcode } from './barcode';
+import { validGtin } from '../shared/barcode';
 
 /** All deployment dependencies are explicit so tests never depend on machine secrets. */
 export type ApiConfig = VisionConfig &
@@ -19,6 +22,7 @@ export type ApiConfig = VisionConfig &
     production?: boolean;
     timeoutMs?: number;
     trustProxy?: number;
+    catalogueFetcher?: typeof fetch;
   };
 
 function authorized(expected: string, header: string | undefined): boolean {
@@ -125,6 +129,64 @@ export function createApi(config: ApiConfig): express.Express {
     next();
   });
   app.use(express.json({ limit: '14mb', strict: true }));
+  app.get('/api/barcode/:code', async (req, res) => {
+    const parsed = z.string().refine(validGtin).safeParse(req.params.code);
+    if (!parsed.success) {
+      res.status(400).json({ error: 'INVALID_BARCODE' });
+      return;
+    }
+    try {
+      res.json({ product: await lookupBarcode(parsed.data, config.catalogueFetcher) });
+    } catch {
+      res.status(502).json({ error: 'CATALOGUE_UNAVAILABLE' });
+    }
+  });
+  app.post('/api/food-context', async (req, res) => {
+    const input = foodRequestSchema.safeParse(req.body);
+    if (!input.success || !validImage(input.data.image, input.data.mimeType)) {
+      res.status(400).json({ error: 'INVALID_IMAGE' });
+      return;
+    }
+    if (!config.apiKey) {
+      res.status(503).json({ error: 'NOT_CONFIGURED' });
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), config.timeoutMs ?? 35_000);
+    const cancel = (): void => {
+      if (!res.writableEnded) controller.abort();
+    };
+    res.on('close', cancel);
+    try {
+      let usage: { inputTokens: number; outputTokens: number } | undefined;
+      const result = await analyzeFood(
+        input.data.image,
+        input.data.mimeType,
+        input.data.mode,
+        {
+          ...config,
+          reportUsage: (value) => {
+            usage = value;
+          },
+        },
+        controller.signal,
+      );
+      if (!res.destroyed) res.json({ result, model: config.model, ...(usage ? { usage } : {}) });
+    } catch (error) {
+      const code = controller.signal.aborted
+        ? 'TIMEOUT'
+        : error instanceof ProviderError
+          ? error.code
+          : 'PROVIDER_UNAVAILABLE';
+      if (!res.destroyed)
+        res
+          .status(code === 'TIMEOUT' ? 504 : code === 'RATE_LIMITED' ? 429 : 502)
+          .json({ error: code });
+    } finally {
+      clearTimeout(timer);
+      res.off('close', cancel);
+    }
+  });
   app.post('/api/analyze', async (req, res) => {
     const input = scanRequestSchema.safeParse(req.body);
     if (

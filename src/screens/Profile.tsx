@@ -85,6 +85,7 @@ export function ProfileScreen({
   token: string;
 }) {
   const [draft, setDraft] = useState(initial);
+  const [avoidedText, setAvoidedText] = useState((initial.avoidedFoods ?? []).join(', '));
   const [step, setStep] = useState(0);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -106,7 +107,16 @@ export function ProfileScreen({
     try {
       await onSave(
         profileSchema.parse(
-          skip ? { ...emptyProfile, completed: true } : { ...draft, completed: true },
+          skip
+            ? { ...emptyProfile, completed: true }
+            : {
+                ...draft,
+                avoidedFoods: avoidedText
+                  .split(',')
+                  .map((v) => v.trim())
+                  .filter(Boolean),
+                completed: true,
+              },
         ),
       );
     } catch {
@@ -194,6 +204,10 @@ export function ProfileScreen({
         )}
         {step === 2 && (
           <>
+            <Text style={ui.small}>
+              Örnekler: IBS-D / IBS-C / IBS-M, reflü, laktoz hassasiyeti, çölyak, SIBO, Crohn veya
+              ülseratif kolit. Yalnız kendi bildiğin durumu yaz.
+            </Text>
             <Field
               label="Paylaşmak istediğin sağlık durumu veya hassasiyet"
               value={draft.conditions}
@@ -216,6 +230,12 @@ export function ProfileScreen({
             <Text style={ui.small}>
               Uygulama tanıyı doğrulamaz. Gerekmeyen kişisel bilgileri paylaşma.
             </Text>
+            <Field
+              label="Kendi tercihinle kaçındığın gıdalar (virgülle ayır)"
+              value={avoidedText}
+              onChange={setAvoidedText}
+              max={1000}
+            />
           </>
         )}
         {step === 3 && (

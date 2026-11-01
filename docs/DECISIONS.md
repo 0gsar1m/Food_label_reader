@@ -29,3 +29,10 @@ Kaynaklar tasarım kararını destekler; seçilen modelin gerçek etiketlerde do
 - Google kimliği sunucuda JOSE JWK doğrulama, 24h uygulama JWT. Gmail kapsamı yok; bulut sync yok.
 - Native giriş için modern Credential Manager SDK; deprecated Expo Google provider eklenmedi.
 - 2026/2027 token giderleri ve sabit abonelikler ayrı, varsayımlar parametreli.
+
+## Faz 14 / My GutIQ yönlendirmesi
+GUTIQ_RESEARCH.md kanıt ve parite tablosudur. Yeni ana hedef tarama, tüketim teyidi, kontrol ve yerel gözlemler döngüsüdür. Yerel tipli ekran yığını korunur; gözlemler dördüncü ana sekmedir.
+Menü/tabak için ayrı Zod sözleşmesi ve API kullanılır; etiket şeması gevşetilmez. Aynı Vision taşımacısı, anahtar, kota ve zaman aşımı kullanılır. API katalog sorgusu sabit Open Food Facts v3.6 origin'ine, sınırlı alanlarla, 8 saniye/128KB sınırıyla gider; sağlık profili ve hesap aktarılmaz. Katalog, LLM veya etiket doğrulaması değildir.
+PDF için SDK58 resmi dokümanı okundu; `npx expo install expo-print expo-sharing expo-file-system` ile uyumlu sürümler kuruldu. app.config.ts plugin kaynağıdır; incoming sharing açılmadı. Native geçici PDF paylaşım sonrası silinir. Web ayrı yerel HTML penceresini yazdırır; sağlık verisi HTML escape edilir, uzak font/görsel yoktur.
+Şifreli vault sürüm1 korunur; yeni alanlar optional, eski kayıtların boş belirtisi eski açık “Belirti yok” seçimine uygun yorumlanır. Yeni pending durumu ayrı saklanır. Günlük sınırı 100 öğündür. Klinik skor/FODMAP veritabanı, senkronizasyon ve abonelik kapsam dışıdır.
+Kaynaklar: https://docs.expo.dev/versions/v58.0.0/sdk/print/ ; https://docs.expo.dev/versions/v58.0.0/sdk/sharing/ ; https://docs.expo.dev/versions/v58.0.0/sdk/camera/ ; https://openfoodfacts.github.io/openfoodfacts-server/api/ ; Bristol betimleri: https://www.plymouthhospitals.nhs.uk/display-pil/pil-loss-of-bowel-motions-in-adults-4092

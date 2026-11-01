@@ -30,14 +30,31 @@ import { AccountScreen } from './src/screens/Account';
 import { useHealth } from './src/hooks/useHealth';
 import { ProfileScreen } from './src/screens/Profile';
 import { DiaryScreen } from './src/screens/Diary';
+import { Insights } from './src/screens/Insights';
+import { Restaurant } from './src/screens/Restaurant';
+import { FoodPhoto } from './src/screens/FoodPhoto';
+import { Barcode } from './src/screens/Barcode';
+import { outcomeOf } from './shared/observations';
+import type { DiaryEntry } from './shared/profile';
 import { Button, Notice } from './src/components/Controls';
 
 type Screen =
   | {
       kind:
-        'home' | 'history' | 'settings' | 'camera' | 'privacy' | 'terms' | 'profile' | 'account';
+        | 'home'
+        | 'history'
+        | 'settings'
+        | 'camera'
+        | 'privacy'
+        | 'terms'
+        | 'profile'
+        | 'account'
+        | 'insights'
+        | 'restaurant'
+        | 'food-photo'
+        | 'barcode';
     }
-  | { kind: 'diary'; meal?: string }
+  | { kind: 'diary'; meal?: string; seed?: Partial<DiaryEntry> }
   | { kind: 'review'; photo: PreparedPhoto }
   | { kind: 'result'; record: ScanRecord };
 
@@ -85,7 +102,7 @@ function Application() {
     setScanError('');
     setStack((past) => [...past, next]);
   };
-  const reset = (kind: 'home' | 'history' | 'settings'): void => {
+  const reset = (kind: 'home' | 'history' | 'settings' | 'insights'): void => {
     inFlight.current?.abort();
     setBusy(false);
     setScanError('');
@@ -182,7 +199,11 @@ function Application() {
         analysis: demoAnalysis,
       },
     });
-  const primary = screen.kind === 'home' || screen.kind === 'history' || screen.kind === 'settings';
+  const primary =
+    screen.kind === 'home' ||
+    screen.kind === 'history' ||
+    screen.kind === 'settings' ||
+    screen.kind === 'insights';
   if (!device.ready || !health.ready || !account.ready)
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -268,6 +289,14 @@ function Application() {
           onAccount={() => push({ kind: 'account' })}
           onProfile={() => push({ kind: 'profile' })}
           onDiary={() => push({ kind: 'diary' })}
+          onInsights={() => push({ kind: 'insights' })}
+          onRestaurant={() => push({ kind: 'restaurant' })}
+          onFoodPhoto={() => push({ kind: 'food-photo' })}
+          onBarcode={() => push({ kind: 'barcode' })}
+          pending={
+            health.vault.diary.filter((entry) => !entry.demo && outcomeOf(entry) === 'pending')
+              .length
+          }
           onCamera={camera}
           onGallery={() => {
             void gallery();
@@ -338,7 +367,18 @@ function Application() {
           apiUrl={device.apiUrl}
           token={effectiveToken}
           onProfile={() => push({ kind: 'profile' })}
-          onDiary={() => push({ kind: 'diary', meal: screen.record.analysis.productName ?? '' })}
+          onDiary={() =>
+            push({
+              kind: 'diary',
+              meal: screen.record.analysis.productName ?? '',
+              seed: {
+                scanId: screen.record.id,
+                ingredients: screen.record.analysis.ingredients.map((item) => item.name),
+                outcome: 'pending',
+                demo: screen.record.demo,
+              },
+            })
+          }
           record={screen.record}
           preferences={device.preferences}
           onBack={back}
@@ -347,9 +387,41 @@ function Application() {
       )}
       {screen.kind === 'account' && accountView}
       {screen.kind === 'profile' && profileView}
+      {screen.kind === 'barcode' && (
+        <Barcode
+          apiUrl={device.apiUrl}
+          token={effectiveToken}
+          onBack={back}
+          onLabel={camera}
+          onDiary={(meal) => push({ kind: 'diary', meal, seed: { outcome: 'pending' } })}
+        />
+      )}
+      {screen.kind === 'insights' && (
+        <Insights vault={health.vault} onBack={back} onDiary={() => push({ kind: 'diary' })} />
+      )}
+      {screen.kind === 'restaurant' && (
+        <Restaurant
+          allergens={device.preferences}
+          avoided={health.vault.profile.avoidedFoods ?? []}
+          onBack={back}
+          onSettings={() => push({ kind: 'settings' })}
+          onProfile={() => push({ kind: 'profile' })}
+          onMenu={() => push({ kind: 'food-photo' })}
+        />
+      )}
+      {screen.kind === 'food-photo' && (
+        <FoodPhoto
+          apiUrl={device.apiUrl}
+          token={effectiveToken}
+          avoided={health.vault.profile.avoidedFoods ?? []}
+          onBack={back}
+          onDiary={(meal, seed) => push({ kind: 'diary', meal, seed })}
+        />
+      )}
       {screen.kind === 'diary' && (
         <DiaryScreen
           meal={screen.meal}
+          seed={screen.seed}
           entries={health.vault.diary}
           onBack={back}
           onSave={(entry) =>
@@ -367,7 +439,10 @@ function Application() {
         <Legal kind={screen.kind} onBack={back} />
       )}
       {primary && (
-        <Navigation active={screen.kind as 'home' | 'history' | 'settings'} onChange={reset} />
+        <Navigation
+          active={screen.kind as 'home' | 'history' | 'settings' | 'insights'}
+          onChange={reset}
+        />
       )}
       <ConfirmDialog
         visible={confirmClear}

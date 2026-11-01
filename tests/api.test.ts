@@ -49,6 +49,80 @@ const post = (
     body: payload,
   });
 
+describe('menu, meal and catalogue HTTP boundaries', () => {
+  const menu = {
+    title: 'Menü',
+    visibleText: 'Çorba',
+    items: [{ name: 'Çorba', basis: 'printed', evidence: 'Çorba' }],
+    questions: [],
+    uncertainties: ['Malzemeler bilinmiyor.'],
+  };
+  const foodPost = (base: string, payload: unknown, token?: string) =>
+    fetch(`${base}/api/food-context`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify(payload),
+    });
+  it('validates mode and image, requires authentication and makes only one provider call', async () => {
+    const transport = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(
+        Response.json({
+          candidates: [
+            { finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(menu) }] } },
+          ],
+        }),
+      );
+    const base = await serve({ fetcher: transport, accessToken: 'test-access-token' });
+    const input = { image, mimeType: 'image/jpeg', mode: 'menu' };
+    expect((await foodPost(base, input)).status).toBe(401);
+    expect((await foodPost(base, { ...input, mode: 'other' }, 'test-access-token')).status).toBe(
+      400,
+    );
+    const response = await foodPost(base, input, 'test-access-token');
+    expect(response.status).toBe(200);
+    expect((await response.json()).result.title).toBe('Menü');
+    expect(transport).toHaveBeenCalledTimes(1);
+  });
+  it('rejects fabricated menu evidence without a synthetic fallback', async () => {
+    const base = await serve({
+      fetcher: vi
+        .fn<typeof fetch>()
+        .mockResolvedValue(
+          Response.json({
+            candidates: [
+              {
+                finishReason: 'STOP',
+                content: { parts: [{ text: JSON.stringify({ ...menu, visibleText: '' }) }] },
+              },
+            ],
+          }),
+        ),
+    });
+    const response = await foodPost(base, { image, mimeType: 'image/jpeg', mode: 'menu' });
+    expect(response.status).toBe(502);
+    expect(await response.json()).toEqual({ error: 'INVALID_RESULT' });
+  });
+  it('returns honest missing-key errors for food photographs', async () => {
+    expect(
+      (await foodPost(await serve({ apiKey: '' }), { image, mimeType: 'image/jpeg', mode: 'meal' }))
+        .status,
+    ).toBe(503);
+  });
+  it('looks up public catalogue data without model credentials and handles unavailable products', async () => {
+    const transport = vi.fn<typeof fetch>().mockResolvedValue(new Response(null, { status: 404 }));
+    const base = await serve({ apiKey: '', catalogueFetcher: transport });
+    expect((await fetch(`${base}/api/barcode/3017620422004`)).status).toBe(400);
+    const response = await fetch(`${base}/api/barcode/3017620422003`);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ product: null });
+    expect(transport).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('HTTP API', () => {
   it('extracts once, validates evidence and never forwards preferences', async () => {
     const fetcher = vi.fn<typeof fetch>().mockResolvedValue(providerSuccess());

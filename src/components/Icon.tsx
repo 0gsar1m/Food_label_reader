@@ -12,6 +12,7 @@ export function Icon({
     | 'scan'
     | 'gallery'
     | 'history'
+    | 'observations'
     | 'settings'
     | 'arrow'
     | 'back'
@@ -29,6 +30,7 @@ export function Icon({
     scan: 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5M3 12h18M8 8h8M8 16h8',
     gallery: 'm3 17 5-5 4 4 4-6 5 7',
     history: 'M3 5v5h5M3.5 9a9 9 0 1 1 .5 7M12 7v5l3 2',
+    observations: 'M4 4v16h16M8 15l4-6 4 3 4-7',
     settings: 'M4 7h16M4 17h16M8 4v6m8 4v6',
     arrow: 'M4 12h15m-6-6 6 6-6 6',
     back: 'M20 12H5m6-6-6 6 6 6',

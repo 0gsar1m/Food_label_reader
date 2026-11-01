@@ -7,8 +7,8 @@ export function Navigation({
   active,
   onChange,
 }: {
-  active: 'home' | 'history' | 'settings';
-  onChange: (tab: 'home' | 'history' | 'settings') => void;
+  active: 'home' | 'history' | 'settings' | 'insights';
+  onChange: (tab: 'home' | 'history' | 'settings' | 'insights') => void;
 }) {
   return (
     <View
@@ -26,6 +26,7 @@ export function Navigation({
         [
           ['home', 'Tara', 'scan'],
           ['history', 'Geçmiş', 'history'],
+          ['insights', 'Gözlemler', 'observations'],
           ['settings', 'Tercihler', 'settings'],
         ] as const
       ).map(([value, label, icon]) => (

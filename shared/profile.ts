@@ -31,6 +31,7 @@ export const profileSchema = z.object({
     z.enum(['portion', 'protein', 'timing', 'context', 'skin', 'routine']),
     z.string().max(600),
   ),
+  avoidedFoods: z.array(z.string().trim().min(1).max(80)).max(20).optional(),
 });
 /** The blank profile can be completed progressively without an account. */
 export const emptyProfile: Profile = {
@@ -48,15 +49,34 @@ export const emptyProfile: Profile = {
 /** Validated local profile. */
 export type Profile = z.infer<typeof profileSchema>;
 /** Both symptomatic and symptom-free meals are recorded to avoid selective recall. */
-export const diarySchema = z.object({
-  id: z.string().max(100),
-  at: z.string().datetime(),
-  meal: z.string().min(1).max(600),
-  amount: z.string().max(100),
-  symptoms: z.array(z.enum(['bloating', 'constipation', 'reflux', 'indigestion', 'eczema'])).max(5),
-  delay: z.string().max(100),
-  notes: z.string().max(600),
-});
+export const diarySchema = z
+  .object({
+    id: z.string().max(100),
+    at: z.string().datetime(),
+    meal: z.string().min(1).max(600),
+    amount: z.string().max(100),
+    symptoms: z
+      .array(z.enum(['bloating', 'constipation', 'reflux', 'indigestion', 'eczema']))
+      .max(5),
+    delay: z.string().max(100),
+    notes: z.string().max(600),
+    outcome: z.enum(['pending', 'symptom_free', 'symptoms']).optional(),
+    ingredients: z.array(z.string().trim().min(1).max(120)).max(60).optional(),
+    scanId: z.string().max(100).optional(),
+    demo: z.boolean().optional(),
+    severity: z.number().int().min(0).max(3).optional(),
+    stool: z.number().int().min(1).max(7).optional(),
+    context: z.string().max(400).optional(),
+  })
+  .superRefine((entry, context) => {
+    if (entry.outcome && (entry.outcome === 'symptoms') !== Boolean(entry.symptoms.length)) {
+      context.addIssue({
+        code: 'custom',
+        message: 'Outcome and symptoms must agree.',
+        path: ['outcome'],
+      });
+    }
+  });
 /** Local meal observation, not a causal inference. */
 export type DiaryEntry = z.infer<typeof diarySchema>;
 /** Single encrypted document avoids partial cross-file updates. */

@@ -98,7 +98,7 @@
       ],
       "fixAvailable": {
         "name": "expo",
-        "version": "53.0.11",
+        "version": "51.0.39",
         "isSemVerMajor": true
       }
     },
@@ -111,6 +111,7 @@
       ],
       "effects": [
         "@expo/inline-modules",
+        "expo-sharing",
         "react-native-nitro-google-signin"
       ],
       "range": "8.0.9-canary-20240719-83ee47b - 8.0.9-canary-20240814-ce0f7d5 || >=8.1.0-canary-20240904-69100c1",
@@ -136,7 +137,7 @@
       ],
       "fixAvailable": {
         "name": "expo",
-        "version": "53.0.11",
+        "version": "51.0.39",
         "isSemVerMajor": true
       }
     },
@@ -172,7 +173,7 @@
       ],
       "fixAvailable": {
         "name": "expo",
-        "version": "53.0.11",
+        "version": "51.0.39",
         "isSemVerMajor": true
       }
     },
@@ -216,18 +217,12 @@
         "@typescript-eslint/utils",
         "eslint"
       ],
-      "effects": [
-        "typescript-eslint"
-      ],
+      "effects": [],
       "range": "*",
       "nodes": [
         "node_modules/@typescript-eslint/eslint-plugin"
       ],
-      "fixAvailable": {
-        "name": "typescript-eslint",
-        "version": "8.14.0",
-        "isSemVerMajor": true
-      }
+      "fixAvailable": true
     },
     "@typescript-eslint/parser": {
       "name": "@typescript-eslint/parser",
@@ -238,7 +233,8 @@
         "eslint"
       ],
       "effects": [
-        "@typescript-eslint/eslint-plugin"
+        "@typescript-eslint/eslint-plugin",
+        "typescript-eslint"
       ],
       "range": "*",
       "nodes": [
@@ -266,11 +262,7 @@
       "nodes": [
         "node_modules/@typescript-eslint/type-utils"
       ],
-      "fixAvailable": {
-        "name": "typescript-eslint",
-        "version": "8.14.0",
-        "isSemVerMajor": true
-      }
+      "fixAvailable": true
     },
     "@typescript-eslint/typescript-estree": {
       "name": "@typescript-eslint/typescript-estree",
@@ -366,7 +358,25 @@
       ],
       "fixAvailable": {
         "name": "expo",
-        "version": "53.0.11",
+        "version": "51.0.39",
+        "isSemVerMajor": true
+      }
+    },
+    "expo-sharing": {
+      "name": "expo-sharing",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@expo/config-plugins"
+      ],
+      "effects": [],
+      "range": ">=14.0.9-canary-20251205-756eb7a",
+      "nodes": [
+        "node_modules/expo-sharing"
+      ],
+      "fixAvailable": {
+        "name": "expo-sharing",
+        "version": "14.0.8",
         "isSemVerMajor": true
       }
     },
@@ -404,7 +414,11 @@
       "nodes": [
         "node_modules/glob"
       ],
-      "fixAvailable": false
+      "fixAvailable": {
+        "name": "expo",
+        "version": "51.0.39",
+        "isSemVerMajor": true
+      }
     },
     "minimatch": {
       "name": "minimatch",
@@ -440,8 +454,8 @@
         "node_modules/minimatch"
       ],
       "fixAvailable": {
-        "name": "eslint",
-        "version": "4.0.0",
+        "name": "expo",
+        "version": "51.0.39",
         "isSemVerMajor": true
       }
     },
@@ -486,18 +500,18 @@
     "vulnerabilities": {
       "info": 0,
       "low": 0,
-      "moderate": 22,
+      "moderate": 23,
       "high": 0,
       "critical": 0,
-      "total": 22
+      "total": 23
     },
     "dependencies": {
-      "prod": 559,
+      "prod": 561,
       "dev": 158,
       "optional": 65,
       "peer": 20,
       "peerOptional": 0,
-      "total": 739
+      "total": 741
     }
   }
 }

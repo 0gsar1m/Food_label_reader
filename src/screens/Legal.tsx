@@ -4,6 +4,14 @@ import { ui } from '../theme';
 
 const privacy = [
   [
+    'Gözlemler, restoran kartı ve rapor',
+    'Öğüne bağlı kontrol durumu, teyit edilen bileşenler, şiddet, isteğe bağlı dışkı tipi ve bağlam şifreli günlüğe eklenir. Gözlem sayıları cihazda hesaplanır. Restoran kartı yalnız seçili alerjenleri ve kendi kaçınma tercihlerini içerir. Paylaşım açık işlem gerektirir. PDF rapor cihazda geçici oluşturulur; paylaşım penceresi kapandığında uygulama geçici dosyayı siler. Paylaştığın veya yazdırdığın kopyaları uygulama geri alamaz. Webde rapor ayrı yazdırma penceresinde açılır.',
+  ],
+  [
+    'Menü, tabak ve barkod',
+    'Menü/tabak fotoğrafı yalnız gönder düğmesiyle aynı Google Gemini hizmetine aktarılır; sağlık profili eklenmez. Menü/tabak görsel sonucu geçmişe kaydedilmez; teyit ettiğin öğün günlüğe eklenebilir. Barkod araması sunucu üzerinden Open Food Facts açık kataloğuna yalnız barkodu gönderir. Bu servis barkod ve sunucu bağlantı bilgisini görür; fotoğraf, profil veya kullanıcı kimliği gönderilmez. Katalog verisi fotoğraftan okunmuş etiket yerine geçmez.',
+  ],
+  [
     'Google hesabı',
     'Google ile kayıt/girişte doğrulanmış temel kimlik bilgisi (Google hesap kimliği, ad, email) ve süreli uygulama oturumu kullanılır. Gmail mesajlarına erişilmez. Google kimliği sunucuda doğrulanır; uygulama oturumu cihazda güvenli depoda, webde sekme oturum deposunda tutulur. Sağlık profili, günlük ve okuma kayıtları hesaba göre ayrı tutulur. Bulut senkronizasyonu yoktur; çıkış verileri silmez. Google Identity Services giriş ekranı açıldığında Google ile teknik bağlantı kurabilir.',
   ],
@@ -17,7 +25,7 @@ const privacy = [
   ],
   [
     'İşlenen veriler',
-    'Seçtiğin fotoğraf, yalnız “Fotoğrafı gönder ve oku” işleminden sonra yapılandırılmış API sunucusuna, ardından Google Gemini API hizmetine gönderilir. Fotoğrafa kişisel bilgi eklememeni öneririz. API anahtarı yalnız sunucuda tutulur.',
+    'Seçtiğin fotoğraf, yalnız fotoğrafı gönderme işleminden sonra yapılandırılmış API sunucusuna, ardından Google Gemini API hizmetine gönderilir. Fotoğrafa kişisel bilgi eklememeni öneririz. API anahtarı yalnız sunucuda tutulur.',
   ],
   [
     'Cihazdaki kayıtlar',

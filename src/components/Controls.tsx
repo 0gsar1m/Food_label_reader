@@ -47,7 +47,16 @@ export function Button({
       {icon && (
         <Icon name={icon} color={secondary ? theme.color.ink : theme.color.paper} size={20} />
       )}
-      <Text style={[ui.strong, { color: secondary ? theme.color.ink : theme.color.paper }]}>
+      <Text
+        style={[
+          ui.strong,
+          {
+            flexShrink: 1,
+            textAlign: 'center',
+            color: secondary ? theme.color.ink : theme.color.paper,
+          },
+        ]}
+      >
         {label}
       </Text>
     </Pressable>

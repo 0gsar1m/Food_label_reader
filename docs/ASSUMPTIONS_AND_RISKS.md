@@ -25,3 +25,12 @@
 Yerel yorumda LLM/token gideri yoktur; gerçek fotoğraf okuma ve bulut ayrıntısı ücretli olabilir. Yerel OCR/LLM uygulanmış değildir. Ucuz sağlayıcı modellerinin canlı kalite kabulü ayrıca gerekir.
 
 Son demo kararı: normal sunucu Gemini 3.8 Flash + Sonnet 5.5; api:economy Lite + Haiku seçer. Yerel kurallı yorum her iki modda API’sizdir. Önceki ekonomik varsayılan ifadeleri bu son kararla alternatif mod anlamındadır.
+
+## My GutIQ kapsamı
+- Rakip incelemesi kamuya açık beyan ve ekranlarla sınırlı; ücretli hesabı, ayrıntılı onboarding'i veya gerçek analiz kalitesi denenmedi.
+- Menü/tabak içeriği belirsizdir; görünmeyen malzeme, miktar veya alerjen yokluğu çıkarılmaz. Tüketim teyidi gerçek ambalaj/mutfak bilgisinin yerini tutmaz.
+- Barkodda Open Food Facts topluluk verisi, sabit v3.6 uç noktası, 8 saniye ve 128KB üst sınırı. Türkiye kapsamı/sürüm/farklı ambalaj güncelliği ölçülmedi; bulunamazsa fotoğraf akışı var. UPC-E sıkıştırılmış kod genişletme yok, kamera EAN8/EAN13/UPC-A ile sınırlı.
+- Katalog ücretsiz kullanım koşulları ve atıf/lisans gerektirir; yayın öncesi uygulama iletişimi ve API kullanım bildirimi kontrol edilir. Bu teslim harici hesap/form gönderimi yapmaz. Katalog verisi birleştirilmiş ticari ürün veritabanında saklanmıyor.
+- Günlük en fazla 100 öğün; 7/30 gün özeti yalnız cihazdaki kalan kayıtları temsil eder. Kayıt silmek sonuçları değiştirir. Arka plan bildirimi ve hesaplar arası senkronizasyon yok.
+- PDF export hassas açık dosya üretir. Native paylaşım sonrası normal cleanup vardır; uygulama/OS kapanması gibi durumda geçici önbellek dosyası kalabilir. Kullanıcının dışa aldığı dosya geri silinmez. Web yazdırma penceresi/PDF kaydetme tarayıcıya bağlıdır.
+- Üretimde gerçek abonelik, tahsilat ve kişi bazında ücret kotası uygulanmış değildir. IP kotası ticari kullanım bütçe garantisi vermez. $25 hosting bir planlama ödeneğidir.

@@ -1,5 +1,28 @@
 # Demo ayarı: Vision + Sonnet
 
+## My GutIQ benzeri deneyimin gideri
+
+1 Kasım 2026 ek kapsamı: profil, öğün sonrası kontrol, 7/30 gün gözlemleri, restoran kartı ve rapor cihazda çalışır; bunlar için token veya servis aboneliği yoktur. Barkod Open Food Facts açık API'sini kullanır, LLM çağırmaz; ağ ve katalog sınırları vardır. Etiket, menü ve tabak ayrı birer fotoğraf çağrısıdır: aşağıdaki 20000 sayısı bunların toplamıdır, her tür için ayrı 20000 değildir.
+
+1000 aktif kullanıcı, kişi başı ayda 20 fotoğraf; Vision 3000 girdi/2000 çıktı, kişisel yorum 6000 girdi/2000 çıktı, %15 tekrar ödeneği, $25 barındırma varsayımı. Ek soru sıralama çağrısı yok:
+
+| Senaryo | API + pay | Barındırma | Aylık toplam | Aktif kişi başı |
+|---|---:|---:|---:|---:|
+| Flash-Lite + yerel takip | $86,25 | $25 | $111,25 | $0,111 |
+| Flash-Lite + %10 Sonnet | $159,85 | $25 | $184,85 | $0,185 |
+| Güçlü Flash + yerel takip | $224,25 | $25 | $249,25 | $0,249 |
+| Güçlü Flash + her fotoğrafta Sonnet | $960,25 | $25 | $985,25 | $0,985 |
+
+Formül: `fotoğraf × (girdi token × girdi fiyatı + çıktı token × çıktı fiyatı) / 1000000`; kişisel çağrılar ayrıca eklenir. Model seçimi yerel takip özelliklerini değiştirmez. Menü/tabak yanıtları daha kısa olabilir, ancak canlı ölçüm olmadığı için bu varsayımsal tasarruf tabloya yazılmadı. Yeni günlük alanları kişisel model bağlamını büyütebilir; 6000 token gerçek ölçüm değildir. Çıktı tavanı da ortalama 2000 token'dan yüksektir. Hesap `npm run costs` ile tekrar üretilebilir.
+
+Ekonomik kullanım `npm run api:economy` ile Lite + isteğe bağlı Haiku seçer. Demo `npm run api` güçlü Flash + Sonnet olarak kalır. Lite + Sonnet için normal sunucuda `GEMINI_MODEL=gemini-3.1-flash-lite`, `PERSONAL_MODEL=claude-sonnet-5-5` tanımlanır. Otomatik yükseltme veya otomatik kişisel çağrı yoktur. Gerçek çağrı kalite kabulü henüz yapılmadı.
+
+Gelir duyarlılığı örneği, satış fiyatı kararı değildir: $3/ay brüt ücret ve varsayımsal %15 mağaza kesintisinde $2,55/ödeyen kişi kalır. Yalnız yukarıdaki teknik gideri karşılamak için ilk senaryoda 44, ikinci senaryoda 73 ücretli kişi gerekir. 1000 aktifin yalnız 30'u ödeme yaparsa $76,50 gelir bu giderleri karşılamaz. Vergi, iade, ödeme kur farkı, müşteri edinme, personel, destek ve hukuk giderleri bu eşiklere dahil değildir. Ücretsiz kullanıcıların fotoğraf kotası ve abonelik dönüşümü canlı ürün deneyiyle belirlenmelidir. Bu teslimde ödeme sistemi veya ücret kotası uygulanmadı.
+
+My GutIQ'nun kendi aylık sunucu faturası ve kullandığı model bilinmiyor. Rakibin mağaza aboneliği bizim maliyetimizi kanıtlamaz. Fiyatlar [Google standart tarife](https://ai.google.dev/gemini-api/docs/pricing.md) ve [Anthropic model fiyatları](https://platform.claude.com/docs/en/models/overview) üzerinden yeniden kontrol edildi; ücretsiz eğitim/veri işleme şartları pahasına sıfır maliyet varsayılmadı.
+
+---
+
 Kullanıcının son kararıyla APK demosunun varsayılanı **gemini-3.8-flash + claude-sonnet-5-5**. Yerel kurallı yorum ücretsiz kalır; gerçek Sonnet yorumu ayrı bulut düğmesinden istenir.
 
 Varsayım: her Vision çağrısı 3000 girdi/2000 çıktı, her Sonnet yorumu 6000 girdi/2000 çıktı token. Resmi standart fiyatlarla bir çift yaklaşık $0,04175; 2 çift $0,0835, 3 çift $0,12525 API tüketimi. Sağlayıcı asgari kredi yüklemesi ve vergi bu tüketim hesabından ayrıdır.

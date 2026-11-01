@@ -74,3 +74,11 @@ Google Play veri güvenliği ve Apple gizlilik formlarını gerçek veri akış�
 Bu adımlar bu oturumda yapılmış veya hesap açılmış gibi raporlanmaz.
 
 Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yerel profil değerlendirmesi ve isteğe bağlı Haiku bulut ayrıntısı. Eski premium gider rakamları varsayılan değildir; INVESTOR_COSTS.md esas alınır.
+# Faz 14 ek kabulü
+
+- `docs/GUTIQ_RESEARCH.md` ürün karşılaştırmasını ve bilinmeyenleri kaydeder. Yeni ekranlar: Gözlemler, Dışarıda yemek, Menü ve tabak, Barkod.
+- Mevcut Google/sağlık izinleri korunur. `POST /api/food-context` ve `GET /api/barcode/:code` aynı erişim/IP kotası altındadır; barkod için model anahtarı gerekmez, internet/katalog erişimi gerekir.
+- Katalog: Open Food Facts v3.6, yalnız sınırlı ürün alanları, 8sn/128KB. Ürün yok, servis kapalı, yanlış kontrol rakamı ve Türkçe ürün kapsamını gerçek ambalajlarla kontrol edin. Yayın öncesi Open Food Facts uygulama iletişimi/API kullanım kurallarını tamamlayın.
+- Native: EAN8/EAN13/UPC-A barkod kamerasını, reddedilen izni ve elle girişi test edin. Expo Print/Sharing/FileSystem yeni paketleri development/APK build'ine dahil edin. Her iki platformda PDF paylaşma, iptal, Türkçe metin ve normal geçici dosya temizliğini kontrol edin.
+- Canlı model seti: en az 5 menü, 5 tabak, 10 etiket; kırpık/bulanık/gizli sos/alerjen eksikliği ve görsel talimat enjeksiyonu dahil. Gerçek usage, p50/p95, bozuk yanıt oranı ölçülmeden ucuz model eşdeğerliği iddia etmeyin.
+- Menü/tabak sonucu saklanmaz; teyit edilen öğün günlükte saklanır. Uzun dönem için 100 kayıt sınırı/senkronizasyon ve abonelik bütçesi ayrıca tasarlanır.

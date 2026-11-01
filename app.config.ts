@@ -9,6 +9,10 @@ export default function configureApp({ config }: ConfigContext): ExpoConfig {
         typeof plugin === 'string' ? plugin : (plugin[0] ?? ''),
       ),
   );
+  if (
+    !plugins.some((plugin) => (typeof plugin === 'string' ? plugin : plugin[0]) === 'expo-sharing')
+  )
+    plugins.push('expo-sharing');
   if (iosClientId) {
     if (!/^[a-zA-Z0-9-]+\.apps\.googleusercontent\.com$/.test(iosClientId))
       throw new Error('Invalid Google iOS OAuth client ID.');

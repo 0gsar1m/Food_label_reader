@@ -6,8 +6,8 @@ Tarih: 1 Kasım 2026. Ortam: Windows, Node 24.15.0, npm 11.12.1, Expo SDK 58.
 |---|---|
 | ESLint | 0 hata / 0 uyarı |
 | Strict TypeScript | Geçti |
-| Birim ve gerçek HTTP API testleri | 74 geçti, 0 başarısız |
-| Playwright Chromium | 11 geçti, 0 başarısız |
+| Birim ve gerçek HTTP API testleri | 87 geçti, 0 başarısız |
+| Playwright Chromium | 14 geçti, 0 başarısız |
 | expo-doctor | 20/20 geçti |
 | Android/iOS/web export | Üç platform da paketlendi |
 | Üretim API bundle | Üretildi, 2,1 MB civarı |
@@ -46,7 +46,7 @@ AES-GCM tag bozma/yanlış anahtar, UTF-8, porsiyon/birim/eksik değer, maliyet 
 Bu kontroller modelin fotoğraftan uydurduğu transkripsiyonu tek başına saptayamaz; kullanıcı kaynak ambalajı kontrol etmelidir.
 
 ## Bağımlılık denetimi
-`audit-results.json`: 0 kritik, 0 yüksek, 22 orta seviye dolaylı/araç zinciri bulgusu.
+`audit-results.json`: 0 kritik, 0 yüksek, 23 orta seviye dolaylı/araç zinciri bulgusu.
 Temel zincir glob/minimatch üzerinden Expo ve lint araçlarına yayılır. Otomatik öneri Expo'yu eski majöre düşürüyordu;
 uyumsuz downgrade/force fix uygulanmadı. Uyumlu upstream düzeltmeleri izlenmelidir.
 Üretim API çok aşamalı derlenir; runner node_modules/Expo araçları taşımaz. API bundle'da glob/minimatch modülü bulunmadığı kontrol edildi.
@@ -65,3 +65,15 @@ Geliştirme sunucusunda iki Playwright süreci aynı trace klasörünü kullanı
 
 ## Ekonomik varsayılan kabulü
 API çağrısız yerel yorum için 5 yeni birim testi eklendi: hedef/protein/enerji, eksik tablo, belirtisiz günlük, tanı-şüphe ve maliyet formülleri. Bulut ve Lite Vision kalitesi canlı anahtar olmadığı için ölçülmedi. Varsayılan kişisel yorum kurallıdır, LLM diye gösterilmez.
+
+## Faz 14 / My GutIQ uyarlaması
+
+Nihai kaynak doğrulaması: `npm run verify` geçti. Lint, strict typecheck, **87 birim/HTTP testi**, Android/iOS/web export, API bundle ve bundle HTTP sağlık/kimlik smoke başarılı. İlk bir birleşik koşu Vitest başlangıcında rapor üretmeden kod1 ile çıktı; bağımsız test ve sonraki tam verify başarılı oldu. Başarısız koşu kabul kanıtı sayılmadı.
+
+Yeni anlamlı kontroller: pending/simülasyon/future/eski kayıt ayrımı, bileşen başına tek öğün sayımı ve bilinmeyen karşılaştırma grubu; takvim geçerliliği; şiddet/dışkı sınırı ve tutarlı outcome; rapor HTML enjeksiyon kaçışı; GTIN kontrol basamağı, katalog sabit origin/alanlar/128KB; menü kanıtı ve tek Vision çağrısı; HTTP kimlik, yanlış mod, sahte kanıt, eksik anahtar ve bulunamayan barkod.
+
+Son görsel düzeltme ve yerelleştirilmiş tarih sonrasında nihai **14/14** web ekran kabulü geçti. expo-doctor 20/20 geçti. Ekran testlerinde model ve katalog yanıtları kontrollü test yanıtlarıdır. Menü fotoğrafı açıkça kurgu test menüsüdür; bu testler canlı modelin görsel doğruluğunu ölçmez. Yerel günlük/gözlem/rapor akışı sıfır `/api` çağrısıyla doğrulandı. Web raporu ayrı yazdırılabilir pencerede açıldı ve kayıt içeriği kontrol edildi; tarayıcının PDF kaydetme diyaloğu otomatik onaylanmadı.
+
+390px gözlem, restoran, menü ve barkod görüntüleri incelendi. Görsel kontrolde başlıktaki düz `\\n` yazısı ve tekrarlı restoran başlığı düzeltildi; dar düğmeler saracak biçime getirildi. Gözlemler 320/1440px taşma kabulü de ekran testindedir. Native barkod kamerası ve PDF paylaşımı, gerçek Open Food Facts ürün isteği, canlı Gemini/Sonnet ve imzalı APK kabulü yapılmadı. Katalog testi sahte upstream transport kullanır, üçüncü taraf servise sağlık verisi gönderilmez.
+
+Yeni audit: **0 yüksek/kritik, 23 orta**. Yeni expo-sharing bulgusu `@expo/config-plugins` glob/minimatch araç zincirinden gelir; önerilen eski majöre force downgrade uygulanmadı. `audit-results.json` güncellendi.

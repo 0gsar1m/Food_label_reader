@@ -4,6 +4,8 @@
 
 Gıda etiketi fotoğrafını okuyup içerik, alerjen ve katkı maddelerini Türkçe açıklayan Android öncelikli React Native uygulama.
 
+My GutIQ araştırması sonrasında menü/tabak incelemesi, barkod kataloğu, tüketim teyidi ve öğün sonrası kontrol, 7/30 günlük yerel gözlemler, restoran kartı ve PDF/metin raporu eklendi. Araştırma ve parite sınırları [GUTIQ_RESEARCH.md](docs/GUTIQ_RESEARCH.md), ekonomik senaryolar [INVESTOR_COSTS.md](docs/INVESTOR_COSTS.md) içinde. Gerçek model, OAuth, native PDF/barkod kamerası ve APK kabulü dış yapılandırma/cihaz bekler.
+
 Kamera veya galeri → yerel önizleme → açık gönderim işlemi → kanıt metinleriyle açıklama.
 Her alerjen beyanı **içerir** veya **eser miktarda içerebilir** olarak ayrılır. Sağlık puanı ve tüketim güvenliği garantisi üretilmez.
 

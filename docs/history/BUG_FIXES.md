@@ -14,3 +14,11 @@
 - HTTP yerel adres kontrolü 192.168 ile başlayan alan adlarını kabul edebiliyordu; gerçek IPv4 kontrolü eklendi.
 - Derlenmiş API dosyası kaynak lint taramasına giriyordu; üretilmiş dist-api klasörü kaynak kontrollerinden ayrıldı.
 - Windows'ta paralel build/test sırasında Vitest fork worker bir kez kapandı; tek thread worker ile yeniden doğrulandı.
+
+## Faz 14 kabul düzeltmeleri
+- Yeni JSX başlıklarında düz ters bölü n yerine gerçek satır kırılması; ortak düğmede uzun Türkçe metin sarılması.
+- Yeni günlüğün varsayılanı kontrol bekliyor; belirtisiz sonuç yalnız açık seçimle kaydedilir. Legacy kayıtlar eski semantiği korur.
+- Pending/kurgu kayıtlar yerel kişisel yorumda belirtisiz sayılmaz. Yeni outcome ile belirti listesi çelişkisi Zod'da reddedilir.
+- Öğün kaydından sonra yeni form eski tarama kimliği ve demo işaretini taşımıyor. Bekleyen kontrol kısa yolu formun üstüne alındı.
+- Kullanıcıya ISO formatı yazdıran alan yerel gün.ay.yıl saat:dakika biçimine dönüştürüldü; hatalı takvim günleri reddedilir.
+- Profil kaçınma alanında virgül yazarken metni kırpan erken normalizasyon kaldırıldı; doğrulama kaydetmede yapılır.

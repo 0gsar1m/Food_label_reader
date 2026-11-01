@@ -1,5 +1,6 @@
 import type { Analysis } from './analysis';
 import { goals, symptoms, type HealthVault } from './profile';
+import { outcomeOf } from './observations';
 
 /** Offline, deterministic profile interpretation; it makes no provider call or disease inference. */
 export function localInterpretation(analysis: Analysis, vault: HealthVault) {
@@ -26,7 +27,9 @@ export function localInterpretation(analysis: Analysis, vault: HealthVault) {
       text: `Takip ettiğin yakınmalar: ${profile.symptoms.map((id) => symptoms[id]).join(', ')}. Bu bildirimler, etiketteki herhangi bir içeriğin sende belirtiye neden olduğunu göstermez.`,
       basis: 'Profilindeki kendi bildirimin',
     });
-  const recent = vault.diary.slice(0, 20);
+  const recent = vault.diary
+    .filter((entry) => !entry.demo && outcomeOf(entry) !== 'pending')
+    .slice(0, 20);
   if (recent.length) {
     const symptomatic = recent.filter((d) => d.symptoms.length).length;
     findings.push({

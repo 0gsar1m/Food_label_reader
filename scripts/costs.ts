@@ -34,3 +34,22 @@ for (const scans of [2, 3, 20000]) {
   });
   console.info(JSON.stringify({ mode: 'Vision + Sonnet demo', scans, api: result.api }));
 }
+
+for (const personalFraction of [0, 0.1]) {
+  const result = estimateCosts({
+    ...economyCosts,
+    users: 1000,
+    scansPerUser: 20,
+    personalFraction,
+    personalModel: 'sonnet',
+    hosting: 25,
+  });
+  console.info(
+    JSON.stringify({
+      mode: 'Local tracking with Lite and optional Sonnet',
+      personalFraction,
+      total: result.total,
+      perActiveUser: result.total / 1000,
+    }),
+  );
+}

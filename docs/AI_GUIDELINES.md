@@ -31,3 +31,10 @@ Güncel kaynaklar ve karar gerekçeleri `docs/DECISIONS.md` içinde tutulur.
 
 ## Ekonomik varsayılan
 Yerel profil değerlendirmesi deterministik kurallardır, üretken LLM veya klinik çıkarım diye sunulmaz. Gözlemlerden gıda tetikleyicisi üretilmez. Ayrı bulut ayrıntılandırması yalnız açık işlemle çalışır; pahalı modele otomatik yükseltme yok.
+
+## Menü, tabak ve takip
+- Menü, tabak ve barkod etiket kanıtı olarak sunulmaz. Menü yalnız yazılı kanıt; tabak görünüşe dayalı belirsiz gözlem; barkod topluluk kataloğudur.
+- Yemek adı tarif/bileşen listesi değildir. Menü öğesini seçmek otomatik bileşen üretmez. Günlüğe aktarım tüketim teyidi gerektirir.
+- Pending kayıt belirtisiz değildir. Örnek kayıtlar ve gelecekteki kayıtlar istatistikten dışlanır. Bilinmeyen bileşen listesi karşılaştırma grubu olmaz.
+- Karşılaştırmadaki 3+3 kayıt sunum eşiğidir; klinik kanıt veya neden eşiği değildir. Güven yüzdesi, kesin tetikleyici ve güvenli gıda sınıfı üretilmez.
+- Restoran kartına tanı/rutin eklenmez. Rapor açık sağlık verisi içerir; paylaşım yalnız kullanıcı düğmesiyle açılır.

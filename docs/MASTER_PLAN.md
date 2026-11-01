@@ -77,3 +77,8 @@ Kurulum ve kalan dış adımlar GOOGLE_AUTH.md içinde. Native modül APK/develo
 ## Faz 13: ekonomik varsayılan
 Kullanıcının maliyet itirazı: kişisel bağlam ve kurallı yorum cihazda API’siz; Vision Lite, bulut Haiku isteğe bağlı.
 Kabul: sıfır yerel API çağrısı, kaynaklı yerel sayısal bilgi, bilinmeyen miktarı uydurmama, maliyet formülü ve mevcut akışların korunması. Canlı ucuz model kalitesi ayrıca ölçülür.
+
+## Faz 14: My GutIQ araştırması ve Türkçe takip döngüsü
+Kaynak: GUTIQ_RESEARCH.md. Amaç: tarama → tüketim teyidi → öğün sonrası kontrol → kişisel gözlemler döngüsünü düşük maliyetle uygula.
+Çıktı: bağlı/bekleyen kontroller, şiddet/bağlam/dışkı tipi, örneksiz 7/30 gün sayımları, restoran kartı, görüşme raporu; ayrı menü/tabak Vision ve barkod kataloğu.
+Kabul: bekleyen kayıt belirtisiz sayılmaz; örnek/future kayıt ve bilinmeyen bileşenler karşılaştırmayı bozmaz; menü kanıtı ve tabak belirsizliği ayrılır; katalog profil almaz. Yerel akış sıfır API çağrısıyla test edilir. Mobil görsel, kontrat/HTTP, tüm verify ve e2e; native/canlı sağlayıcı ayrı kalır.
