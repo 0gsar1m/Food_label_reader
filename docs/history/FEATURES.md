@@ -7,3 +7,5 @@
 - Expo/React Native uygulama, fotoğraf akışı, kanıtlı sonuçlar ve yerel geçmiş eklendi.
 - Node API, Gemini entegrasyonu, doğrulama, erişim token'ı ve maliyet korumaları eklendi.
 - Anahtar yokluğunu gizlemeyen gerçek yapılandırma ve açıkça etiketli kurgu örnek eklendi.
+- 33 birim/HTTP testi, 7 ekran akışı, üç platform export ve üretim API smoke kabulü geçti.
+- Doğrulanan kod 1bfdc25 commit'iyle istenen GitHub reposunun main dalına gönderildi.

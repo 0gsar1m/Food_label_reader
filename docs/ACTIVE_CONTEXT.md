@@ -3,7 +3,7 @@
 1 Kasım 2026. Kullanıcı tüm fazların tamamlanmasını ve sonunda Food_label_reader reposuna push istedi.
 Eski proje yalnız metodoloji referansı olarak okundu. Mevcut çalışma klasörü başlangıçta boştu.
 Etiket: Expo React Native Android/iOS, Türkçe arayüz, Node API, Gemini Flash Vision.
-Etkin faz: 07 / doğrulama ve teslim. Plan: MASTER_PLAN.md.
+Etkin faz: 07 / kaynak kod ve yerel kabul teslimi tamamlandı. Plan: MASTER_PLAN.md.
 Tasarım: AI_SLOP_AVOIDANCE.md. Güvenilirlik: AI_GUIDELINES.md.
 Kullanıcının sağladığı API anahtarı/EAS hesabı yok. Bunlar varmış gibi kabul raporu yazılmaz.
 
@@ -25,7 +25,7 @@ Kullanıcının sağladığı API anahtarı/EAS hesabı yok. Bunlar varmış gib
 - README, RELEASE_RUNBOOK, VERIFICATION ve ASSUMPTIONS_AND_RISKS güncel.
 
 ## Sonraki kesin adımlar
-1. Kod doğrulaması tamamlandı; sır deseni taramasında eşleşme yok. Son işlem normal commit/push ve remote hash teyidi.
+1. Kod doğrulaması tamamlandı; sır deseni taramasında eşleşme yok. Kod commit'i `1bfdc25` origin/main'e push edildi ve uzak hash teyit edildi.
 2. Kullanıcı anahtar eklediğinde gerçek Gemini çağrısı ve 20 etiket kalite/gecikme kabulü.
 3. Fiziksel Android kamera/izin/fener/TalkBack ve %200 yazı kabulü.
 4. Hesap hazır olduğunda HTTPS API + EAS APK. Hesap/anahtar bu oturumda yoktu.
@@ -36,3 +36,8 @@ Yerel başlangıç: `npm ci`, `npm run api`, ayrı terminal `npm start`; web `np
 Gerçek key yalnız GEMINI_API_KEY. Fiziksel telefon için EXPO_PUBLIC_API_URL bilgisayarın LAN IP'si olmalı.
 CI şablonu docs/ci-verify.yml içinde; otomatik GitHub workflow etkinleştirilmedi.
 Harici kabul işleri için RELEASE_RUNBOOK.md; yapılan test sınırları VERIFICATION.md.
+
+## Teslim
+Repo: https://github.com/0gsar1m/Food_label_reader
+Doğrulanan kod commit'i: 1bfdc25. Bu belge güncellemesi ayrı docs commit'iyle push edilir.
+Yeni özellik isteği gelmezse kod işi kalmadı; sonraki çalışmalar yukarıdaki gerçek hesap/donanım kabul adımlarıdır.
