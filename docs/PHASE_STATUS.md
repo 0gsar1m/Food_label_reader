@@ -37,3 +37,5 @@ Profil/kişiselleştirme, maliyet modeli ve Google giriş kodu 45308ef ile main 
 | 14 Araştırma ve Türkçe takip döngüsü | Kod ve yerel kabul tamamlandı | Resmi kaynak/web giriş/görsel araştırma; menü/tabak/barkod, bekleyen kontroller, 7/30 gün gözlemleri, restoran kartı ve rapor. verify87 test/üç platform/API; e2e14/14; expo-doctor20/20. Canlı model/katalog/native PDF-kamera ve imzalı APK ayrı kabul bekler. |
 
 Kaynak: GUTIQ_RESEARCH.md. Bu faz tam rakip klonu veya klinik doğrulama iddiası değildir; parite dışı alanlar ve test sınırları belgede açıkça listelidir.
+
+Faz14 kod/belge teslimi: ecfc221 origin/main dalına push edildi ve uzak hash teyit edildi. 87 test, 14 ekran testi, üç platform/API paketleri ve expo-doctor20/20 geçti. Dış kabul sınırları değişmedi.

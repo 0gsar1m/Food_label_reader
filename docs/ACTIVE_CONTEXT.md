@@ -3,7 +3,7 @@
 1 Kasım 2026. Etiket: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
 Kullanıcı tüm fazları özerk uygulama, test ve sonunda https://github.com/0gsar1m/Food_label_reader.git repoya normal push yetkisi verdi. Fazlar arasında onay isteme.
 Son direktif: My GutIQ'yu ayrıntılı araştır, düşük maliyetle yakın Türkçe deneyimi uygula.
-Etkin faz: 14. Kod ve yerel kabul tamamlandı; teslim commit/push işlemi sırada.
+Etkin faz: 14. Kod, yerel kabul ve kaynak kod push tamamlandı. Sonraki işler dış hesap/cihaz kabulüdür.
 
 ## Önce okunacaklar
 AGENTS.md → bu dosya → MASTER_PLAN.md / PHASE_STATUS.md. AI_GUIDELINES.md ve AI_SLOP_AVOIDANCE.md bağlayıcı.
@@ -49,4 +49,4 @@ Klinik FODMAP miktar veritabanı, kesin tetikleyici/güvenli gıda hükmü, OS z
 My GutIQ resmi site/mağaza/gizlilik/koşullar/blog dizini, kamuya açık web girişi ve üç mağaza görseli incelendi. Onay verilmedi, hesap açılmadı; giriş sonrası ekranlar kullanılmadı. App Store1 puan, Play10+ indirme; yorum gövdesi yok, güçlü pazar doğrulaması iddiası kurulmaz. Rakibin modeli/faturası bilinmiyor. Marka/asset/metin kopyalanmadı.
 
 ## Teslim sırası
-Yeni kapsam kodu ve belgeleri commit → normal origin/main push → uzak hash kontrolü. Ardından bu dosyaya teslim hash kaydı ve son docs push. Önceki teslim866f12d; yeni hash işlem sonunda yazılır. Force push veya git kimlik değişimi yok.
+Yeni kapsam ecfc221ff3e595270cdea9eb2e8906053905c2d1 ile origin/main dalına push edildi; git ls-remote ile uzak hash eşleşti. Çalışma ağacı temizdi. Bu teslim kaydı ayrı docs commit ile gönderilir. Sonraki agent uygulamayı yeniden yazmamalı; RELEASE_RUNBOOK içindeki dış kabul adımlarından veya kullanıcının yeni yönlendirmesinden devam etmelidir. Force push veya git kimlik değişimi yapılmadı.
