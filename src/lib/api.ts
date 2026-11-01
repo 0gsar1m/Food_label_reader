@@ -36,6 +36,7 @@ export async function requestAnalysis(
   image: string,
   token: string,
   signal: AbortSignal,
+  nutritionImage?: string,
 ): Promise<Analysis> {
   let response: Response;
   try {
@@ -46,7 +47,11 @@ export async function requestAnalysis(
         'Content-Type': 'application/json',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
-      body: JSON.stringify({ image, mimeType: 'image/jpeg' }),
+      body: JSON.stringify({
+        image,
+        mimeType: 'image/jpeg',
+        ...(nutritionImage ? { nutritionImage } : {}),
+      }),
     });
   } catch (error) {
     if (signal.aborted) throw error;

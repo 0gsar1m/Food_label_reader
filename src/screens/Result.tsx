@@ -4,15 +4,27 @@ import { allergenNames, type AllergenId, type ScanRecord } from '../../shared/an
 import { Button, IconButton, Notice, ScreenHeader } from '../components/Controls';
 import { theme, ui } from '../theme';
 import { copy } from '../content';
+import { PersonalPanel } from '../components/PersonalPanel';
+import type { HealthVault } from '../../shared/profile';
 
 /** Evidence is visible next to every explanation, including personalized allergen highlights. */
 export function Result({
   record,
+  vault,
+  apiUrl,
+  token,
+  onProfile,
+  onDiary,
   preferences,
   onBack,
   onScan,
 }: {
   record: ScanRecord;
+  vault: HealthVault;
+  apiUrl: string;
+  token: string;
+  onProfile: () => void;
+  onDiary: () => void;
   preferences: AllergenId[];
   onBack: () => void;
   onScan: () => void;
@@ -135,6 +147,14 @@ export function Result({
             </View>
             {tab === 'summary' && (
               <>
+                <PersonalPanel
+                  analysis={analysis}
+                  vault={vault}
+                  apiUrl={apiUrl}
+                  token={token}
+                  onProfile={onProfile}
+                  onDiary={onDiary}
+                />
                 <Text style={[ui.body, { fontSize: 17, lineHeight: 26 }]}>{analysis.summary}</Text>
                 <View style={{ gap: 18 }}>
                   <Text style={ui.h2}>Alerjen beyanları</Text>

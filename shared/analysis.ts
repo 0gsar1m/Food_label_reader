@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { nutritionSchema } from './nutrition';
 
 /** Supported label declarations; preferences never imply a complete allergy profile. */
 export const allergenIds = [
@@ -73,6 +74,7 @@ export const analysisSchema = z.object({
     )
     .max(30),
   uncertainties: z.array(shortText).max(12),
+  nutrition: nutritionSchema.nullable().optional(),
 });
 
 /** Validated extraction, without personal preferences or photo bytes. */
@@ -105,6 +107,13 @@ export function validateAnalysis(input: unknown): Analysis {
       throw new Error('Finding lacks transcribed label evidence.');
     }
   }
+  if (result.nutrition) {
+    for (const item of [result.nutrition, ...result.nutrition.micros]) {
+      if (!normalized(result.rawText).includes(normalized(item.evidence)))
+        throw new Error('Nutrition lacks transcribed evidence.');
+    }
+    if (result.readability === 'unreadable') throw new Error('Unreadable nutrition.');
+  }
   return result;
 }
 
@@ -117,6 +126,12 @@ export const scanRequestSchema = z
       .max(7_000_000)
       .regex(/^[A-Za-z0-9+/]+={0,2}$/),
     mimeType: z.enum(['image/jpeg', 'image/png']),
+    nutritionImage: z
+      .string()
+      .min(16)
+      .max(7_000_000)
+      .regex(/^[A-Za-z0-9+/]+={0,2}$/)
+      .optional(),
   })
   .strict();
 

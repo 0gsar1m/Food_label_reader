@@ -3,6 +3,13 @@ import { analysisSchema, validateAnalysis, type Analysis } from '../shared/analy
 import { labelPrompt } from './prompt';
 
 const providerResponse = z.object({
+  usageMetadata: z
+    .object({
+      promptTokenCount: z.number().nonnegative().optional(),
+      candidatesTokenCount: z.number().nonnegative().optional(),
+      thoughtsTokenCount: z.number().nonnegative().optional(),
+    })
+    .optional(),
   candidates: z
     .array(
       z.object({
@@ -29,7 +36,12 @@ export class ProviderError extends Error {
 }
 
 /** Injectable transport supports realistic contract tests without paid model calls. */
-export type VisionConfig = { apiKey: string; model: string; fetcher?: typeof fetch };
+export type VisionConfig = {
+  apiKey: string;
+  model: string;
+  fetcher?: typeof fetch;
+  reportUsage?: (usage: { inputTokens: number; outputTokens: number }) => void;
+};
 
 /** A single bounded multimodal call; invalid/blocked/truncated responses fail closed. */
 export async function analyzeImage(
@@ -37,6 +49,7 @@ export async function analyzeImage(
   mimeType: string,
   config: VisionConfig,
   signal: AbortSignal,
+  nutritionImage?: string,
 ): Promise<Analysis> {
   const schema = z.toJSONSchema(analysisSchema);
   const response = await (config.fetcher ?? fetch)(
@@ -52,6 +65,9 @@ export async function analyzeImage(
             role: 'user',
             parts: [
               { inlineData: { mimeType, data: image } },
+              ...(nutritionImage
+                ? [{ inlineData: { mimeType: 'image/jpeg', data: nutritionImage } }]
+                : []),
               { text: 'Bu gıda etiketini oku ve açıkla.' },
             ],
           },
@@ -69,6 +85,13 @@ export async function analyzeImage(
     throw new ProviderError(response.status === 429 ? 'RATE_LIMITED' : 'PROVIDER_UNAVAILABLE');
   try {
     const parsed = providerResponse.parse(await response.json());
+    if (parsed.usageMetadata)
+      config.reportUsage?.({
+        inputTokens: parsed.usageMetadata.promptTokenCount ?? 0,
+        outputTokens:
+          (parsed.usageMetadata.candidatesTokenCount ?? 0) +
+          (parsed.usageMetadata.thoughtsTokenCount ?? 0),
+      });
     const candidate = parsed.candidates?.[0];
     if (candidate?.finishReason !== 'STOP') throw new Error('Incomplete provider response.');
     const output = candidate.content?.parts

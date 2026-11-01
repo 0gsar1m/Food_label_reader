@@ -4,6 +4,14 @@
 - Amaç, rutin, sağlık bildirimi, koşullu sorular, besin/porsiyon ve belirti günlüğü ürün tasarımına eklendi.
 - Faz 08–11 planlandı; bu özellikler henüz uygulanmadı. Kaynaklar ve karar tablosu PERSONALIZATION_VISION.md içinde.
 
+## Profil, kişisel yorum ve Google giriş uygulaması
+- Altı adımlı profil, koşullu sorular, tanı/şüphe ayrımı, şifreli öğün/belirti günlüğü, silme/dışa aktarma uygulandı.
+- Besin tablosu için ikinci fotoğraf, kaynaklı besin değerleri ve deterministik porsiyon hesabı eklendi.
+- Claude Opus 5.5 kişisel yorum/soru seçimi; açık aktarım izni, kaynak ID kontrolü ve kullanım token bilgisi eklendi.
+- Google GIS / native Credential Manager girişi, server JWK doğrulaması, JWT ve hesaplara ayrılmış cihaz depoları eklendi.
+- Yatırımcı maliyet modeli, 2027 fiyat senaryosu, model seçim raporu ve beş dakikalık demo akışı yazıldı.
+- 69 birim/HTTP ve 11 tarayıcı akışı geçti; gerçek sağlayıcı anahtarları/OAuth kabulü yapılmış gibi gösterilmedi.
+
 ## 1 Kasım 2026
 - Eski proje metodolojisinden faz planı, etkin bağlam ve AI rehberleri oluşturuldu.
 - Kullanıcının sağladığı AI Slop rehberi mobil tasarım ve kabul ölçütlerine uyarlandı.

@@ -24,9 +24,20 @@ import { demoAnalysis } from './src/data/demo';
 import type { ScanRecord } from './shared/analysis';
 import { theme, ui } from './src/theme';
 import { copy } from './src/content';
+import { useLibrary } from './src/hooks/useLibrary';
+import { useAccount } from './src/hooks/useAccount';
+import { AccountScreen } from './src/screens/Account';
+import { useHealth } from './src/hooks/useHealth';
+import { ProfileScreen } from './src/screens/Profile';
+import { DiaryScreen } from './src/screens/Diary';
+import { Button, Notice } from './src/components/Controls';
 
 type Screen =
-  | { kind: 'home' | 'history' | 'settings' | 'camera' | 'privacy' | 'terms' }
+  | {
+      kind:
+        'home' | 'history' | 'settings' | 'camera' | 'privacy' | 'terms' | 'profile' | 'account';
+    }
+  | { kind: 'diary'; meal?: string }
   | { kind: 'review'; photo: PreparedPhoto }
   | { kind: 'result'; record: ScanRecord };
 
@@ -56,7 +67,13 @@ export default function App() {
 }
 
 function Application() {
-  const device = useDeviceData();
+  const connection = useDeviceData();
+  const account = useAccount(connection.apiUrl);
+  const library = useLibrary(account.session?.user.id ?? 'guest', connection.setNotice);
+  const device = { ...connection, ...library, ready: connection.ready && library.ready };
+  const health = useHealth(account.session?.user.id ?? 'guest');
+  const effectiveToken = account.session?.token ?? device.token;
+  const [nutritionPhoto, setNutritionPhoto] = useState<PreparedPhoto | null>(null);
   const [stack, setStack] = useState<Screen[]>([{ kind: 'home' }]);
   const [busy, setBusy] = useState(false);
   const [preparing, setPreparing] = useState(false);
@@ -95,6 +112,7 @@ function Application() {
   }, [screen.kind, back, confirmClear]);
   async function gallery(): Promise<void> {
     if (preparing) return;
+    setNutritionPhoto(null);
     setPreparing(true);
     try {
       const photo = await pickPhoto();
@@ -122,8 +140,9 @@ function Application() {
       const analysis = await requestAnalysis(
         device.apiUrl,
         photo.base64,
-        device.token,
+        effectiveToken,
         controller.signal,
+        nutritionPhoto?.base64,
       );
       if (controller.signal.aborted) return;
       const record: ScanRecord = {
@@ -164,12 +183,58 @@ function Application() {
       },
     });
   const primary = screen.kind === 'home' || screen.kind === 'history' || screen.kind === 'settings';
-  if (!device.ready)
+  if (!device.ready || !health.ready || !account.ready)
     return (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <ActivityIndicator color={theme.color.green} />
       </View>
     );
+  const accountView = (
+    <AccountScreen
+      session={account.session}
+      onCredential={async (token) => {
+        await account.login(token);
+        reset('home');
+      }}
+      onGuest={() => {
+        account.continueGuest();
+        reset('home');
+      }}
+      onLogout={async () => {
+        await account.logout();
+        reset('home');
+      }}
+      onBack={() => reset('home')}
+    />
+  );
+  if (!account.session && !account.guest) return accountView;
+  const profileView = (
+    <ProfileScreen
+      initial={health.vault.profile}
+      apiUrl={device.apiUrl}
+      token={effectiveToken}
+      onBack={() => reset('home')}
+      onSave={async (profile) => {
+        await health.update((old) => ({ ...old, profile }));
+        reset('home');
+      }}
+      onErase={health.clear}
+      exportData={() => JSON.stringify(health.vault, null, 2)}
+    />
+  );
+  if (health.error)
+    return (
+      <View style={ui.content}>
+        <Notice>{health.error}</Notice>
+        <Button
+          label="Şifreli veriyi sil ve yeniden başla"
+          onPress={() => {
+            void health.clear().catch(() => device.setNotice('Veri silinemedi.'));
+          }}
+        />
+      </View>
+    );
+  if (!health.vault.profile.completed) return profileView;
   return (
     <View
       style={{
@@ -200,6 +265,9 @@ function Application() {
       )}
       {screen.kind === 'home' && (
         <Home
+          onAccount={() => push({ kind: 'account' })}
+          onProfile={() => push({ kind: 'profile' })}
+          onDiary={() => push({ kind: 'diary' })}
           onCamera={camera}
           onGallery={() => {
             void gallery();
@@ -220,6 +288,9 @@ function Application() {
       )}
       {screen.kind === 'settings' && (
         <Settings
+          onAccount={() => push({ kind: 'account' })}
+          onProfile={() => push({ kind: 'profile' })}
+          onDiary={() => push({ kind: 'diary' })}
           preferences={device.preferences}
           onPreferences={device.updatePreferences}
           apiUrl={device.apiUrl}
@@ -239,6 +310,15 @@ function Application() {
       )}
       {screen.kind === 'review' && (
         <Review
+          nutritionPhoto={nutritionPhoto}
+          onNutrition={() => {
+            void pickPhoto()
+              .then((photo) => {
+                if (photo) setNutritionPhoto(photo);
+              })
+              .catch(() => device.setNotice('Besin tablosu fotoğrafı açılamadı.'));
+          }}
+          onRemoveNutrition={() => setNutritionPhoto(null)}
           photo={screen.photo}
           busy={busy}
           error={scanError}
@@ -253,10 +333,34 @@ function Application() {
       )}
       {screen.kind === 'result' && (
         <Result
+          key={screen.record.id}
+          vault={health.vault}
+          apiUrl={device.apiUrl}
+          token={effectiveToken}
+          onProfile={() => push({ kind: 'profile' })}
+          onDiary={() => push({ kind: 'diary', meal: screen.record.analysis.productName ?? '' })}
           record={screen.record}
           preferences={device.preferences}
           onBack={back}
           onScan={() => setStack([{ kind: 'home' }, { kind: 'camera' }])}
+        />
+      )}
+      {screen.kind === 'account' && accountView}
+      {screen.kind === 'profile' && profileView}
+      {screen.kind === 'diary' && (
+        <DiaryScreen
+          meal={screen.meal}
+          entries={health.vault.diary}
+          onBack={back}
+          onSave={(entry) =>
+            health.update((old) => ({
+              ...old,
+              diary: [entry, ...old.diary.filter((d) => d.id !== entry.id)].slice(0, 100),
+            }))
+          }
+          onDelete={(id) =>
+            health.update((old) => ({ ...old, diary: old.diary.filter((d) => d.id !== id) }))
+          }
         />
       )}
       {(screen.kind === 'privacy' || screen.kind === 'terms') && (

@@ -8,6 +8,9 @@ import { theme, ui } from '../theme';
 
 /** Allergy preferences highlight label declarations without pretending to cover all sensitivities. */
 export function Settings({
+  onAccount,
+  onProfile,
+  onDiary,
   preferences,
   onPreferences,
   apiUrl,
@@ -15,6 +18,9 @@ export function Settings({
   onConnection,
   onLegal,
 }: {
+  onAccount: () => void;
+  onProfile: () => void;
+  onDiary: () => void;
   preferences: AllergenId[];
   onPreferences: (value: AllergenId[]) => void;
   apiUrl: string;
@@ -53,9 +59,12 @@ export function Settings({
   return (
     <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={ui.content}>
       <Text style={ui.eyebrow}>SANA GÖRE</Text>
+      <Button label="Hesabım" secondary onPress={onAccount} />
+      <Button label="Kullanım profilimi düzenle" secondary onPress={onProfile} />
+      <Button label="Öğün ve belirti günlüğüm" secondary onPress={onDiary} />
       <View style={{ gap: 12 }}>
         <Text accessibilityRole="header" style={ui.title}>
-          Önemsediğin\nalerjenler.
+          {'Önemsediğin\nalerjenler.'}
         </Text>
         <Text style={ui.body}>
           Seçtiklerin, etikette bir beyan bulunduğunda öne çıkar. Tercihlerin bu cihazda kalır.

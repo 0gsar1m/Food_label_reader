@@ -1,46 +1,50 @@
 # Aktif bağlam
 
-1 Kasım 2026. Kullanıcı tüm fazların tamamlanmasını ve sonunda Food_label_reader reposuna push istedi.
-Eski proje yalnız metodoloji referansı olarak okundu. Mevcut çalışma klasörü başlangıçta boştu.
-Etiket: Expo React Native Android/iOS, Türkçe arayüz, Node API, Gemini Flash Vision.
-Etkin faz: 08 / amaç ve kişisel sağlık bağlamı ürün tasarımı. İlk sürümün kod teslimi tamamlandı; yeni kapsam henüz uygulanmadı.
-Tasarım: AI_SLOP_AVOIDANCE.md. Güvenilirlik: AI_GUIDELINES.md.
-Kullanıcının sağladığı API anahtarı/EAS hesabı yok. Bunlar varmış gibi kabul raporu yazılmaz.
+1 Kasım 2026. Etiket: Expo SDK 58 React Native Android/iOS + web kabul önizlemesi, Node API.
+Kullanıcı tüm fazların soru sormadan uygulanmasını, test edilmesini ve GitHub push istedi.
+Son ek direktif: Gmail adresiyle Google hesabından kayıt/giriş. Uygulandı; gerçek OAuth kabulü için client ID yok.
+Etkin faz: 08–12 kod ve yerel kabul tamamlandı; GitHub teslimi.
 
-## Hazır kod
-- Ana ekran, gerçek CameraView, galeri seçimi, JPEG yeniden kodlama, gönderim öncesi izin/önizleme.
-- Sonuç: özet, alerjen ayrımı, kişisel eşleşme, katkı açıklaması, içerik ve birebir kanıt metni.
-- 50 yerel kayıt, Türkçe geçmiş araması, tekil/tam silme, tercihler, SecureStore token, gizlilik/koşullar.
-- Express API: ortak Zod şeması, tek Gemini çağrısı, kanıt doğrulama, auth/kota/timeout/boyut koruması.
-- Rakip araştırması docs/COMPETITOR_RESEARCH.md içinde. Yuka/Fig resmi sayfaları ve mağaza yorumları okundu.
+## Başlangıç belgeleri
+AGENTS.md → MASTER_PLAN.md → PHASE_STATUS.md. Tasarım: AI_SLOP_AVOIDANCE.md.
+AI_GUIDELINES.md; model seçimi MODEL_SELECTION.md; maliyet INVESTOR_COSTS.md.
 
-## Son çalıştırılanlar
-- Strict typecheck temiz. Lint 0 hata/uyarı. 33 birim/HTTP testi geçti.
-- Nihai app.json ile expo-doctor 20/20 geçti.
-- npm audit: 0 yüksek/kritik; Expo/lint araç zincirinde 21 orta seviye bulgu raporlandı. Uyumsuz majör downgrade uygulanmadı.
-- Web önizleme 8081, anahtarsız API 8787 çalışıyor.
-- 7/7 Playwright testi geçti. 390px ana ekran/sonuç/önizleme gözle incelendi; 320/360/390/1440 taşma kontrolü geçti.
-- Android/iOS/web bundle, üretim API bundle ve bundle üzerinden HTTP smoke geçti.
-- Son toplu `npm run verify` başarılı. Tarayıcı runtime konsolu ana ekran/örnek/içerikte temiz.
-- README, RELEASE_RUNBOOK, VERIFICATION ve ASSUMPTIONS_AND_RISKS güncel.
+## Hazır özellikler
+- Kamera/galeri, önizleme, ikinci besin tablosu fotoğrafı, tek Gemini Vision çağrısı.
+- Kanıtlı içerik/alerjen/katkı, görünür besin değerleri ve deterministik porsiyon hesabı.
+- Altı adımlı amaç/rutin/tanı-şüphe/semptom profili; seçimlere göre sorular, LLM ile isteğe bağlı sıralama.
+- Öğün/belirti günlüğü CRUD, belirtisiz kayıt, zaman, miktar ve notlar.
+- Hassas profil/günlük AES-256-GCM. Native key SecureStore; web yalnız sekme oturum deposu.
+- Health verisi Anthropic'e yalnız ayrı açık izin ve düğmeyle; Google'a sağlık profili gönderilmez.
+- Kişisel yorum Claude Opus 5.5, kaynak ID kontrolü, Sonnet yapılandırılabilir; sessiz fallback yok.
+- Opus forced-tool desteklemez; JSON output_config.format ve ayrı Zod kontrolü kullanılır.
+- Google GIS web / Nitro Credential Manager native; server Google JWK+audience+issuer+expiry+verified-email.
+- Ayrı 24h uygulama JWT, güvenli saklama ve origin bağı. Bulut kullanıcı DB/senkronizasyonu yok.
+- Profil/günlük/anahtar, geçmiş ve alerjen tercihleri hesap/misafir bazında ayrılır.
+- Hesap değişirken önceki veri gösterilmez, bekleyen yazılar eski kimliğe bağlı kalır.
 
-## Sonraki kesin adımlar
-1. Kod doğrulaması tamamlandı; sır deseni taramasında eşleşme yok. Kod commit'i `1bfdc25` origin/main'e push edildi ve uzak hash teyit edildi.
-2. Kullanıcı anahtar eklediğinde gerçek Gemini çağrısı ve 20 etiket kalite/gecikme kabulü.
-3. Fiziksel Android kamera/izin/fener/TalkBack ve %200 yazı kabulü.
-4. Hesap hazır olduğunda HTTPS API + EAS APK. Hesap/anahtar bu oturumda yoktu.
+## Çalıştırma ve kabul
+- npm ci; ayrı terminaller npm run api ve npm start. Web geliştirme npm run web.
+- npm run test:e2e önce export üretir, 8082 statik önizlemede tek worker kullanır. Paralel iki koşu başlatma.
+- 69 birim/HTTP testi ve 11 ekran testi geçti. Lint/typecheck temiz; expo-doctor 20/20.
+- Nihai npm run verify başarılı: Android/iOS/web export + API bundle + bundle HTTP smoke geçti.
+- npm audit: 0 yüksek/kritik, 22 orta araç zinciri bulgusu; uyumsuz force downgrade yapılmadı.
+- Gerçek sağlayıcı çağrısı, Google OAuth ve native cihaz kabulü yapılmadı. VERIFICATION.md sınırları açıklar.
 
-## Claude Code'a kısa devir
-`AGENTS.md` ve bu dosyadan başla. Kodda yapay demo fallback yok; örnek kasıtlı ve işaretli.
-Yerel başlangıç: `npm ci`, `npm run api`, ayrı terminal `npm start`; web `npm run web`.
-Gerçek key yalnız GEMINI_API_KEY. Fiziksel telefon için EXPO_PUBLIC_API_URL bilgisayarın LAN IP'si olmalı.
-CI şablonu docs/ci-verify.yml içinde; otomatik GitHub workflow etkinleştirilmedi.
-Harici kabul işleri için RELEASE_RUNBOOK.md; yapılan test sınırları VERIFICATION.md.
+## Dış yapılandırmalar
+- Sunucu: GEMINI_API_KEY, ANTHROPIC_API_KEY, PERSONAL_MODEL=claude-opus-5-5.
+- Google: public OAuth client ID'leri, server GOOGLE_CLIENT_IDS ve 32+ karakter SESSION_SECRET.
+- Native Google girişi Expo Go'da yok; APK/development build gerekir. iOS gerçek ID app.config.ts plugin'ini açar.
+- Google-only production anonim API açmaz. REQUIRE_GOOGLE_AUTH=true yalnız kullanıcı oturumu ister.
+- Fiziksel telefon için EXPO_PUBLIC_API_URL LAN IP; yayında HTTPS.
+- Hesap/anahtar verilmedi; bunları varmış gibi raporlama. GOOGLE_AUTH.md ve RELEASE_RUNBOOK.md takip edilir.
 
-## Teslim
-Repo: https://github.com/0gsar1m/Food_label_reader
-Doğrulanan kod commit'i: 1bfdc25. Bu belge güncellemesi ayrı docs commit'iyle push edilir.
-Kullanıcı yeni yön istedi: amaç/rutin/bildirilen hastalık/semptom profili ve bunlara göre etiket yorumu.
-PERSONALIZATION_VISION.md yes/no tablosu, örnek dil ve mimariyi içerir; MASTER_PLAN faz 08–11 eklendi.
-Yeni profili mevcut şifresiz depoya ekleme. Alerjen tercihlerinin mevcut aktarılmama davranışını sessizce değiştirme.
-Bu tur ürün değerlendirmesi ve plan güncellemesidir; yeni özelliğin kodlandığını iddia etme.
+## Demo ve giderler
+DEMO_SCRIPT.md beş dakikalık akış. npm run costs senaryoları tekrar üretir.
+1000 aktif / 20000 tarama / %50 yorum: Opus toplam yaklaşık $1012/ay; Sonnet yaklaşık $640/ay.
+Bunlar token/hacim varsayımlarıdır; gerçek fatura değildir. Gemini 2027 fiyat değişimi ayrı hesaplandı.
+
+## Son teslim işlemi
+Repo https://github.com/0gsar1m/Food_label_reader. Önceki plan commit'i cbe8d27.
+Yeni kapsam son doğrulamadan sonra normal commit/push ile gönderilecek; force push yok.
+Sonraki kod dışı kabul: gerçek iki sağlayıcı çağrısı, 20 etiket/sağlık senaryosu ve native OAuth/erişilebilirlik.

@@ -5,6 +5,20 @@ import { demoAnalysis } from '../../src/data/demo';
 const fixture = path.resolve('tests/fixtures/example-label.jpg');
 async function openHome(page: Page): Promise<void> {
   await page.goto('/');
+  const guest = page.getByRole('button', { name: 'Hesapsız dene' });
+  const already = page.getByRole('button', { name: 'Şimdilik geç' });
+  await Promise.race([
+    guest.waitFor(),
+    already.waitFor(),
+    page.getByRole('button', { name: 'Etiketi tara', exact: true }).waitFor(),
+  ]);
+  if (await guest.isVisible()) await guest.click();
+  const skip = page.getByRole('button', { name: 'Şimdilik geç' });
+  await Promise.race([
+    skip.waitFor(),
+    page.getByRole('button', { name: 'Etiketi tara', exact: true }).waitFor(),
+  ]);
+  if (await skip.isVisible()) await skip.click();
   await expect(page.getByRole('button', { name: 'Etiketi tara', exact: true })).toBeVisible();
 }
 async function upload(page: Page): Promise<void> {

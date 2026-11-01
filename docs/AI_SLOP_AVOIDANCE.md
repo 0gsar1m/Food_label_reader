@@ -6,7 +6,7 @@ Kullanıcının sağladığı rehber mobil ürüne uyarlanmıştır. Tasarım ro
 Kitle: markette veya evde ambalajı anlamak isteyen Türkçe konuşan kullanıcı.
 Ana aksiyon: etiketi kadraja alıp okumak. Referans ilkesi: Apple ürün sayfalarının ölçülü tipografi, boşluk ve ürün odağı; özgün Etiket kimliği.
 Gerçek içerik: kamera/galeri görüntüsü ve çalışan sonuç akışı. Kurgu etiketler her ekranda 'Örnek' olarak belirtilir.
-Ekranlar: tara, önizle/aktar, sonuç, geçmiş, alerjen tercihleri, gizlilik, kullanım koşulları.
+Ekranlar: Google/hesapsız giriş, altı adımlı kullanım profili, tara, önizle/aktar, kişisel sonuç, öğün/belirti günlüğü, geçmiş, alerjen tercihleri, gizlilik ve kullanım koşulları.
 
 ## Görsel yön
 - Zemin #F6F4ED, koyu metin #202820, birincil vurgu #455B36. Uyarı rengi yalnız risk/eksik bilgi için.

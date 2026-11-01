@@ -4,6 +4,18 @@ import { ui } from '../theme';
 
 const privacy = [
   [
+    'Google hesabı',
+    'Google ile kayıt/girişte doğrulanmış temel kimlik bilgisi (Google hesap kimliği, ad, email) ve süreli uygulama oturumu kullanılır. Gmail mesajlarına erişilmez. Google kimliği sunucuda doğrulanır; uygulama oturumu cihazda güvenli depoda, webde sekme oturum deposunda tutulur. Sağlık profili, günlük ve okuma kayıtları hesaba göre ayrı tutulur. Bulut senkronizasyonu yoktur; çıkış verileri silmez. Google Identity Services giriş ekranı açıldığında Google ile teknik bağlantı kurabilir.',
+  ],
+  [
+    'Profil ve günlük',
+    'Amaç, bildirdiğin tanı veya şüphe, rutin ve öğün/belirti kayıtları hassas bilgidir. Native uygulamada ayrı AES-256-GCM şifreli depoda tutulur; anahtar işletim sisteminin güvenli deposundadır. Web demosunda bu bilgiler yalnız sekme oturumunda kalır. Profil ekranından açık JSON olarak dışa aktarabilir veya tüm profil/günlüğü ve şifreleme anahtarını silebilirsin.',
+  ],
+  [
+    'Kişisel model yorumu',
+    'Yalnız aktarım iznini açıp ilgili yorum veya soru özelleştirme düğmesine bastığında profil özeti, yorum için son 20 öğün kaydı ve etiket metni sunucu üzerinden Anthropic hizmetine gönderilir. Soru özelleştirmesinde öğün ve etiket gönderilmez. Alerjen tercihleri Google görsel isteğine eklenmez. Sunucu sağlık içeriğini kaydetmez. Sağlayıcının saklama koşulları kendi hesabının sözleşmesine bağlıdır. İzni kapatmak yeni aktarımı durdurur; daha önce sağlayıcıya aktarılan veriyi bu uygulamadan geri çekmez.',
+  ],
+  [
     'İşlenen veriler',
     'Seçtiğin fotoğraf, yalnız “Fotoğrafı gönder ve oku” işleminden sonra yapılandırılmış API sunucusuna, ardından Google Gemini API hizmetine gönderilir. Fotoğrafa kişisel bilgi eklememeni öneririz. API anahtarı yalnız sunucuda tutulur.',
   ],
@@ -17,7 +29,7 @@ const privacy = [
   ],
   [
     'Üçüncü taraflar',
-    'Google tarafından veri işleme ve saklama, kullanılan Gemini hesabının planına ve geçerli şartlarına tabidir. Ücretsiz ve ücretli hizmet koşulları farklı olabilir. Barındırma sağlayıcısı IP ve teknik bağlantı günlükleri tutabilir. Yurt dışı işleme söz konusu olabilir.',
+    'Google ve Anthropic tarafından veri işleme ve saklama, kullanılan Gemini hesabının planına ve geçerli şartlarına tabidir. Ücretsiz ve ücretli hizmet koşulları farklı olabilir. Barındırma sağlayıcısı IP ve teknik bağlantı günlükleri tutabilir. Yurt dışı işleme söz konusu olabilir.',
   ],
   [
     'İzinler ve erişim',

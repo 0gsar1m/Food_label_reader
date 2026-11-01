@@ -45,6 +45,20 @@ npm run web
 Örnek sonucu anahtarsız ve çevrimdışı inceleyebilirsin. Örnek kurgu olduğu her ekranda belirtilir.
 Gerçek fotoğraf gönderiminde anahtar yoksa yapılandırma hatası gösterilir; sahte analiz yapılmaz.
 
+## Google hesabıyla kayıt / giriş
+
+İlk ekranda Google hesabıyla devam veya hesapsız deneme bulunur. Sunucu imza/audience/süre doğrulaması yapıp uygulama oturumu oluşturur; Gmail kutusu okunmaz. Kurulum: [Google auth rehberi](docs/GOOGLE_AUTH.md). OAuth kimlikleri sağlanmadığı için gerçek Google giriş kabulü henüz yapılmadı. Google native girişi Expo Go içinde çalışmaz; APK veya development build gerekir. Profil, günlük, geçmiş ve alerjen tercihleri hesaplara göre ayrı tutulur.
+
+## Kişisel kullanım profili
+
+İlk açılışta altı adımlı amaç, yakınma, bildirilen tanı/şüphe, rutin ve koşullu takip soruları akışı vardır. Atlanabilir ve sonradan düzenlenebilir. Profil/günlük native cihazda AES-256-GCM ile şifrelenir; web önizlemesinde yalnız sekme oturumunda tutulur.
+
+Kişisel yorum ve soru sıralama için sunucu `.env` dosyasına `ANTHROPIC_API_KEY` ekle. Varsayılan `PERSONAL_MODEL=claude-opus-5-5`; bütçe alternatifi `claude-sonnet-5-5`. Kullanıcı aktarım iznini açmadan sağlık verisi modele gönderilmez. Anahtar yokken yerel profil, günlük ve porsiyon hesabı kullanılabilir; model yorumu yerine sahte yanıt gösterilmez.
+
+Besin tablosu için önizlemede ikinci fotoğraf eklenebilir. Sonuçta porsiyon miktarı girilince görünen kalori/makro değerleri kodla ölçeklenir; eksik mikrobesin tahmin edilmez.
+
+[Yatırımcı maliyet senaryoları](docs/INVESTOR_COSTS.md) ve [model seçimi](docs/MODEL_SELECTION.md) günceldir. `npm run costs` hesapları tekrar üretir.
+
 ## İçerik
 
 - Gerçek kamera ekranı, fener, sistem galeri seçicisi, JPEG küçültme ve fotoğraf önizlemesi.
@@ -85,3 +99,5 @@ Claude Code veya başka bir geliştirme oturumunda önce [CLAUDE.md](CLAUDE.md),
 ve [aktif bağlam](docs/ACTIVE_CONTEXT.md) okunur. [Faz planı](docs/MASTER_PLAN.md),
 [faz durumları](docs/PHASE_STATUS.md), [AI rehberi](docs/AI_GUIDELINES.md),
 [AI Slop rehberi](docs/AI_SLOP_AVOIDANCE.md) ve [rakip araştırması](docs/COMPETITOR_RESEARCH.md) ayrı tutulur.
+
+Tarayıcı kabulü `npm run test:e2e` ile önce web export üretir, sonra 8082 üzerinde statik önizlemeyi açar. Aynı çıktı klasöründe eşzamanlı iki Playwright çalıştırması başlatma.

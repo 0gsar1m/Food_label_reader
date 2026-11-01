@@ -1,6 +1,6 @@
 # Kişisel kullanım profili ve amaç odaklı yorum
 
-1 Kasım 2026 kullanıcı yönlendirmesi. Durum: ürün tasarımı; henüz uygulanmadı.
+1 Kasım 2026 kullanıcı yönlendirmesi. Durum: faz 08–11 kodu uygulandı; 69 kontrat/API ve 11 ekran testiyle yerel kabul tamamlandı; canlı model ve native kabulü açık.
 Yeni amaç, etiket metnini kullanıcının hedefi, kendi deneyimi ve paylaştığı sağlık bağlamıyla anlamlandırmak.
 
 ## Yapılacaklar

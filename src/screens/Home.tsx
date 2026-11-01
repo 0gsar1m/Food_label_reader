@@ -8,12 +8,18 @@ import type { ScanRecord } from '../../shared/analysis';
 
 /** The primary action stays focused on photographing the label rather than product marketing. */
 export function Home({
+  onAccount,
+  onProfile,
+  onDiary,
   onCamera,
   onGallery,
   onDemo,
   recent,
   onRecent,
 }: {
+  onAccount: () => void;
+  onProfile: () => void;
+  onDiary: () => void;
   onCamera: () => void;
   onGallery: () => void;
   onDemo: () => void;
@@ -62,6 +68,9 @@ export function Home({
         </View>
         <Icon name="arrow" size={22} />
       </Pressable>
+      <Button label="Hesabım" secondary onPress={onAccount} />
+      <Button label="Kullanım profilim" secondary onPress={onProfile} />
+      <Button label="Öğün ve belirti günlüğüm" secondary onPress={onDiary} />
       {recent && (
         <Pressable accessibilityRole="button" onPress={() => onRecent(recent)} style={{ gap: 8 }}>
           <Text style={ui.eyebrow}>SON OKUMAN</Text>

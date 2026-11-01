@@ -110,13 +110,14 @@
         "glob"
       ],
       "effects": [
-        "@expo/inline-modules"
+        "@expo/inline-modules",
+        "react-native-nitro-google-signin"
       ],
       "range": "8.0.9-canary-20240719-83ee47b - 8.0.9-canary-20240814-ce0f7d5 || >=8.1.0-canary-20240904-69100c1",
       "nodes": [
         "node_modules/@expo/config-plugins"
       ],
-      "fixAvailable": true
+      "fixAvailable": false
     },
     "@expo/fingerprint": {
       "name": "@expo/fingerprint",
@@ -403,11 +404,7 @@
       "nodes": [
         "node_modules/glob"
       ],
-      "fixAvailable": {
-        "name": "expo",
-        "version": "53.0.11",
-        "isSemVerMajor": true
-      }
+      "fixAvailable": false
     },
     "minimatch": {
       "name": "minimatch",
@@ -448,6 +445,20 @@
         "isSemVerMajor": true
       }
     },
+    "react-native-nitro-google-signin": {
+      "name": "react-native-nitro-google-signin",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@expo/config-plugins"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/react-native-nitro-google-signin"
+      ],
+      "fixAvailable": false
+    },
     "typescript-eslint": {
       "name": "typescript-eslint",
       "severity": "moderate",
@@ -475,18 +486,18 @@
     "vulnerabilities": {
       "info": 0,
       "low": 0,
-      "moderate": 21,
+      "moderate": 22,
       "high": 0,
       "critical": 0,
-      "total": 21
+      "total": 22
     },
     "dependencies": {
-      "prod": 554,
+      "prod": 559,
       "dev": 158,
       "optional": 65,
       "peer": 20,
       "peerOptional": 0,
-      "total": 734
+      "total": 739
     }
   }
 }

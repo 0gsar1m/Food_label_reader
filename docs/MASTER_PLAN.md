@@ -49,7 +49,7 @@ Mağaza yayını, ücretli hesap veya olmayan anahtar varmış gibi tamamlandı 
 
 ## Yeni yön: amaç ve kişisel kullanım profili
 Kullanıcının 1 Kasım ek yönlendirmesi: etiket yorumunu kişinin amacı, rutini ve bildirdiği sağlık bağlamına bağla.
-Ayrıntılı ürün kararı ve yes/no tablosu: PERSONALIZATION_VISION.md. Aşağıdaki fazlar henüz uygulanmadı.
+Ayrıntılı ürün kararı: PERSONALIZATION_VISION.md. Fazların güncel uygulanma/kabul durumu PHASE_STATUS.md içinde.
 
 ## Faz 08: profil ve koşullu tanışma
 Amaç, rutin, alerji, bildirilen tanı/semptom, düzenlenebilir takip soruları ve hassas veri tercihi.
@@ -67,3 +67,9 @@ LLM seçimi Türkçe sağlık/etiket kabul setiyle yapılır; eğitim etiketi te
 ## Faz 11: yeni kapsamın kabulü
 Eksik/çelişkili profil, alerji, şişkinlik, egzama, kilo hedefi, porsiyon ve veri silme senaryoları.
 Kabul: yeni şema/API/ekran testleri ve canlı model değerlendirmesi ayrı raporlanır.
+
+## Faz 12: Google hesabıyla kayıt/giriş
+Kullanıcının ek direktifi: Gmail adresiyle kullanılan Google hesabından kayıt/giriş.
+Google GIS web, Credential Manager native, server JWK/audience/issuer/expiry kontrolü ve süreli uygulama oturumu.
+Kabul: yanlış/süresi dolmuş token reddi, hesap/misafir izolasyonu, çıkış ve yapılandırma eksikliği; gerçek OAuth ayrı kabul.
+Kurulum ve kalan dış adımlar GOOGLE_AUTH.md içinde. Native modül APK/development build gerektirir.

@@ -16,9 +16,14 @@ const keys = {
   url: 'etiket.api-url.v1',
 };
 
+function scoped(key: string, owner: string): string {
+  if (!/^(guest|[0-9]{1,64})$/.test(owner)) throw new Error('Invalid library owner.');
+  return owner === 'guest' ? key : `${key}.${owner}`;
+}
+
 /** Restores only validated text records; one corrupted entry does not erase good entries. */
-export async function loadHistory(): Promise<ScanRecord[]> {
-  const raw = await AsyncStorage.getItem(keys.history);
+export async function loadHistory(owner = 'guest'): Promise<ScanRecord[]> {
+  const raw = await AsyncStorage.getItem(scoped(keys.history, owner));
   if (!raw) return [];
   const values: unknown = JSON.parse(raw);
   if (!Array.isArray(values)) throw new Error('Invalid history.');
@@ -37,23 +42,23 @@ export async function loadHistory(): Promise<ScanRecord[]> {
 }
 
 /** Saves a bounded history without photo URIs/base64 or access tokens. */
-export async function saveHistory(records: ScanRecord[]): Promise<void> {
+export async function saveHistory(records: ScanRecord[], owner = 'guest'): Promise<void> {
   await AsyncStorage.setItem(
-    keys.history,
+    scoped(keys.history, owner),
     JSON.stringify(z.array(recordSchema).max(50).parse(records.slice(0, 50))),
   );
 }
 
 /** Preferences are optional and independent from the history's lifecycle. */
-export async function loadPreferences(): Promise<AllergenId[]> {
-  const raw = await AsyncStorage.getItem(keys.preferences);
+export async function loadPreferences(owner = 'guest'): Promise<AllergenId[]> {
+  const raw = await AsyncStorage.getItem(scoped(keys.preferences, owner));
   return raw ? preferencesSchema.parse(JSON.parse(raw)) : [];
 }
 
 /** Only stable allergen identifiers are stored, without medical profile metadata. */
-export async function savePreferences(preferences: AllergenId[]): Promise<void> {
+export async function savePreferences(preferences: AllergenId[], owner = 'guest'): Promise<void> {
   await AsyncStorage.setItem(
-    keys.preferences,
+    scoped(keys.preferences, owner),
     JSON.stringify(preferencesSchema.parse(preferences)),
   );
 }

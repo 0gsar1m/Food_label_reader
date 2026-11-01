@@ -7,6 +7,9 @@ import type { PreparedPhoto } from '../lib/photo';
 /** Explicit transmission action follows a local-only preview; retries use the same image. */
 export function Review({
   photo,
+  nutritionPhoto,
+  onNutrition,
+  onRemoveNutrition,
   busy,
   error,
   onBack,
@@ -16,6 +19,9 @@ export function Review({
   onPrivacy,
 }: {
   photo: PreparedPhoto;
+  nutritionPhoto: PreparedPhoto | null;
+  onNutrition: () => void;
+  onRemoveNutrition: () => void;
   busy: boolean;
   error: string;
   onBack: () => void;
@@ -63,6 +69,26 @@ export function Review({
               İçindekiler listesi ve alerjen uyarısının tamamı görünsün. Bulanık veya kesik alan
               varsa tekrar çek.
             </Text>
+            <Button
+              label={
+                nutritionPhoto
+                  ? 'Besin tablosu fotoğrafını değiştir'
+                  : 'Besin tablosu fotoğrafı ekle'
+              }
+              secondary
+              onPress={onNutrition}
+            />
+            {nutritionPhoto && (
+              <>
+                <Image
+                  source={{ uri: nutritionPhoto.uri }}
+                  style={{ width: '100%', height: 160 }}
+                  resizeMode="contain"
+                  accessibilityLabel="Besin tablosu fotoğrafı"
+                />
+                <Button label="Ek fotoğrafı kaldır" secondary onPress={onRemoveNutrition} />
+              </>
+            )}
             <View style={{ gap: 8 }}>
               <Text style={ui.small}>{copy.photoConsent}</Text>
               <Text

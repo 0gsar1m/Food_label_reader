@@ -7,3 +7,4 @@
 - Test etiketi kurgudur; üçüncü taraf marka veya ürün fotoğrafı kullanılmaz.
 - Node API bundle'ında esbuild legal-comments=eof ile kütüphane lisans yorumları korunur.
 - Kökteki Expo başlangıç şablonunun MIT lisans bildirimi korunmuştur.
+- AES-GCM uygulaması @noble/ciphers (MIT), JWT/JWK doğrulaması jose (MIT), native Google giriş Nitro paketleri ve web Google Identity Services kullanır; her paketin kendi lisansı/sağlayıcı koşulları geçerlidir.

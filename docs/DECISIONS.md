@@ -22,3 +22,10 @@
 - https://www.gov.uk/understanding-food-labelling/allergen-labelling
 
 Kaynaklar tasarım kararını destekler; seçilen modelin gerçek etiketlerde doğruluğu henüz ölçülmemiştir.
+
+## Kişiselleştirme ve kimlik eki
+- Sağlık profili/günlük ayrı şifreli cihaz depoları; hesap değişiminde izolasyon.
+- Claude Opus 5.5 kaynaklı kişisel yorum; seçim MODEL_SELECTION.md içinde gerekçelidir, canlı kalite kanıtı yok.
+- Google kimliği sunucuda JOSE JWK doğrulama, 24h uygulama JWT. Gmail kapsamı yok; bulut sync yok.
+- Native giriş için modern Credential Manager SDK; deprecated Expo Google provider eklenmedi.
+- 2026/2027 token giderleri ve sabit abonelikler ayrı, varsayımlar parametreli.

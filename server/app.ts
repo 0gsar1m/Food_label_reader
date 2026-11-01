@@ -3,17 +3,23 @@ import helmet from 'helmet';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { timingSafeEqual } from 'node:crypto';
+import { z } from 'zod';
+import { googleConfigured, googleUser, issueSession, verifySession, type AuthConfig } from './auth';
+import { personalRequestSchema } from '../shared/profile';
+import { personalize, type PersonalConfig } from './personal';
 import { scanRequestSchema } from '../shared/analysis';
 import { analyzeImage, ProviderError, type VisionConfig } from './provider';
 
 /** All deployment dependencies are explicit so tests never depend on machine secrets. */
-export type ApiConfig = VisionConfig & {
-  accessToken?: string;
-  origins: string[];
-  production?: boolean;
-  timeoutMs?: number;
-  trustProxy?: number;
-};
+export type ApiConfig = VisionConfig &
+  AuthConfig &
+  PersonalConfig & {
+    accessToken?: string;
+    origins: string[];
+    production?: boolean;
+    timeoutMs?: number;
+    trustProxy?: number;
+  };
 
 function authorized(expected: string, header: string | undefined): boolean {
   const supplied = Buffer.from(header?.startsWith('Bearer ') ? header.slice(7) : '');
@@ -32,9 +38,18 @@ function validImage(image: string, mime: string): boolean {
 
 /** API does not persist or log photos, provider output, tokens, or user preferences. */
 export function createApi(config: ApiConfig): express.Express {
-  if (config.production && (!config.accessToken || config.accessToken.length < 24)) {
+  const requireAccount = Boolean(
+    config.requireGoogleAuth || (config.production && !config.accessToken),
+  );
+  if (
+    config.production &&
+    (!config.accessToken || config.accessToken.length < 24) &&
+    !googleConfigured(config)
+  ) {
     throw new Error('Production requires APP_ACCESS_TOKEN with at least 24 characters.');
   }
+  if (config.requireGoogleAuth && !googleConfigured(config))
+    throw new Error('Google authentication is required but not configured.');
   const app = express();
   app.disable('x-powered-by');
   if (config.trustProxy) app.set('trust proxy', config.trustProxy);
@@ -53,7 +68,8 @@ export function createApi(config: ApiConfig): express.Express {
       status: 'ok',
       configured: Boolean(config.apiKey),
       model: config.model,
-      authenticationRequired: Boolean(config.accessToken),
+      authenticationRequired: Boolean(config.accessToken) || requireAccount,
+      googleConfigured: googleConfigured(config),
     }),
   );
   app.use(
@@ -66,17 +82,58 @@ export function createApi(config: ApiConfig): express.Express {
       message: { error: 'RATE_LIMITED' },
     }),
   );
-  app.use('/api', (req, res, next) => {
-    if (config.accessToken && !authorized(config.accessToken, req.headers.authorization)) {
+  app.post('/api/auth/google', express.json({ limit: '16kb' }), async (req, res) => {
+    const parsed = z
+      .object({ idToken: z.string().min(20).max(12000) })
+      .strict()
+      .safeParse(req.body);
+    if (!parsed.success) {
+      res.status(400).json({ error: 'INVALID_CREDENTIAL' });
+      return;
+    }
+    if (!googleConfigured(config)) {
+      res.status(503).json({ error: 'GOOGLE_NOT_CONFIGURED' });
+      return;
+    }
+    try {
+      const user = await googleUser(parsed.data.idToken, config);
+      res.json(await issueSession(user, config));
+    } catch {
+      res.status(401).json({ error: 'INVALID_CREDENTIAL' });
+    }
+  });
+  app.use('/api', async (req, res, next) => {
+    const bearer = req.headers.authorization?.startsWith('Bearer ')
+      ? req.headers.authorization.slice(7)
+      : '';
+    if (bearer && config.sessionSecret) {
+      try {
+        await verifySession(bearer, config);
+        next();
+        return;
+      } catch {
+        /* Service credentials are checked separately below. */
+      }
+    }
+    if (
+      requireAccount ||
+      (config.accessToken && !authorized(config.accessToken, req.headers.authorization))
+    ) {
       res.status(401).json({ error: 'UNAUTHORIZED' });
       return;
     }
     next();
   });
-  app.use(express.json({ limit: '7mb', strict: true }));
+  app.use(express.json({ limit: '14mb', strict: true }));
   app.post('/api/analyze', async (req, res) => {
     const input = scanRequestSchema.safeParse(req.body);
-    if (!input.success || !validImage(input.data.image, input.data.mimeType)) {
+    if (
+      !input.success ||
+      !validImage(input.data.image, input.data.mimeType) ||
+      (input.success &&
+        input.data.nutritionImage &&
+        !validImage(input.data.nutritionImage, 'image/jpeg'))
+    ) {
       res.status(400).json({ error: 'INVALID_IMAGE' });
       return;
     }
@@ -91,13 +148,20 @@ export function createApi(config: ApiConfig): express.Express {
     };
     res.on('close', cancel);
     try {
+      let usage: { inputTokens: number; outputTokens: number } | undefined;
       const analysis = await analyzeImage(
         input.data.image,
         input.data.mimeType,
-        config,
+        {
+          ...config,
+          reportUsage: (value) => {
+            usage = value;
+          },
+        },
         controller.signal,
+        input.data.nutritionImage,
       );
-      res.json({ analysis, model: config.model });
+      res.json({ analysis, model: config.model, ...(usage ? { usage } : {}) });
     } catch (error) {
       const code = controller.signal.aborted
         ? 'TIMEOUT'
@@ -108,6 +172,42 @@ export function createApi(config: ApiConfig): express.Express {
       if (!res.destroyed) res.status(status).json({ error: code });
     } finally {
       clearTimeout(timeout);
+      res.off('close', cancel);
+    }
+  });
+  app.post('/api/personalize', async (req, res) => {
+    const parsed = personalRequestSchema.safeParse(req.body);
+    if (
+      !parsed.success ||
+      !parsed.data.profile.cloudConsent ||
+      (parsed.data.task === 'interpret' && !parsed.data.analysis)
+    ) {
+      res.status(400).json({ error: 'CONSENT_OR_INPUT_REQUIRED' });
+      return;
+    }
+    if (!config.personalKey) {
+      res.status(503).json({ error: 'NOT_CONFIGURED' });
+      return;
+    }
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), config.timeoutMs ?? 35_000);
+    const cancel = (): void => {
+      if (!res.writableEnded) controller.abort();
+    };
+    res.on('close', cancel);
+    try {
+      res.json(await personalize(parsed.data, config, controller.signal));
+    } catch (error) {
+      if (!res.destroyed)
+        res.status(controller.signal.aborted ? 504 : 502).json({
+          error: controller.signal.aborted
+            ? 'TIMEOUT'
+            : error instanceof ProviderError
+              ? error.code
+              : 'INVALID_RESULT',
+        });
+    } finally {
+      clearTimeout(timer);
       res.off('close', cancel);
     }
   });

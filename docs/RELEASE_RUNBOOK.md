@@ -1,5 +1,12 @@
 # Çalıştırma ve yayın rehberi
 
+## Profil, kişisel yorum ve Google giriş eki
+Profil/günlük native cihazda ayrı şifreli depoda; webde sekme oturumundadır. Google, misafir ve diğer hesaplar ayrı kayıt alanları kullanır.
+Kişisel yorum için `ANTHROPIC_API_KEY` ve `PERSONAL_MODEL=claude-opus-5-5`; kullanıcıdan açık aktarım izni gerekir.
+Google giriş ortamı ve native yapılandırması GOOGLE_AUTH.md içinde. Google native SDK Expo Go'da bulunmaz; gerçek giriş için APK/development build gerekir.
+`npm run test:e2e` derlenmiş web önizlemesini 8082'de sınar. Tek Playwright çalıştırması kullan; geliştirme sunucusu HMR çıktısı test kanıtı değildir.
+Yatırımcı gider tablosu INVESTOR_COSTS.md, tekrar üretim `npm run costs`, demo akışı DEMO_SCRIPT.md içinde.
+
 ## Yerel ortam
 Node 24 LTS, `npm ci`. İlk terminal `npm run api`, ikinci terminal `npm start`.
 Web `npm run web`, telefon Expo Go QR. Android Studio yalnız yerel emülatör/yerel native build için gereklidir.

@@ -5,7 +5,7 @@ export const demoAnalysis: Analysis = validateAnalysis({
   readability: 'clear',
   productName: 'Kakaolu yulaflı bisküvi',
   rawText:
-    'ÖRNEK ETİKET\nKakaolu yulaflı bisküvi\nİçindekiler: Yulaf ezmesi (%32), buğday unu, şeker, ayçiçek yağı, kakao (%6), yağsız süt tozu, kabartıcı (sodyum hidrojen karbonat, E500), tuz.\nAlerjenler: Gluten ve süt içerir. Eser miktarda fındık ve soya içerebilir.',
+    'ÖRNEK ETİKET\nKakaolu yulaflı bisküvi\nİçindekiler: Yulaf ezmesi (%32), buğday unu, şeker, ayçiçek yağı, kakao (%6), yağsız süt tozu, kabartıcı (sodyum hidrojen karbonat, E500), tuz.\nAlerjenler: Gluten ve süt içerir. Eser miktarda fındık ve soya içerebilir.\nBesin değerleri / 100 g: Enerji 400 kcal; Protein 8 g; Karbonhidrat 60 g; Yağ 14 g; Lif 6 g; Tuz 0,5 g.',
   summary:
     'İlk sırada yulaf ezmesi var. Etikette süt ve gluten beyanı bulunuyor. Kabartıcı olarak E500 kullanılmış.',
   ingredients: [
@@ -61,5 +61,18 @@ export const demoAnalysis: Analysis = validateAnalysis({
       evidence: 'kabartıcı (sodyum hidrojen karbonat, E500)',
     },
   ],
+  nutrition: {
+    basisAmount: 100,
+    basisUnit: 'g',
+    energyKcal: 400,
+    proteinG: 8,
+    carbohydrateG: 60,
+    fatG: 14,
+    fiberG: 6,
+    saltG: 0.5,
+    micros: [],
+    evidence:
+      'Besin değerleri / 100 g: Enerji 400 kcal; Protein 8 g; Karbonhidrat 60 g; Yağ 14 g; Lif 6 g; Tuz 0,5 g.',
+  },
   uncertainties: [],
 });

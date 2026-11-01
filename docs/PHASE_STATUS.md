@@ -10,8 +10,13 @@
 | 05 Sonuç ve geçmiş | Tamamlandı | Kanıt sekmeleri, tercih kalıcılığı, Türkçe arama/silme |
 | 06 Erişilebilirlik/gizlilik | Kod ve web kabulü tamamlandı | Semantik state, veri pratikleri; native okuyucu ve hukuk kabulü açık |
 | 07 Teslim | Kaynak kod teslimi tamamlandı | verify geçti; 1bfdc25 origin/main'e push edildi, uzak hash teyit edildi |
+| 08 Profil ve koşullu tanışma | Kod/web kabulü tamamlandı | Altı adım, şifreli saklama, koşullu sorular, izin ve silme |
+| 09 Besin tablosu ve porsiyon | Kod/web kabulü tamamlandı | İkinci fotoğraf, kaynaklı değerler, 100g/40g deterministik hesap |
+| 10 Kişisel yorum ve günlük | Kod/kontrat kabulü tamamlandı | Opus yapılandırması, kaynak atfı, günlük CRUD; canlı model kalitesi açık |
+| 11 Yeni kapsamın kabulü | Kod ve yerel kabul tamamlandı | Nihai verify, 69 birim/API ve 11 ekran testi geçti |
+| 12 Google kayıt/giriş | Kod/kontrat kabulü tamamlandı | Google JWK doğrulama, JWT, hesap izolasyonu; gerçek OAuth/native kabulü açık |
 
 ## Tamamlandı ifadesinin kapsamı
-Yeni kişiselleştirme kapsamı: Faz 08–11 planlandı, uygulanmadı. Ayrıntı PERSONALIZATION_VISION.md.
+Kişiselleştirme fazları ve Google giriş kapsamı uygulandı. Canlı model ve gerçek Google OAuth kabulü için hesap/anahtar gerekiyor.
 Kaynak kod ve yerel kabul teslimidir. Fiziksel cihaz, canlı model, HTTPS barındırma, imzalı APK ve mağaza yayını ayrıca gerekir.
 Eksik hesaplar/anahtarlar varmış gibi tamamlanmış gösterilmez. Ayrıntı: VERIFICATION.md ve RELEASE_RUNBOOK.md.
