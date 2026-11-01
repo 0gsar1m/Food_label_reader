@@ -46,3 +46,24 @@ Lint, strict typecheck, anlamlı birim/API testleri, Android/iOS/web bundle ve g
 Android bulut APK profili, Docker API, kurulum ve yayın runbook'u; sır taraması.
 En sonda doğrulanan kod git commit + istenen repoya normal push.
 Mağaza yayını, ücretli hesap veya olmayan anahtar varmış gibi tamamlandı yazılmaz.
+
+## Yeni yön: amaç ve kişisel kullanım profili
+Kullanıcının 1 Kasım ek yönlendirmesi: etiket yorumunu kişinin amacı, rutini ve bildirdiği sağlık bağlamına bağla.
+Ayrıntılı ürün kararı ve yes/no tablosu: PERSONALIZATION_VISION.md. Aşağıdaki fazlar henüz uygulanmadı.
+
+## Faz 08: profil ve koşullu tanışma
+Amaç, rutin, alerji, bildirilen tanı/semptom, düzenlenebilir takip soruları ve hassas veri tercihi.
+Kabul: tanı/şüphe ayrımı, atlama/düzenleme, şifreli saklama ve eksiksiz silme; zorunlu bulut hesabı yok.
+
+## Faz 09: besin tablosu ve porsiyon
+İkinci fotoğraf desteği, kalori/makro ve gerçekten belirtilen mikrobesinler, birim ve porsiyon hesabı.
+Kabul: 100g/100ml/porsiyon ayrımı, eksik değer uydurmama ve deterministik hesap testleri.
+
+## Faz 10: kişisel yorum ve besin/belirti günlüğü
+Kaynaklı genel bilgi, kişinin beyanı ve zaman damgalı öğün/belirti kayıtları üzerinden amaca göre yorum.
+Kabul: açıklamaların dayanağı görünür; genel eğilim kişisel kesinliğe, korelasyon nedene dönüşmez.
+LLM seçimi Türkçe sağlık/etiket kabul setiyle yapılır; eğitim etiketi tek başına seçim gerekçesi değildir.
+
+## Faz 11: yeni kapsamın kabulü
+Eksik/çelişkili profil, alerji, şişkinlik, egzama, kilo hedefi, porsiyon ve veri silme senaryoları.
+Kabul: yeni şema/API/ekran testleri ve canlı model değerlendirmesi ayrı raporlanır.

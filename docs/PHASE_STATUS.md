@@ -12,5 +12,6 @@
 | 07 Teslim | Kaynak kod teslimi tamamlandı | verify geçti; 1bfdc25 origin/main'e push edildi, uzak hash teyit edildi |
 
 ## Tamamlandı ifadesinin kapsamı
+Yeni kişiselleştirme kapsamı: Faz 08–11 planlandı, uygulanmadı. Ayrıntı PERSONALIZATION_VISION.md.
 Kaynak kod ve yerel kabul teslimidir. Fiziksel cihaz, canlı model, HTTPS barındırma, imzalı APK ve mağaza yayını ayrıca gerekir.
 Eksik hesaplar/anahtarlar varmış gibi tamamlanmış gösterilmez. Ayrıntı: VERIFICATION.md ve RELEASE_RUNBOOK.md.

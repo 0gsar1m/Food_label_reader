@@ -1,5 +1,9 @@
 # Değişiklik geçmişi
 
+## Kişiselleştirme yönlendirmesi
+- Amaç, rutin, sağlık bildirimi, koşullu sorular, besin/porsiyon ve belirti günlüğü ürün tasarımına eklendi.
+- Faz 08–11 planlandı; bu özellikler henüz uygulanmadı. Kaynaklar ve karar tablosu PERSONALIZATION_VISION.md içinde.
+
 ## 1 Kasım 2026
 - Eski proje metodolojisinden faz planı, etkin bağlam ve AI rehberleri oluşturuldu.
 - Kullanıcının sağladığı AI Slop rehberi mobil tasarım ve kabul ölçütlerine uyarlandı.

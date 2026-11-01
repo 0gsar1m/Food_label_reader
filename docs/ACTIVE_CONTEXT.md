@@ -3,7 +3,7 @@
 1 Kasım 2026. Kullanıcı tüm fazların tamamlanmasını ve sonunda Food_label_reader reposuna push istedi.
 Eski proje yalnız metodoloji referansı olarak okundu. Mevcut çalışma klasörü başlangıçta boştu.
 Etiket: Expo React Native Android/iOS, Türkçe arayüz, Node API, Gemini Flash Vision.
-Etkin faz: 07 / kaynak kod ve yerel kabul teslimi tamamlandı. Plan: MASTER_PLAN.md.
+Etkin faz: 08 / amaç ve kişisel sağlık bağlamı ürün tasarımı. İlk sürümün kod teslimi tamamlandı; yeni kapsam henüz uygulanmadı.
 Tasarım: AI_SLOP_AVOIDANCE.md. Güvenilirlik: AI_GUIDELINES.md.
 Kullanıcının sağladığı API anahtarı/EAS hesabı yok. Bunlar varmış gibi kabul raporu yazılmaz.
 
@@ -40,4 +40,7 @@ Harici kabul işleri için RELEASE_RUNBOOK.md; yapılan test sınırları VERIFI
 ## Teslim
 Repo: https://github.com/0gsar1m/Food_label_reader
 Doğrulanan kod commit'i: 1bfdc25. Bu belge güncellemesi ayrı docs commit'iyle push edilir.
-Yeni özellik isteği gelmezse kod işi kalmadı; sonraki çalışmalar yukarıdaki gerçek hesap/donanım kabul adımlarıdır.
+Kullanıcı yeni yön istedi: amaç/rutin/bildirilen hastalık/semptom profili ve bunlara göre etiket yorumu.
+PERSONALIZATION_VISION.md yes/no tablosu, örnek dil ve mimariyi içerir; MASTER_PLAN faz 08–11 eklendi.
+Yeni profili mevcut şifresiz depoya ekleme. Alerjen tercihlerinin mevcut aktarılmama davranışını sessizce değiştirme.
+Bu tur ürün değerlendirmesi ve plan güncellemesidir; yeni özelliğin kodlandığını iddia etme.
