@@ -3,7 +3,7 @@
 1 Kasım 2026. Etiket: Expo SDK 58 React Native Android/iOS + web kabul önizlemesi, Node API.
 Kullanıcı tüm fazların soru sormadan uygulanmasını, test edilmesini ve GitHub push istedi.
 Son ek direktif: Gmail adresiyle Google hesabından kayıt/giriş. Uygulandı; gerçek OAuth kabulü için client ID yok.
-Etkin faz: 08–12 kod ve yerel kabul tamamlandı, GitHub teslimi doğrulandı.
+Etkin faz: 13 / yerel ücretsiz yorum ve demo model seçimi kabulü.
 
 ## Başlangıç belgeleri
 AGENTS.md → MASTER_PLAN.md → PHASE_STATUS.md. Tasarım: AI_SLOP_AVOIDANCE.md.
@@ -16,7 +16,7 @@ AI_GUIDELINES.md; model seçimi MODEL_SELECTION.md; maliyet INVESTOR_COSTS.md.
 - Öğün/belirti günlüğü CRUD, belirtisiz kayıt, zaman, miktar ve notlar.
 - Hassas profil/günlük AES-256-GCM. Native key SecureStore; web yalnız sekme oturum deposu.
 - Health verisi Anthropic'e yalnız ayrı açık izin ve düğmeyle; Google'a sağlık profili gönderilmez.
-- Kişisel yorum Claude Opus 5.5, kaynak ID kontrolü, Sonnet yapılandırılabilir; sessiz fallback yok.
+- Yerel profil yorumu API çağrısı yapmaz. Demo bulutu Sonnet 5.5; ekonomi komutu Haiku 5.5.
 - Opus forced-tool desteklemez; JSON output_config.format ve ayrı Zod kontrolü kullanılır.
 - Google GIS web / Nitro Credential Manager native; server Google JWK+audience+issuer+expiry+verified-email.
 - Ayrı 24h uygulama JWT, güvenli saklama ve origin bağı. Bulut kullanıcı DB/senkronizasyonu yok.
@@ -26,13 +26,13 @@ AI_GUIDELINES.md; model seçimi MODEL_SELECTION.md; maliyet INVESTOR_COSTS.md.
 ## Çalıştırma ve kabul
 - npm ci; ayrı terminaller npm run api ve npm start. Web geliştirme npm run web.
 - npm run test:e2e önce export üretir, 8082 statik önizlemede tek worker kullanır. Paralel iki koşu başlatma.
-- 69 birim/HTTP testi ve 11 ekran testi geçti. Lint/typecheck temiz; expo-doctor 20/20.
+- 74 birim/HTTP testi ve 11 ekran testi geçti. Lint/typecheck temiz; expo-doctor 20/20.
 - Nihai npm run verify başarılı: Android/iOS/web export + API bundle + bundle HTTP smoke geçti.
 - npm audit: 0 yüksek/kritik, 22 orta araç zinciri bulgusu; uyumsuz force downgrade yapılmadı.
 - Gerçek sağlayıcı çağrısı, Google OAuth ve native cihaz kabulü yapılmadı. VERIFICATION.md sınırları açıklar.
 
 ## Dış yapılandırmalar
-- Sunucu: GEMINI_API_KEY, ANTHROPIC_API_KEY, PERSONAL_MODEL=claude-opus-5-5.
+- Sunucu: GEMINI_API_KEY, ANTHROPIC_API_KEY, PERSONAL_MODEL=claude-sonnet-5-5.
 - Google: public OAuth client ID'leri, server GOOGLE_CLIENT_IDS ve 32+ karakter SESSION_SECRET.
 - Native Google girişi Expo Go'da yok; APK/development build gerekir. iOS gerçek ID app.config.ts plugin'ini açar.
 - Google-only production anonim API açmaz. REQUIRE_GOOGLE_AUTH=true yalnız kullanıcı oturumu ister.
@@ -41,10 +41,21 @@ AI_GUIDELINES.md; model seçimi MODEL_SELECTION.md; maliyet INVESTOR_COSTS.md.
 
 ## Demo ve giderler
 DEMO_SCRIPT.md beş dakikalık akış. npm run costs senaryoları tekrar üretir.
-1000 aktif / 20000 tarama / %50 yorum: Opus toplam yaklaşık $1012/ay; Sonnet yaklaşık $640/ay.
-Bunlar token/hacim varsayımlarıdır; gerçek fatura değildir. Gemini 2027 fiyat değişimi ayrı hesaplandı.
+Ekonomi alternatifi: 1000 aktif / 20000 tarama ~$111/ay; %50 Haiku ile ~$130/ay. Demo tam Vision+Sonnet çiftleri ~$835 API/ay.
+Bunlar token/hacim varsayımlarıdır; gerçek fatura değildir. Eski premium senaryo arşive alındı.
 
 ## Son teslim işlemi
 Repo https://github.com/0gsar1m/Food_label_reader. Doğrulanan yeni kapsam kod commit'i 45308ef.
 origin/main push başarılı ve uzak hash eşleşti. Bu teslim kaydı ayrı docs commit'iyle gönderilir.
 Sonraki kod dışı kabul: gerçek iki sağlayıcı çağrısı, 20 etiket/sağlık senaryosu ve native OAuth/erişilebilirlik.
+
+## Son yönlendirme: maliyet ve sıfır token
+Kullanıcı pahalı Opus senaryosunu reddetti. Gemini 3.1 Flash-Lite + yerel kurallı yorum varsayılan; bulut Haiku isteğe bağlı.
+Yerel yorum gerçek LLM diye etiketlenmez; tam fotoğraf akışı sıfır maliyetli diye sunulmaz. Profil bağlamı cihazda ücretsizdir.
+Yeni maliyetler INVESTOR_COSTS.md; eski Opus tablosu INVESTOR_COSTS_PREMIUM.md. 74 birim/HTTP, 11 ekran testi ve üç platform/API derlemesi geçti; push son adım.
+
+## Son karar: APK demo Vision + Sonnet
+Kullanıcı 2–3 deneme için güçlü Vision + Sonnet istedi ve 20000 okuma giderini ayrı sunmayı kabul etti.
+Normal API varsayılanı Gemini 3.8 Flash + Sonnet 5.5; api:economy açıkça Lite + Haiku seçer.
+3 demo çifti ~$0,125; 20000 Vision+20000 Sonnet ~$835 API tüketimi (aynı token varsayımlarıyla, paylar hariç).
+Yerel kurallı yorum ücretsiz kalır. Nihai verify geçti (74 test, üç platform/API paketleri); tek sıra 11 ekran kabulü geçti, push son adım.

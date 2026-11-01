@@ -28,3 +28,6 @@ Güncel kaynaklar ve karar gerekçeleri `docs/DECISIONS.md` içinde tutulur.
 - Genel bilgi, kişi bildirimi ve günlük ilişkisi ayrı evidence ID taşır; korelasyon nedensellik sayılmaz.
 - Nicel porsiyon hesabı modelden alınmaz. Besin tablosu yoksa kalori/makro/mikro bilinmiyor kalır.
 - Model sağlayıcı çıktısı kaynak ID ve şema bakımından doğrulanır; bu kontrol klinik doğruluk garantisi değildir.
+
+## Ekonomik varsayılan
+Yerel profil değerlendirmesi deterministik kurallardır, üretken LLM veya klinik çıkarım diye sunulmaz. Gözlemlerden gıda tetikleyicisi üretilmez. Ayrı bulut ayrıntılandırması yalnız açık işlemle çalışır; pahalı modele otomatik yükseltme yok.

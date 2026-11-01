@@ -23,3 +23,9 @@ Eksik hesaplar/anahtarlar varmış gibi tamamlanmış gösterilmez. Ayrıntı: V
 
 ## Yeni kapsam teslimi
 Profil/kişiselleştirme, maliyet modeli ve Google giriş kodu 45308ef ile main dalına push edildi; uzak hash eşleşmesi doğrulandı. Canlı sağlayıcı/OAuth ve native kabul sınırları değişmedi.
+
+## Faz 13: yerel yorum ve demo gideri
+
+| Faz | Durum | Kanıt |
+|---|---|---|
+| 13 Yerel yorum / demo | Kod ve kabul tamamlandı | API’siz yerel yorum ve ayrı ekonomi modu; son demo kararı güçlü Flash + Sonnet, giderler ayrı |

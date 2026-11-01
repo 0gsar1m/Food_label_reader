@@ -64,7 +64,8 @@
     "test:api-bundle": "tsx scripts/smoke-api.ts",
     "costs": "tsx scripts/costs.ts",
     "preview": "tsx scripts/preview.ts",
-    "build:web": "expo export --platform web"
+    "build:web": "expo export --platform web",
+    "api:economy": "tsx scripts/api-economy.ts"
   },
   "private": true
 }

@@ -20,6 +20,11 @@ async function next(page: Page) {
 test('detailed onboarding, encrypted persistence, portion scaling and diary CRUD', async ({
   page,
 }) => {
+  let localCloudCalls = 0;
+  await page.route('**/api/personalize', (route) => {
+    localCloudCalls++;
+    return route.abort();
+  });
   await start(page);
   await page.getByRole('checkbox', { name: 'Kilo yönetimi', exact: true }).click();
   await page.getByRole('checkbox', { name: 'Protein takibi', exact: true }).click();
@@ -53,7 +58,9 @@ test('detailed onboarding, encrypted persistence, portion scaling and diary CRUD
   await expect(
     page.getByText('Enerji: 160 kcal / seçtiğin porsiyon', { exact: true }),
   ).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Profilime göre yorumla' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Bulut modeliyle ayrıntılandır' })).toBeDisabled();
+  await expect(page.getByText('YEREL DEĞERLENDİRME / API ÇAĞRISI YOK')).toBeVisible();
+  expect(localCloudCalls).toBe(0);
   await page.screenshot({ path: 'docs/screenshots/personal-portion.png' });
   await page.getByRole('button', { name: 'Bu öğünü günlüğe ekle' }).click();
   await expect(page.getByRole('textbox', { name: 'Ne yedin?' })).toHaveValue(
@@ -138,7 +145,7 @@ test('explicit consent enables grounded model interpretation and question select
   await next(page);
   await page.getByRole('button', { name: 'Profili kaydet', exact: true }).click();
   await page.getByRole('button', { name: 'Örnek etiketi incele' }).click();
-  await page.getByRole('button', { name: 'Profilime göre yorumla' }).click();
+  await page.getByRole('button', { name: 'Bulut modeliyle ayrıntılandır' }).click();
   await expect(page.getByText('Bu kontrollü model test yanıtıdır.')).toBeVisible();
   await expect.poll(() => calls).toBe(2);
   await page.screenshot({ path: 'docs/screenshots/personal-model-attribution.png' });

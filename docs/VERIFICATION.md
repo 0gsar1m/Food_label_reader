@@ -6,7 +6,7 @@ Tarih: 1 Kasım 2026. Ortam: Windows, Node 24.15.0, npm 11.12.1, Expo SDK 58.
 |---|---|
 | ESLint | 0 hata / 0 uyarı |
 | Strict TypeScript | Geçti |
-| Birim ve gerçek HTTP API testleri | 69 geçti, 0 başarısız |
+| Birim ve gerçek HTTP API testleri | 74 geçti, 0 başarısız |
 | Playwright Chromium | 11 geçti, 0 başarısız |
 | expo-doctor | 20/20 geçti |
 | Android/iOS/web export | Üç platform da paketlendi |
@@ -62,3 +62,6 @@ Kod/yerel doğrulama teslimi bu dış kabul adımlarından ayrıdır. Sonraki ad
 
 ## Kabul yöntemi düzeltmesi
 Geliştirme sunucusunda iki Playwright süreci aynı trace klasörünü kullanınca başarısız/eksik izler oluştu. Bu koşular kabul kanıtı sayılmadı. Sonuçlar tek worker ile export edilmiş web paketi üzerinde tekrarlanan tam test grubuna aittir.
+
+## Ekonomik varsayılan kabulü
+API çağrısız yerel yorum için 5 yeni birim testi eklendi: hedef/protein/enerji, eksik tablo, belirtisiz günlük, tanı-şüphe ve maliyet formülleri. Bulut ve Lite Vision kalitesi canlı anahtar olmadığı için ölçülmedi. Varsayılan kişisel yorum kurallıdır, LLM diye gösterilmez.

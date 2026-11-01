@@ -65,7 +65,19 @@ export function personalEvidence(input: z.infer<typeof personalRequestSchema>) {
     const analysis = validateAnalysis(input.analysis);
     evidence.push(
       { id: 'label:text', text: analysis.rawText },
-      { id: 'label:extraction', text: JSON.stringify(analysis) },
+      {
+        id: 'label:extraction',
+        text: JSON.stringify({
+          productName: analysis.productName,
+          nutrition: analysis.nutrition ?? null,
+          allergens: analysis.allergens,
+          additives: analysis.additives.map(({ name, code, evidence }) => ({
+            name,
+            code,
+            evidence,
+          })),
+        }),
+      },
     );
   }
   return evidence;
@@ -88,7 +100,7 @@ export async function personalize(
         'anthropic-version': '2026-10-21',
       },
       body: JSON.stringify({
-        model: config.personalModel ?? 'claude-opus-5-5',
+        model: config.personalModel ?? 'claude-sonnet-5-5',
         max_tokens: 4096,
         output_config: {
           effort: 'low',
@@ -164,7 +176,7 @@ export async function personalize(
     return {
       result,
       evidence,
-      model: config.personalModel ?? 'claude-opus-5-5',
+      model: config.personalModel ?? 'claude-sonnet-5-5',
       usage: payload.usage,
     };
   } catch {

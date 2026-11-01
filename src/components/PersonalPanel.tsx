@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Linking, Text, TextInput, View } from 'react-native';
 import type { Analysis } from '../../shared/analysis';
-import { goals, type HealthVault } from '../../shared/profile';
+import { type HealthVault } from '../../shared/profile';
 import { portionValues } from '../../shared/nutrition';
+import { localInterpretation } from '../../shared/localInterpretation';
 import { requestPersonal } from '../lib/personalApi';
 import { Button, Notice } from './Controls';
 import { ui, theme } from '../theme';
@@ -28,6 +29,7 @@ export function PersonalPanel({
   const [error, setError] = useState('');
   const [reply, setReply] = useState<Awaited<ReturnType<typeof requestPersonal>> | null>(null);
   const nutrition = analysis.nutrition;
+  const local = localInterpretation(analysis, vault);
   let values: ReturnType<typeof portionValues> | null = null;
   if (nutrition && amount) {
     try {
@@ -59,11 +61,14 @@ export function PersonalPanel({
   return (
     <View style={{ gap: 18, borderTopWidth: 1, borderColor: theme.color.line, paddingTop: 24 }}>
       <Text style={ui.h2}>Senin amacın açısından</Text>
-      <Text style={ui.body}>
-        {vault.profile.goals.length
-          ? vault.profile.goals.map((g) => goals[g]).join(' · ')
-          : 'Amaçlarını profilinden seçerek bu okumaya kişisel bağlam ekleyebilirsin.'}
-      </Text>
+      <Text style={ui.body}>{local.title}</Text>
+      <Text style={ui.eyebrow}>YEREL DEĞERLENDİRME / API ÇAĞRISI YOK</Text>
+      {local.findings.map((finding, index) => (
+        <View key={index} style={{ gap: 6 }}>
+          <Text style={ui.body}>{finding.text}</Text>
+          <Text style={ui.small}>Dayanak: {finding.basis}</Text>
+        </View>
+      ))}
       {nutrition ? (
         <>
           <Text style={ui.strong}>
@@ -128,8 +133,8 @@ export function PersonalPanel({
           : 'Kişisel LLM yorumu için profilinde aktarım iznini aç. Yerel porsiyon hesabı izin gerektirmez.'}
       </Text>
       <Button
-        label={busy ? 'Kişisel yorum hazırlanıyor' : 'Profilime göre yorumla'}
-        disabled={busy || !vault.profile.cloudConsent}
+        label={busy ? 'Kişisel yorum hazırlanıyor' : 'Bulut modeliyle ayrıntılandır'}
+        disabled={busy || !vault.profile.cloudConsent || Boolean(reply)}
         onPress={() => {
           void interpret();
         }}

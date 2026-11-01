@@ -2,7 +2,7 @@
 
 ## Profil, kişisel yorum ve Google giriş eki
 Profil/günlük native cihazda ayrı şifreli depoda; webde sekme oturumundadır. Google, misafir ve diğer hesaplar ayrı kayıt alanları kullanır.
-Kişisel yorum için `ANTHROPIC_API_KEY` ve `PERSONAL_MODEL=claude-opus-5-5`; kullanıcıdan açık aktarım izni gerekir.
+Kişisel yorum için `ANTHROPIC_API_KEY` ve `PERSONAL_MODEL=claude-sonnet-5-5`; kullanıcıdan açık aktarım izni gerekir.
 Google giriş ortamı ve native yapılandırması GOOGLE_AUTH.md içinde. Google native SDK Expo Go'da bulunmaz; gerçek giriş için APK/development build gerekir.
 `npm run test:e2e` derlenmiş web önizlemesini 8082'de sınar. Tek Playwright çalıştırması kullan; geliştirme sunucusu HMR çıktısı test kanıtı değildir.
 Yatırımcı gider tablosu INVESTOR_COSTS.md, tekrar üretim `npm run costs`, demo akışı DEMO_SCRIPT.md içinde.
@@ -72,3 +72,5 @@ Bu oturumda EAS hesabı/proje ID yoktu; imzalı APK oluşturulmadı. EAS build �
 Google Play veri güvenliği ve Apple gizlilik formlarını gerçek veri akışına göre doldur.
 Ürün adı/modeli başarı ve gecikme garantisi vermez. Model sürümü değişince etiket kabul setini yeniden çalıştır.
 Bu adımlar bu oturumda yapılmış veya hesap açılmış gibi raporlanmaz.
+
+Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yerel profil değerlendirmesi ve isteğe bağlı Haiku bulut ayrıntısı. Eski premium gider rakamları varsayılan değildir; INVESTOR_COSTS.md esas alınır.

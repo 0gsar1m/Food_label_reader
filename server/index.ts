@@ -14,7 +14,7 @@ const environment = z
     PERSONAL_MODEL: z
       .string()
       .regex(/^[a-zA-Z0-9._-]+$/)
-      .default('claude-opus-5-5'),
+      .default('claude-sonnet-5-5'),
     GOOGLE_CLIENT_IDS: z.string().default(''),
     SESSION_SECRET: z.string().min(32).optional(),
     REQUIRE_GOOGLE_AUTH: z.enum(['true', 'false']).default('false'),

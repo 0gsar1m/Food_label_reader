@@ -73,3 +73,7 @@ Kullanıcının ek direktifi: Gmail adresiyle kullanılan Google hesabından kay
 Google GIS web, Credential Manager native, server JWK/audience/issuer/expiry kontrolü ve süreli uygulama oturumu.
 Kabul: yanlış/süresi dolmuş token reddi, hesap/misafir izolasyonu, çıkış ve yapılandırma eksikliği; gerçek OAuth ayrı kabul.
 Kurulum ve kalan dış adımlar GOOGLE_AUTH.md içinde. Native modül APK/development build gerektirir.
+
+## Faz 13: ekonomik varsayılan
+Kullanıcının maliyet itirazı: kişisel bağlam ve kurallı yorum cihazda API’siz; Vision Lite, bulut Haiku isteğe bağlı.
+Kabul: sıfır yerel API çağrısı, kaynaklı yerel sayısal bilgi, bilinmeyen miktarı uydurmama, maliyet formülü ve mevcut akışların korunması. Canlı ucuz model kalitesi ayrıca ölçülür.

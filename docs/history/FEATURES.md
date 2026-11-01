@@ -23,3 +23,11 @@
 - Doğrulanan kod 1bfdc25 commit'iyle istenen GitHub reposunun main dalına gönderildi.
 
 Yeni kapsamın doğrulanan kod teslimi: 45308ef; origin/main push ve hash teyidi başarılı.
+
+## Ekonomik kullanım
+- Yerel profil/etiket/günlük değerlendirmesi eklendi; bu bölüm API çağırmaz ve LLM diye sunulmaz.
+- Vision varsayılanı Gemini 3.1 Flash-Lite, isteğe bağlı bulut varsayılanı Haiku 5.5. Opus otomatik kullanılmaz.
+- Yinelenen ürün açıklamaları bulut bağlamından çıkarıldı; başarılı cevap açıkken tekrar bulut çağrısı kapatıldı.
+- Eski premium maliyet raporu arşivlendi, EAS ücretsiz planı ile ekonomik tablo yazıldı.
+
+Son kullanıcı kararı: APK demosu için Gemini 3.8 Flash + Sonnet 5.5 normal varsayılan yapıldı; ekonomik sunucu ayrı komutla korundu. 2–3 deneme ve 20000 tam çift gideri ayrı raporlandı.

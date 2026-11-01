@@ -4,6 +4,8 @@ export const rates = {
   vision: { input: 0.75, output: 3.75 },
   opus: { input: 4, output: 20 },
   sonnet: { input: 2, output: 10 },
+  haiku: { input: 0.1, output: 0.5 },
+  lite: { input: 0.25, output: 1.5 },
 };
 /** All load assumptions are editable; image tokens and thinking must be included in measured usage. */
 export const costInputSchema = z.object({
@@ -18,7 +20,8 @@ export const costInputSchema = z.object({
   personalOutput: z.number().min(0),
   hosting: z.number().min(0),
   subscription: z.number().min(0),
-  personalModel: z.enum(['opus', 'sonnet']),
+  personalModel: z.enum(['opus', 'sonnet', 'haiku']),
+  visionModel: z.enum(['flash', 'lite']).optional(),
   priceWindow: z.enum(['intro2026', 'standard2027']).optional(),
 });
 /** Base case budgets two photo inputs inside 3000 input tokens; verify with live usage metadata. */
@@ -36,14 +39,24 @@ export const baseCosts = {
   subscription: 19,
   personalModel: 'opus' as const,
 };
+/** Economical default: local profile interpretation has no API calls; Vision remains separately billed. */
+export const economyCosts = {
+  ...baseCosts,
+  personalFraction: 0,
+  newProfiles: 0,
+  subscription: 0,
+  visionModel: 'lite' as const,
+  personalModel: 'haiku' as const,
+};
 /** Separates variable API spending from fixed subscriptions and infrastructure. */
 export function estimateCosts(raw: z.infer<typeof costInputSchema>) {
   const x = costInputSchema.parse(raw);
   const scans = x.users * x.scansPerUser;
-  const visionMultiplier = x.priceWindow === 'standard2027' ? 2 : 1;
+  const visionMultiplier = x.visionModel !== 'lite' && x.priceWindow === 'standard2027' ? 2 : 1;
+  const visionRate = x.visionModel === 'lite' ? rates.lite : rates.vision;
   const vision =
     (visionMultiplier *
-      (scans * (x.visionInput * rates.vision.input + x.visionOutput * rates.vision.output))) /
+      (scans * (x.visionInput * visionRate.input + x.visionOutput * visionRate.output))) /
     1e6;
   const personal =
     ((scans * x.personalFraction + x.newProfiles) *
