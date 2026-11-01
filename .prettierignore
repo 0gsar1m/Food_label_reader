@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-api
+package-lock.json
+audit-results.json
+.expo
+test-results
+playwright-report

@@ -1,0 +1,71 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Constants from 'expo-constants';
+import { z } from 'zod';
+import {
+  recordSchema,
+  preferencesSchema,
+  validateAnalysis,
+  type ScanRecord,
+  type AllergenId,
+} from '../../shared/analysis';
+import { validateApiUrl } from '../../shared/connection';
+
+const keys = {
+  history: 'etiket.history.v1',
+  preferences: 'etiket.preferences.v1',
+  url: 'etiket.api-url.v1',
+};
+
+/** Restores only validated text records; one corrupted entry does not erase good entries. */
+export async function loadHistory(): Promise<ScanRecord[]> {
+  const raw = await AsyncStorage.getItem(keys.history);
+  if (!raw) return [];
+  const values: unknown = JSON.parse(raw);
+  if (!Array.isArray(values)) throw new Error('Invalid history.');
+  return values
+    .flatMap((value: unknown) => {
+      const entry = recordSchema.safeParse(value);
+      if (!entry.success) return [];
+      try {
+        validateAnalysis(entry.data.analysis);
+        return [entry.data];
+      } catch {
+        return [];
+      }
+    })
+    .slice(0, 50);
+}
+
+/** Saves a bounded history without photo URIs/base64 or access tokens. */
+export async function saveHistory(records: ScanRecord[]): Promise<void> {
+  await AsyncStorage.setItem(
+    keys.history,
+    JSON.stringify(z.array(recordSchema).max(50).parse(records.slice(0, 50))),
+  );
+}
+
+/** Preferences are optional and independent from the history's lifecycle. */
+export async function loadPreferences(): Promise<AllergenId[]> {
+  const raw = await AsyncStorage.getItem(keys.preferences);
+  return raw ? preferencesSchema.parse(JSON.parse(raw)) : [];
+}
+
+/** Only stable allergen identifiers are stored, without medical profile metadata. */
+export async function savePreferences(preferences: AllergenId[]): Promise<void> {
+  await AsyncStorage.setItem(
+    keys.preferences,
+    JSON.stringify(preferencesSchema.parse(preferences)),
+  );
+}
+
+/** Restores a non-secret endpoint; defaults are supplied by the build environment. */
+export async function loadApiUrl(): Promise<string> {
+  const devHost = Constants.expoConfig?.hostUri?.split(':')[0];
+  const fallback = __DEV__ && devHost ? `http://${devHost}:8787` : 'http://localhost:8787';
+  return (await AsyncStorage.getItem(keys.url)) ?? process.env.EXPO_PUBLIC_API_URL ?? fallback;
+}
+
+/** Validates before persisting so malformed endpoints never enter the request path. */
+export async function saveApiUrl(url: string): Promise<void> {
+  await AsyncStorage.setItem(keys.url, validateApiUrl(url));
+}

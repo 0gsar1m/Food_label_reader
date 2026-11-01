@@ -1,25 +1,51 @@
 {
   "expo": {
-    "name": "SoftITo_bireysel_proje",
-    "slug": "SoftITo_bireysel_proje",
+    "name": "Etiket",
+    "slug": "etiket-food-label-reader",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ogsarim.etiket",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Gıda etiketinin fotoğrafını çekmek için kamera izni gerekir.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "com.ogsarim.etiket",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#F6F4ED"
       },
-      "predictiveBackGestureEnabled": false
+      "permissions": ["CAMERA"],
+      "blockedPermissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Gıda etiketini fotoğraflamak için kameraya izin ver.",
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Etiket fotoğrafını seçmek için galeriyi kullan.",
+          "cameraPermission": "Etiket fotoğrafını çekmek için kamerayı kullan.",
+          "microphonePermission": false
+        }
+      ],
+      "expo-secure-store",
+      "expo-font"
+    ],
+    "scheme": "etiket",
+    "backgroundColor": "#F6F4ED"
   }
 }

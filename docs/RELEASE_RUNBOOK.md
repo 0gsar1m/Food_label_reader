@@ -1,0 +1,67 @@
+# Çalıştırma ve yayın rehberi
+
+## Yerel ortam
+Node 24 LTS, `npm ci`. İlk terminal `npm run api`, ikinci terminal `npm start`.
+Web `npm run web`, telefon Expo Go QR. Android Studio yalnız yerel emülatör/yerel native build için gereklidir.
+SDK 58 projesidir; telefonundaki Expo Go sürümü SDK 58 desteklemiyorsa uygulamayı güncelle veya EAS development build kullan.
+create-expo-app başlangıç mesajı SDK 57 dese de çıkarılan gerçek paket SDK 58.0.22 idi; expo-doctor gerçek bağımlılıkları doğrular.
+
+## Gerçek Vision
+1. Google AI Studio üzerinden sunucu hesabına ait API anahtarı oluştur.
+2. `.env` içindeki `GEMINI_API_KEY` değerini doldur. Anahtarı mobil ayarlara yazma.
+3. `GEMINI_MODEL=gemini-3.8-flash` varsayılan. Model erişimini kendi hesap/bölgenle doğrula.
+4. API'yi başlat; `/health` configured=true olmalı. Bu yalnız anahtarın tanımlı olduğunu gösterir, geçerli olduğunu doğrulamaz.
+5. Düz, net ve tam bir etiketle gerçek okuma yap; her alerjen kanıtını ambalajla karşılaştır.
+6. Bulanık fotoğraf, kesik alerjen bölümü, yabancı dil, uzun içerik ve aynı ürünün değişmiş etiketini dene.
+7. En az 20 gerçek etiket için alerjen kaçırma/hatalı ekleme ve gecikme p50/p95 kaydı tut.
+Canlı anahtar bu oturumda mevcut değildi. Sahte benchmark/başarı yüzdesi yok.
+
+## Üretim API
+`npm run build:api`, ardından `node dist-api/server.cjs` veya çok aşamalı Dockerfile.
+Runner yalnız Node ve oluşturulmuş sunucu dosyasını taşır; Expo araçları üretim runtime'ına kopyalanmaz.
+
+```powershell
+docker build -t etiket-api .
+docker run --rm -p 8787:8787 --env-file .env etiket-api
+```
+
+Gerekli ortam:
+- `NODE_ENV=production`
+- `GEMINI_API_KEY`: sağlayıcı sırrı
+- `APP_ACCESS_TOKEN`: rastgele, en az 24 karakter; uygulamanın güvenli bağlantı ayarına girilir
+- `ALLOWED_ORIGINS`: web önizlemesinin gerçek HTTPS origin'i, virgülle ayrılır
+- `GEMINI_MODEL`, `PORT`, gerekiyorsa `TRUST_PROXY_HOPS`
+
+Önüne HTTPS reverse proxy koy. TRUST_PROXY_HOPS değerini gerçek proxy zinciriyle eşleştir; herkese güven seçeneği kullanma.
+Native uygulamada CORS güvenlik kontrolü değildir; token ve API oran sınırı uygulanır.
+Mevcut oran sınırı instance başına bellektedir. Çok instance için ortak limiter, genel bütçe kotası ve kullanıcı bazlı yetkilendirme gerekir.
+Bu sürümün elle girilen erişim token'ı kişisel/iç test içindir. Herkese açık mağaza dağıtımında kısa ömürlü oturum ve cihaz/hesap bazlı yetkilendirme kur.
+Sağlayıcı hesabında bütçe ve kota belirle. Görsel veya model yanıtı loglama. Proxy gövde limiti uygulamadan düşük olmamalı.
+
+## Android APK, Android Studio olmadan
+EAS hesabıyla kendi terminalinde:
+
+```powershell
+npx eas-cli login
+npx eas-cli build:configure
+npx eas-cli build --platform android --profile preview
+```
+
+Build ortamında `EXPO_PUBLIC_API_URL=https://gercek-api-adresin` tanımla. API anahtarı EAS public değişkenlerine konmaz.
+`preview` iç dağıtım APK üretir. `production` Play Store AAB üretir.
+Paket adı `com.ogsarim.etiket`. Hesap sahibi değiştirirse bundle ID ve mağaza kaydı birlikte güncellenir.
+Bu oturumda EAS hesabı/proje ID yoktu; imzalı APK oluşturulmadı. EAS build ücret/kota sınırları hesabına bağlıdır.
+
+## Fiziksel cihaz kabulü
+- Expo Go/development build açılışı; geri tuşu, çentik ve alt güvenli alan.
+- Kamera izni reddi/kalıcı reddi, fener, yönlü fotoğraf, galeri HEIC/JPEG/PNG.
+- Android yazı ölçeği %100/%200, TalkBack; iOS VoiceOver ve dinamik yazı.
+- Uçak modunda eski kayıtlar; yeni okuma hatası; okuma sırasında iptal/arka plana alma.
+- Gerçek ağda 20 etiket kabulü; kişisel alerjen ile eser miktarda ayrımı.
+- Geçmişi sil, uygulamayı yeniden başlat, silinmiş kayıt kalmadığını doğrula.
+
+## Mağaza yayını öncesi
+İşletmeci/iletişim ve hukuki metinleri tamamla; gerçek Google planı ve barındırma bölgesini gizlilik metnine işle.
+Google Play veri güvenliği ve Apple gizlilik formlarını gerçek veri akışına göre doldur.
+Ürün adı/modeli başarı ve gecikme garantisi vermez. Model sürümü değişince etiket kabul setini yeniden çalıştır.
+Bu adımlar bu oturumda yapılmış veya hesap açılmış gibi raporlanmaz.
