@@ -61,3 +61,5 @@ Etiket sonuçlarında yerel kişisel yorum, bir bileşeni son 20 tamamlanmış g
 Faz 17: kurgu senaryo ve takip sorusu tamamlandı. Gemini’ye özgü izin eski sağlayıcı iznini devralmaz. Ayrıntılı yorumda kullanıcı cevabı ilgili öğüne yazılır, sonra yeniden yorumlanır.
 
 Kullanım profilinin açık uçlu adımlarında kısa ve gündelik yazma yönlendirmesi var. Kahvaltı sorusu örnek bir cümleyle başlıyor.
+
+Profil soru seçimi için düğmenin yanında bekleme, hata, boş yanıt ve başarı geri bildirimi gösterilir. Servis hatasında mevcut sorularla devam edilebilir.

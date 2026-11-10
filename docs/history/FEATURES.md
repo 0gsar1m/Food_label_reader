@@ -57,3 +57,5 @@ Flash-Lite yorum, kurgu yulaf senaryosu, öğüne bağlı cevap ve yeniden değe
 ### Kullanım profili metni
 
 Açık uçlu adımlara bir arkadaşına mesaj yazar gibi cevaplama önerisi ve kahvaltı örneği eklendi.
+
+Profilde soru özelleştirme sonucu düğmenin yanında gösterilir. Sağlayıcı hatasında yerel sorular ve ilerleme kullanılabilir.

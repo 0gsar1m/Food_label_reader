@@ -96,6 +96,10 @@ test('explicit consent enables grounded model interpretation and question select
     const input = route.request().postDataJSON();
     expect(input.consent).toBe(true);
     expect(input.profile.geminiConsent).toBe(true);
+    if (calls === 1) {
+      await route.fulfill({ status: 503, json: { error: 'PROVIDER_UNAVAILABLE' } });
+      return;
+    }
     const data = {
       ...emptyProfile,
       goals: ['symptoms' as const],
@@ -140,14 +144,20 @@ test('explicit consent enables grounded model interpretation and question select
   expect(calls).toBe(0);
   await page.getByRole('checkbox', { name: /Profil özetimi kişisel yorum/ }).click();
   await page.getByRole('button', { name: 'Soruları modelle özelleştir' }).click();
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'Daha sonra tekrar deneyin.' }),
+  ).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Devam et', exact: true })).toBeEnabled();
+  await page.getByRole('button', { name: 'Soruları modelle özelleştir' }).click();
+  await expect(page.getByText(/Soru önerileri hazır/)).toBeVisible();
   await expect(page.getByRole('textbox', { name: /Aynı öğünde başka neler/ })).toBeVisible();
-  await expect.poll(() => calls).toBe(1);
+  await expect.poll(() => calls).toBe(2);
   await next(page);
   await page.getByRole('button', { name: 'Profili kaydet', exact: true }).click();
   await page.getByRole('button', { name: 'Örnek etiketi incele' }).click();
   await page.getByRole('button', { name: 'Bulut modeliyle ayrıntılandır' }).click();
   await expect(page.getByText('Bu kontrollü model test yanıtıdır.')).toBeVisible();
-  await expect.poll(() => calls).toBe(2);
+  await expect.poll(() => calls).toBe(3);
   await page.screenshot({ path: 'docs/screenshots/personal-model-attribution.png' });
 });
 

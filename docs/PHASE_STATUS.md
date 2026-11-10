@@ -53,3 +53,5 @@ Etiket ve geçmiş öğün bileşeni eşleşmesi uygulandı. Verify, 88 birim/AP
 Gemini fotoğraf ve yorum aynı anahtarı kullanır. Kurgu senaryo, takip cevabı ve ikinci istek tarayıcıda kontrollü yanıtla doğrulandı. Canlı yorum kısmen çalıştı. Model fotoğrafı ve cevap sonrası canlı yorum sağlayıcı 503 nedeniyle açık. Ayrıntı PROD_FLOW_LOG.md dosyasında.
 
 Profil metni: 390 px web önizlemesinde açık uçlu adımlar ve kahvaltı örneği görüldü. Verify ve 88 test geçti.
+
+Profil soru özelleştirme: tarayıcıda 503 mesajı, yerel sorularla devam ve tekrar denemede başarı doğrulandı. Verify geçti.

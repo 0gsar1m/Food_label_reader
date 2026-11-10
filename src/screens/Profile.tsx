@@ -90,6 +90,9 @@ export function ProfileScreen({
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [erase, setErase] = useState(false);
+  const [questionStatus, setQuestionStatus] = useState<'idle' | 'ready' | 'empty' | 'failed'>(
+    'idle',
+  );
   const [ordered, setOrdered] = useState<(keyof typeof questions)[] | null>(null);
   const titles = [
     'Sana ne iyi gelir?',
@@ -127,7 +130,7 @@ export function ProfileScreen({
   }
   async function adapt(): Promise<void> {
     setBusy(true);
-    setError('');
+    setQuestionStatus('idle');
     try {
       const reply = await requestPersonal(apiUrl, token, {
         consent: true,
@@ -136,13 +139,11 @@ export function ProfileScreen({
         analysis: null,
         task: 'questions',
       });
-      setOrdered(reply.result.questionIds);
-    } catch (e) {
-      setError(
-        e instanceof Error
-          ? e.message
-          : 'Sorular düzenlenemedi. Yerel sorularla devam edebilirsin.',
-      );
+      const ids = reply.result.questionIds;
+      if (ids.length) setOrdered(ids);
+      setQuestionStatus(ids.length ? 'ready' : 'empty');
+    } catch {
+      setQuestionStatus('failed');
     } finally {
       setBusy(false);
     }
@@ -285,13 +286,26 @@ export function ProfileScreen({
               onPress={() => change('geminiConsent', !draft.geminiConsent)}
             />
             <Button
-              label="Soruları modelle özelleştir"
+              label={busy ? 'Sorular hazırlanıyor…' : 'Soruları modelle özelleştir'}
               secondary
               disabled={!draft.geminiConsent || busy}
               onPress={() => {
                 void adapt();
               }}
             />
+            {questionStatus === 'failed' && (
+              <Notice>
+                Sorular şu anda özelleştirilemedi. Daha sonra tekrar deneyin. Mevcut sorularla devam
+                edebilirsin.
+              </Notice>
+            )}
+            {(questionStatus === 'ready' || questionStatus === 'empty') && (
+              <Text accessibilityRole="status" accessibilityLiveRegion="polite" style={ui.small}>
+                {questionStatus === 'ready'
+                  ? 'Soru önerileri hazır. Yukarıdaki soruları yanıtlayabilirsin.'
+                  : 'Yeni soru önerisi bulunamadı. Mevcut sorularla devam edebilirsin.'}
+              </Text>
+            )}
           </>
         )}
         {step === 5 && (
