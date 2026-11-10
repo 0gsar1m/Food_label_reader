@@ -73,3 +73,5 @@ Yerel Gradle release derlemesi başarılı. Nazif APK ARM64 ve Android 7.0+ içi
 Android bağlantı düzeltmesi: ikinci APK derlemesinde geçici HTTPS adresi varsayılan olarak kullanılır. Kurulumda Gemini anahtarı girilmez. Sunucuya 11 Kasım 2026 sonuna kadar toplam 30 isteklik anahtarsız misafir erişimi açıldı. Soru isteği kendi Gemini yanıt şemasını kullanır, etiket özeti gerektirmez. Bekleme göstergesi ile bağlantı ve yetki hataları ayrı gösterilir.
 
 Faz 19: kullanıcı Railway bağlantısını onayladı. Nazif API için bilgisayardan bağımsız HTTPS alan adı oluşturuldu. Bulut APK sürüm kodu 3. Cihazda önceki tünel adresi kayıtlıysa yalnız o adres taşınır ve eski erişim anahtarı temizlenir. Fotoğrafta Gemini 3.5 Flash, profil ve yorumda 3.5 Flash-Lite seçildi. Sağlayıcı 503 döndürürse süre sınırı içinde diğer Gemini modeli bir kez denenir.
+
+Bulut API `https://nazif-api-production.up.railway.app`. Yerel tünel ve geçici API kapatıldı. İmzalı APK, GitHub Releases `nazif-android-v3` sürümünde yayınlandı. Erişim başlıksız misafir modu İstanbul saatiyle 11 Kasım gün sonuna kadar, sunucu süreci başına 30 istekle açık. Fiziksel telefon kurulumu ve kamera testi ayrı kabul.

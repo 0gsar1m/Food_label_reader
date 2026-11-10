@@ -63,3 +63,11 @@ Sonraki canlı cevap testi 200 döndü ve model 60 g yulaf ile 200 ml süt içer
 Sentetik profille yeniden üretimde Gemini soru önerisi döndürdü. Boş etiket özeti ortak yanıt şeması tarafından reddedildi ve API 502 verdi. Soru görevi için ayrı şemaya geçildi. Ardından telefonun kullandığı HTTPS adresinde, erişim başlığı olmadan profil sorusu 200 ve test etiket fotoğrafı 200 döndü. Aynı servis başka denemelerde geçici sağlayıcı hatası veya zaman aşımı da döndürdü.
 
 Sunum için erişim 11 Kasım İstanbul gün sonuna kadar ve sunucu süreci başına 30 anahtarsız istekle sınırlıdır. Gemini anahtarı sunucuda kalır. Telefon kurulum ve kamera kabulü fiziksel cihazda yapılır.
+
+## Railway bulut kabulü
+
+Bulut dağıtımında anahtarsız /health 200, profil sorusu 200 ve test etiketi okuma 200 döndü. Üretim fotoğraf modeli Gemini 3.5 Flash, kişisel görev modeli Gemini 3.5 Flash-Lite. İlk testlerde bazı istekler 502 PROVIDER_UNAVAILABLE döndürdü. Tek 503 tekrarında karşı model yapılandırıldı. Fotoğraf isteğinde yedek Flash-Lite 200 ve okunabilir etiket döndürdü. Kişisel yorum isteği Flash-Lite ile 200 ve takip sorusu döndürdü. Cevap sonrası yorum yedek Flash ile 200 döndü ve 200 ml süt ayrıntısını kullandı. Profil ve günlük girdileri sentetik, sağlayıcı çağrıları canlıydı.
+
+Yerel tünel ve önceki API kapatıldı. Railway /health çalışmaya devam etti. GitHub Releases APK dosyası indirildi ve SHA-256 imzalı derleme ile eşleşti. Anahtar APK içeriğinde bulunmadı. [Android sürümü](https://github.com/0gsar1m/Food_label_reader/releases/tag/nazif-android-v3)
+
+Yerel süreçler durdurulduktan sonraki tam akış denemesinde yeni fotoğraf ve ilk kişisel yorum 200 döndü. Cevap sonrası istek 502 PROVIDER_UNAVAILABLE döndürdü. Önceki başarılı yanıt süreklilik garantisi değildir.

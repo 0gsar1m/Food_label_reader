@@ -65,3 +65,9 @@ Gemini 3.5 Flash-Lite ile korumalı HTTPS üzerinden etiket okuma, kişisel yoru
 Lint, strict typecheck, 90 test, üç platform export ve derlenmiş API smoke geçti. Windows Gradle release APK, geliştirme imzası v2, ARM64 hedefi, Nazif adı ve gömülü Android bundle doğrulandı. Geçici HTTPS üzerinden APK yanıtı 200 döndü.
 
 Bağlantı ve soru önerisi düzeltmesinden sonra 91 birim/API testi, üç profil ekran testi, üç platform export ve derlenmiş API smoke geçti. Süreli misafir erişiminde gerçek Gemini soru ve fotoğraf uçları erişim başlığı olmadan 200 döndü.
+
+## Faz 19 / Bulut API ve Android güncellemesi
+
+Railway üretim dağıtımı başarılı. Önceki yerel tünel ve ona bağlı sunucu durdurulduktan sonra bulut sağlık kontrolü 200 döndü. Android sürüm kodu 3, mevcut imza ve bulut origin'i doğrulandı. GitHub Releases üzerinden indirilen APK'nın SHA-256 özeti yerel imzalı APK ile eşleşti. Fiziksel cihaz kabulü ayrı.
+
+Lint, strict typecheck, 92 birim/API testi, üç platform export, Android release ve derlenmiş API smoke geçti. Canlı kabul ve Gemini yedek model kanıtı PROD_FLOW_LOG.md dosyasında.
