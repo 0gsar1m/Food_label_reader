@@ -156,6 +156,9 @@ test('explicit consent enables grounded model interpretation and question select
     page.getByRole('alert').filter({ hasText: 'Daha sonra tekrar deneyin.' }),
   ).toBeVisible();
   await expect(page.getByRole('button', { name: 'Devam et', exact: true })).toBeEnabled();
+  await page.reload();
+  await expect(page.getByText('TANIŞMA / 5 / 6')).toBeVisible();
+  await expect(page.getByRole('checkbox', { name: /Profil özetimi kişisel yorum/ })).toBeChecked();
   await page.getByRole('button', { name: 'Profilime göre soru öner' }).click();
   await expect(page.getByText(/Soru önerileri hazır/)).toBeVisible();
   await expect(

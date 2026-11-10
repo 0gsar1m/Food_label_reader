@@ -71,3 +71,5 @@ Bağlantı ve soru önerisi düzeltmesinden sonra 91 birim/API testi, üç profi
 Railway üretim dağıtımı başarılı. Önceki yerel tünel ve ona bağlı sunucu durdurulduktan sonra bulut sağlık kontrolü 200 döndü. Android sürüm kodu 3, mevcut imza ve bulut origin'i doğrulandı. GitHub Releases üzerinden indirilen APK'nın SHA-256 özeti yerel imzalı APK ile eşleşti. Fiziksel cihaz kabulü ayrı.
 
 Lint, strict typecheck, 92 birim/API testi, üç platform export, Android release ve derlenmiş API smoke geçti. Canlı kabul ve Gemini yedek model kanıtı PROD_FLOW_LOG.md dosyasında.
+
+Android profil sonucu düzeltmesinde 92 birim/API testi ve üç profil tarayıcı testi geçti. Tarayıcı testinde başarısız istekten sonra sayfa yenilendi, beşinci adım ve izin seçimi geri geldi, tekrar denemede öneri gösterildi. Bulut Gemini profil isteği 200 ve üç öneri döndürdü. Kullanıcının telefonundan native çökme kaydı alınmadı.

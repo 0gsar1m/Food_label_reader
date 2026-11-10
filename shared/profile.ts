@@ -80,11 +80,17 @@ export const diarySchema = z
   });
 /** Local meal observation, not a causal inference. */
 export type DiaryEntry = z.infer<typeof diarySchema>;
+const profileDraftSchema = z.object({
+  profile: profileSchema,
+  avoidedText: z.string().max(1000),
+});
+export type ProfileDraft = z.infer<typeof profileDraftSchema>;
 /** Single encrypted document avoids partial cross-file updates. */
 export const vaultSchema = z.object({
   version: z.literal(1),
   profile: profileSchema,
   diary: z.array(diarySchema).max(100),
+  profileDraft: profileDraftSchema.optional(),
 });
 /** The complete sensitive device data. */
 export type HealthVault = z.infer<typeof vaultSchema>;

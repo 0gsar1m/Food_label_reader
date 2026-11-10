@@ -34,3 +34,4 @@
 
 - Android güncellemesi tanımlı eski tünel adresini bulut adresine taşır ve önceki sunucu anahtarını temizler. Kullanıcının diğer sunucu seçimleri korunur.
 - Gemini 503 yanıtında bir kez çağrılacak model sunucuda yapılandırılabilir. API, geçerli yanıtı döndüren gerçek model adını taşır.
+- Android profil sorusu yanıtı render edilirken kullanılan status rolü native Android enumunda bulunmadığı için istisna üretiyordu. Web rolü ayrıldı. Gemini isteğinden önce profil taslağı şifreli kasaya alınır ve yeniden açılışta aynı adım geri yüklenir.

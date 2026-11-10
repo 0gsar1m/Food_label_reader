@@ -17,6 +17,7 @@ import {
   profileSchema,
   emptyProfile,
   type Profile as ProfileData,
+  type ProfileDraft,
 } from '../../shared/profile';
 import { Button, Notice, ScreenHeader } from '../components/Controls';
 import { theme, ui } from '../theme';
@@ -78,6 +79,8 @@ export function Field({
 /** Progressive onboarding collects goals before sensitive details and offers an explicit skip. */
 export function ProfileScreen({
   initial,
+  initialDraft,
+  onCheckpoint,
   onSave,
   onBack,
   onErase,
@@ -86,6 +89,8 @@ export function ProfileScreen({
   token,
 }: {
   initial: ProfileData;
+  initialDraft?: ProfileDraft;
+  onCheckpoint: (draft: ProfileDraft) => Promise<void>;
   onSave: (profile: ProfileData) => Promise<void>;
   onBack: () => void;
   onErase: () => Promise<void>;
@@ -93,9 +98,11 @@ export function ProfileScreen({
   apiUrl: string;
   token: string;
 }) {
-  const [draft, setDraft] = useState(initial);
-  const [avoidedText, setAvoidedText] = useState((initial.avoidedFoods ?? []).join(', '));
-  const [step, setStep] = useState(0);
+  const [draft, setDraft] = useState(initialDraft?.profile ?? initial);
+  const [avoidedText, setAvoidedText] = useState(
+    initialDraft?.avoidedText ?? (initial.avoidedFoods ?? []).join(', '),
+  );
+  const [step, setStep] = useState(initialDraft ? 4 : 0);
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [erase, setErase] = useState(false);
@@ -141,6 +148,7 @@ export function ProfileScreen({
     setBusy(true);
     setQuestionStatus('loading');
     try {
+      await onCheckpoint({ profile: draft, avoidedText });
       const reply = await requestPersonal(apiUrl, token, {
         consent: true,
         profile: draft,
@@ -343,7 +351,11 @@ export function ProfileScreen({
               </Notice>
             )}
             {(questionStatus === 'ready' || questionStatus === 'empty') && (
-              <Text accessibilityRole="status" accessibilityLiveRegion="polite" style={ui.small}>
+              <Text
+                role={Platform.OS === 'web' ? 'status' : undefined}
+                accessibilityLiveRegion="polite"
+                style={ui.small}
+              >
                 {questionStatus === 'ready'
                   ? 'Soru önerileri hazır. Yukarıdaki soruları yanıtlayabilirsin.'
                   : 'Yeni soru önerisi bulunamadı. Mevcut sorularla devam edebilirsin.'}

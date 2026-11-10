@@ -234,11 +234,13 @@ function Application() {
   const profileView = (
     <ProfileScreen
       initial={health.vault.profile}
+      initialDraft={health.vault.profileDraft}
+      onCheckpoint={(profileDraft) => health.update((old) => ({ ...old, profileDraft }))}
       apiUrl={device.apiUrl}
       token={effectiveToken}
       onBack={() => reset('home')}
       onSave={async (profile) => {
-        await health.update((old) => ({ ...old, profile }));
+        await health.update((old) => ({ ...old, profile, profileDraft: undefined }));
         reset('home');
       }}
       onErase={health.clear}

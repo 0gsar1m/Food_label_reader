@@ -75,3 +75,5 @@ Android bağlantı düzeltmesi: ikinci APK derlemesinde geçici HTTPS adresi var
 Faz 19: kullanıcı Railway bağlantısını onayladı. Nazif API için bilgisayardan bağımsız HTTPS alan adı oluşturuldu. Bulut APK sürüm kodu 3. Cihazda önceki tünel adresi kayıtlıysa yalnız o adres taşınır ve eski erişim anahtarı temizlenir. Fotoğrafta Gemini 3.5 Flash, profil ve yorumda 3.5 Flash-Lite seçildi. Sağlayıcı 503 döndürürse süre sınırı içinde diğer Gemini modeli bir kez denenir.
 
 Bulut API `https://nazif-api-production.up.railway.app`. Yerel tünel ve geçici API kapatıldı. İmzalı APK, GitHub Releases `nazif-android-v3` sürümünde yayınlandı. Erişim başlıksız misafir modu İstanbul saatiyle 11 Kasım gün sonuna kadar, sunucu süreci başına 30 istekle açık. Fiziksel telefon kurulumu ve kamera testi ayrı kabul.
+
+Android profil sonucu düzeltmesi: React Native Android'in desteklemediği status erişilebilirlik rolü sonuç metninden kaldırıldı, web rolü ve canlı duyuru korundu. Soru isteği öncesi taslak mevcut şifreli kasaya yazılır. Uygulama yeniden açılırsa soru adımı ve girilen bilgiler geri gelir. Profil kaydedilir veya silinirse taslak temizlenir.
