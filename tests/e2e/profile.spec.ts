@@ -41,8 +41,11 @@ test('detailed onboarding, encrypted persistence, portion scaling and diary CRUD
     .getByRole('textbox', { name: 'Genellikle kahvaltıda ne yersin?' })
     .fill('Yulaf ve yoğurt');
   await next(page);
-  await expect(page.getByRole('textbox', { name: /Genellikle ne kadar tüketirsin/ })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Soruları modelle özelleştir' })).toBeDisabled();
+  await expect(
+    page.getByRole('textbox', { name: /Porsiyonunu ayarlarken en çok hangi öğünde/ }),
+  ).toBeVisible();
+  await expect(page.getByRole('textbox', { name: /Belirtisiz tükettiğin/ })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Profilime göre soru öner' })).toBeDisabled();
   await page.screenshot({ path: 'docs/screenshots/onboarding-questions.png' });
   await next(page);
   await page.getByRole('button', { name: 'Profili kaydet', exact: true }).click();
@@ -117,7 +120,11 @@ test('explicit consent enables grounded model interpretation and question select
               },
             ]
           : [],
-      questionIds: ['context'],
+      questionIds: [],
+      questionSuggestions:
+        input.task === 'questions'
+          ? [{ id: 'context', text: 'Şişkinlik hissettiğin son öğünde ne yedin?' }]
+          : undefined,
     };
     await route.fulfill({
       json: {
@@ -143,16 +150,19 @@ test('explicit consent enables grounded model interpretation and question select
   await next(page);
   expect(calls).toBe(0);
   await page.getByRole('checkbox', { name: /Profil özetimi kişisel yorum/ }).click();
-  await page.getByRole('button', { name: 'Soruları modelle özelleştir' }).click();
+  await page.getByRole('button', { name: 'Profilime göre soru öner' }).click();
   await expect(
     page.getByRole('alert').filter({ hasText: 'Daha sonra tekrar deneyin.' }),
   ).toBeVisible();
   await expect(page.getByRole('button', { name: 'Devam et', exact: true })).toBeEnabled();
-  await page.getByRole('button', { name: 'Soruları modelle özelleştir' }).click();
+  await page.getByRole('button', { name: 'Profilime göre soru öner' }).click();
   await expect(page.getByText(/Soru önerileri hazır/)).toBeVisible();
-  await expect(page.getByRole('textbox', { name: /Aynı öğünde başka neler/ })).toBeVisible();
+  await expect(
+    page.getByRole('textbox', { name: 'Şişkinlik hissettiğin son öğünde ne yedin?' }),
+  ).toBeVisible();
   await expect.poll(() => calls).toBe(2);
   await next(page);
+  await expect(page.getByText(/son 20 öğün kaydın/)).toBeVisible();
   await page.getByRole('button', { name: 'Profili kaydet', exact: true }).click();
   await page.getByRole('button', { name: 'Örnek etiketi incele' }).click();
   await page.getByRole('button', { name: 'Bulut modeliyle ayrıntılandır' }).click();

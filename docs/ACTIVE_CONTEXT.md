@@ -63,3 +63,5 @@ Faz 17: kurgu senaryo ve takip sorusu tamamlandı. Gemini’ye özgü izin eski 
 Kullanım profilinin açık uçlu adımlarında kısa ve gündelik yazma yönlendirmesi var. Kahvaltı sorusu örnek bir cümleyle başlıyor.
 
 Profil soru seçimi için düğmenin yanında bekleme, hata, boş yanıt ve başarı geri bildirimi gösterilir. Servis hatasında mevcut sorularla devam edilebilir.
+
+Kullanım profilinde başlangıç süresi, sıklık, öğün saati ve son belirtili öğün ayrı sorulur. Gemini izinle yalnızca yanıtlanmamış konularda yeni soru metni önerebilir. Soru metni cevabıyla birlikte saklanır. Fotoğraf, soru önerisi ve ayrıntılı yorumun veri kapsamı profil ekranında ayrı anlatılır.

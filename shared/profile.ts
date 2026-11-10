@@ -16,6 +16,9 @@ export const symptoms = {
   indigestion: 'Hazımsızlık',
   eczema: 'Egzama / cilt yakınması',
 } as const;
+const questionId = z.enum(['portion', 'protein', 'timing', 'context', 'skin', 'routine']);
+const questionText = z.string().trim().min(1).max(180);
+
 /** A bounded sensitive profile; diagnosis provenance is explicit. */
 export const profileSchema = z.object({
   completed: z.boolean(),
@@ -27,10 +30,8 @@ export const profileSchema = z.object({
   timing: z.string().max(400),
   routine: z.string().max(600),
   geminiConsent: z.boolean().default(false),
-  answers: z.partialRecord(
-    z.enum(['portion', 'protein', 'timing', 'context', 'skin', 'routine']),
-    z.string().max(600),
-  ),
+  answers: z.partialRecord(questionId, z.string().max(600)),
+  answerPrompts: z.partialRecord(questionId, questionText).optional(),
   avoidedFoods: z.array(z.string().trim().min(1).max(80)).max(20).optional(),
 });
 /** The blank profile can be completed progressively without an account. */
@@ -87,8 +88,8 @@ export const vaultSchema = z.object({
 });
 /** The complete sensitive device data. */
 export type HealthVault = z.infer<typeof vaultSchema>;
-/** Questions are selected from a fixed bank and remain editable. */
-export const questions = {
+/** Original wording for answers saved before question text was persisted. */
+const legacyQuestions = {
   portion: 'Genellikle ne kadar tüketirsin? Porsiyonunu nasıl belirlersin?',
   protein: 'Günlük öğünlerinde hangi protein kaynakları bulunur?',
   timing: 'Yakınma yemekten ne kadar sonra başlar ve ne sıklıkta olur?',
@@ -96,7 +97,24 @@ export const questions = {
   skin: 'Cilt yakınması ile yemek arasında kendi gözlemlediğin bir ilişki var mı? Hekim değerlendirmesi oldu mu?',
   routine: 'Öğün düzenin ve günlük hareketin nasıl?',
 } as const;
-/** Local follow-ups work offline; the LLM may reorder only these allowed IDs. */
+export const questions = {
+  portion: 'Porsiyonunu ayarlarken en çok hangi öğünde zorlanıyorsun?',
+  protein: 'Öğünlerine protein eklemek istediğinde genelde hangi gıdaları seçersin?',
+  timing: 'Seni en çok rahatsız eden belirti son bir haftada yaklaşık kaç kez oldu?',
+  context: 'En son belirti yaşadığın öğünde ne yedin?',
+  skin: 'Cildindeki değişiklikler genelde ne kadar sürüyor?',
+  routine: 'Öğünlerin arasında genelde ne atıştırırsın?',
+} as const;
+
+/** Keep saved answer text attached to the question that elicited it. */
+export function promptForAnswer(profile: Profile, id: keyof typeof questions): string {
+  return (
+    profile.answerPrompts?.[id] ??
+    (profile.answers[id]?.trim() ? legacyQuestions[id] : questions[id])
+  );
+}
+
+/** Local follow-ups work offline and define eligible topics for model suggestions. */
 export function followUps(profile: Profile): (keyof typeof questions)[] {
   const list: (keyof typeof questions)[] = ['routine'];
   if (profile.goals.includes('weight')) list.push('portion');
@@ -133,7 +151,9 @@ export const personalResponseSchema = z.object({
       }),
     )
     .max(8),
-  questionIds: z
-    .array(z.enum(['portion', 'protein', 'timing', 'context', 'skin', 'routine']))
-    .max(6),
+  questionIds: z.array(questionId).max(6),
+  questionSuggestions: z
+    .array(z.object({ id: questionId, text: questionText }))
+    .max(3)
+    .optional(),
 });

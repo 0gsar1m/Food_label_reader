@@ -3,7 +3,7 @@ import { Platform, Pressable, ScrollView, Share, Text, TextInput, View } from 'r
 import {
   goals,
   symptoms,
-  questions,
+  promptForAnswer,
   followUps,
   profileSchema,
   emptyProfile,
@@ -93,7 +93,6 @@ export function ProfileScreen({
   const [questionStatus, setQuestionStatus] = useState<'idle' | 'ready' | 'empty' | 'failed'>(
     'idle',
   );
-  const [ordered, setOrdered] = useState<(keyof typeof questions)[] | null>(null);
   const titles = [
     'Sana ne iyi gelir?',
     'Neleri takip edelim?',
@@ -139,9 +138,17 @@ export function ProfileScreen({
         analysis: null,
         task: 'questions',
       });
-      const ids = reply.result.questionIds;
-      if (ids.length) setOrdered(ids);
-      setQuestionStatus(ids.length ? 'ready' : 'empty');
+      const suggestions = (reply.result.questionSuggestions ?? []).filter(
+        ({ id, text }) => !draft.answers[id]?.trim() && text !== promptForAnswer(draft, id),
+      );
+      setDraft((old) => {
+        const answerPrompts = { ...old.answerPrompts };
+        for (const { id, text } of suggestions) {
+          if (!old.answers[id]?.trim()) answerPrompts[id] = text;
+        }
+        return { ...old, answerPrompts };
+      });
+      setQuestionStatus(suggestions.length ? 'ready' : 'empty');
     } catch {
       setQuestionStatus('failed');
     } finally {
@@ -254,13 +261,13 @@ export function ProfileScreen({
               onChange={(v) => change('breakfast', v)}
             />
             <Field
-              label="Yemekten sonra yakınma olursa ne zaman başlıyor?"
+              label="Belirti olursa yemekten yaklaşık kaç dakika veya saat sonra başlıyor?"
               value={draft.timing}
               onChange={(v) => change('timing', v)}
               max={400}
             />
             <Field
-              label="Öğün düzenin ve günlük hareketin"
+              label="Ana öğünlerini genellikle hangi saatlerde yersin?"
               value={draft.routine}
               onChange={(v) => change('routine', v)}
             />
@@ -268,25 +275,34 @@ export function ProfileScreen({
         )}
         {step === 4 && (
           <>
-            {(ordered?.length ? ordered : followUps(draft)).map((id) => (
-              <Field
-                key={id}
-                label={questions[id]}
-                value={draft.answers[id] ?? ''}
-                onChange={(v) => change('answers', { ...draft.answers, [id]: v })}
-              />
-            ))}
+            {followUps(draft).map((id) => {
+              const prompt = promptForAnswer(draft, id);
+              return (
+                <Field
+                  key={id}
+                  label={prompt}
+                  value={draft.answers[id] ?? ''}
+                  onChange={(v) =>
+                    setDraft((old) => ({
+                      ...old,
+                      answers: { ...old.answers, [id]: v },
+                      answerPrompts: { ...old.answerPrompts, [id]: prompt },
+                    }))
+                  }
+                />
+              );
+            })}
             <Text style={ui.small}>
-              Sorular seçimlerine göre bu cihazda hazırlanır. İstersen aktarım iznini açıp Gemini
-              ile sırasını özelleştirebilirsin.
+              Bu sorular seçimlerine göre hazırlanır. İzin verip düğmeye basarsan Gemini, henüz
+              yanıtlamadığın konular için profiline göre yeni sorular önerebilir.
             </Text>
             <Choice
-              label="Profil özetimi kişisel yorum ve soru seçimi için sunucu üzerinden Google Gemini'e göndermeye izin veriyorum"
+              label="Profil özetimi kişisel yorum ve soru seçimi için sunucu üzerinden Google Gemini’ye göndermeye izin veriyorum"
               checked={draft.geminiConsent}
               onPress={() => change('geminiConsent', !draft.geminiConsent)}
             />
             <Button
-              label={busy ? 'Sorular hazırlanıyor…' : 'Soruları modelle özelleştir'}
+              label={busy ? 'Sorular hazırlanıyor…' : 'Profilime göre soru öner'}
               secondary
               disabled={!draft.geminiConsent || busy}
               onPress={() => {
@@ -311,9 +327,10 @@ export function ProfileScreen({
         {step === 5 && (
           <>
             <Text style={ui.body}>
-              Profilin ve öğün günlüğün cihazda AES-GCM ile şifrelenir. Google'a gönderilen etiket
-              fotoğrafına profil eklenmez. Kişisel yorum isteğinde yalnız izin verdiğin profil ve
-              son 20 günlük kaydı Google Gemini'e aktarılır.
+              Profilin ve öğün günlüğün cihazında şifreli saklanır. Etiket okurken Gemini’ye
+              yalnızca çektiğin fotoğraflar gönderilir. Soru önerisi istersen, izninle profil özetin
+              kullanılır. İzin verip ayrıntılı yorum istediğinde etiket metni, profil özetin ve son
+              20 öğün kaydın, yorumun kendi deneyimlerine dayanması için Gemini’ye gönderilir.
             </Text>
             {Platform.OS === 'web' && (
               <Notice>
@@ -322,7 +339,7 @@ export function ProfileScreen({
               </Notice>
             )}
             <Choice
-              label="Profil ve günlüğüm kişisel yorum için Google Gemini'e aktarılabilir"
+              label="Profil ve günlüğüm kişisel yorum için Google Gemini’ye aktarılabilir"
               checked={draft.geminiConsent}
               onPress={() => change('geminiConsent', !draft.geminiConsent)}
             />

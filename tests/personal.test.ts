@@ -123,6 +123,32 @@ describe('grounded health-language contract', () => {
     expect(body.systemInstruction.parts[0].text).toContain('not causation');
     expect(body.contents[0].parts[0].text).not.toContain('image/jpeg');
   });
+  it('keeps new question wording and drops repeated or answered topics', async () => {
+    const text = 'Şişkinlik yaşadığın son öğünde ne yedin?';
+    const result = await personalize(
+      {
+        ...input,
+        task: 'questions',
+        analysis: null,
+        profile: { ...profile, answers: { routine: 'Meyve' } },
+      },
+      {
+        personalKey: 'test',
+        personalFetcher: transport({
+          ...success,
+          findings: [],
+          questionIds: [],
+          questionSuggestions: [
+            { id: 'context', text },
+            { id: 'timing', text },
+            { id: 'routine', text: 'Ara öğünde ne yersin?' },
+          ],
+        }),
+      },
+      new AbortController().signal,
+    );
+    expect(result.result.questionSuggestions).toEqual([{ id: 'context', text }]);
+  });
   it('rejects invented medical citations', async () => {
     await expect(
       personalize(

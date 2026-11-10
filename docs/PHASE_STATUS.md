@@ -55,3 +55,5 @@ Gemini fotoğraf ve yorum aynı anahtarı kullanır. Kurgu senaryo, takip cevab�
 Profil metni: 390 px web önizlemesinde açık uçlu adımlar ve kahvaltı örneği görüldü. Verify ve 88 test geçti.
 
 Profil soru özelleştirme: tarayıcıda 503 mesajı, yerel sorularla devam ve tekrar denemede başarı doğrulandı. Verify geçti.
+
+Profil soru metni ve veri açıklaması: 89 birim/API, verify ve 3 profil ekran testi geçti. Kontrollü model yanıtı yeni soru olarak gösterildi. Canlı Gemini provası 502 PROVIDER_UNAVAILABLE döndürdü.

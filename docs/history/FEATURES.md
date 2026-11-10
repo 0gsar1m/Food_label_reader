@@ -59,3 +59,5 @@ Flash-Lite yorum, kurgu yulaf senaryosu, öğüne bağlı cevap ve yeniden değe
 Açık uçlu adımlara bir arkadaşına mesaj yazar gibi cevaplama önerisi ve kahvaltı örneği eklendi.
 
 Profilde soru özelleştirme sonucu düğmenin yanında gösterilir. Sağlayıcı hatasında yerel sorular ve ilerleme kullanılabilir.
+
+Profil sorularındaki tekrarlar giderildi. Gemini, izin verilen ve yanıtlanmamış konularda yeni soru önerileri döndürür. Veri paylaşımı açıklaması, ayrıntılı yorumda son 20 öğün kaydının kullanılacağını açıkça söyler.
