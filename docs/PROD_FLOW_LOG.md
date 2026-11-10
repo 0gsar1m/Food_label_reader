@@ -79,3 +79,5 @@ Railway gerçek fotoğraf isteği, dakikalık sayaçta 9 istek hakkı görünür
 ### Çevrimdışı OCR ve GPT-6 Luna
 
 Kullanıcının noodle etiket fotoğrafı yerelde Türkçe OCR ile işlendi. Ürün metni ayrıştırıcısı glüten ve kereviz için aynı basılı alerjen satırını gösterdi. Railway'de yeni OpenAI aktarım izniyle kişisel yorum HTTP 200 döndü (1.536 giriş, 237 çıkış tokenı). Profil soruları HTTP 200 ve üç öneri döndürdü (595 giriş, 244 çıkış tokenı). Test profili sentetikti, fotoğraf Luna'ya gönderilmedi. Masaüstü OCR, APK içindeki ML Kit'in cihazda çalıştığını tek başına kanıtlamaz.
+
+Ayrı Railway isteğinde aynı etiket metni ve iki sentetik öğün kaydı GPT-6 Luna'dan HTTP 200 döndü. Yanıt iki kaydı da dayanak gösterdi ve takip sorusu üretti. Herkese açık v5 APK indirildi, özeti yerel imzalı paketle eşleşti. Fiziksel Android kabulü açık.

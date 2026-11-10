@@ -79,3 +79,5 @@ Android profil sonucu düzeltmesinde 92 birim/API testi ve üç profil tarayıc�
 Gerçek noodle fotoğrafı masaüstü OCR ile işlendi. Aynı metin ayrıştırıcı glüten ve kereviz beyanını etiket kanıtıyla çıkardı. Railway'de GPT-6 Luna 200 ile yorum ve üç soru döndürdü. Android derlemesi ve fiziksel cihaz kabulü ayrı izlenir. Besin tablosunda doğrulanmamış sütunlardan miktar hesaplanmaz.
 
 Android sürüm kodu 5 derlendi ve GitHub Releases üzerinden yayınlandı. APK imzası, paketlenmiş çevrimdışı model ve sunucu adresi doğrulandı. Lint, typecheck, 95 birim/API, üç profil tarayıcı testi, üç platform export ve API smoke geçti.
+
+Açık kabul: fiziksel Android'de uçak modunda gerçek fotoğrafı okut, ardından interneti açıp OpenAI izniyle soru ve kişisel yorum iste. Sonuçlar kullanıcıdan veya cihaz testinden gelene kadar fazın donanım kabulü açık. [Uygulama adımları](ACTIVE_CONTEXT.md#claude-code-için-devam-noktası)

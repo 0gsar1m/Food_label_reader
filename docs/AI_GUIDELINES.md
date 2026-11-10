@@ -11,9 +11,9 @@
 
 ## Mühendislik
 Şema uygulama ve sunucu arasında ortaktır. Sunucu istemci ve model yanıtını ayrı doğrular.
-Görsel boyutu sınırlı; kontrollü zaman aşımı, iptal, hata kodları ve kota koruması bulunur. Gemini 503 döndürürse aynı zaman sınırı içinde bir kez yeniden denenir.
-Model/sağlayıcı yapılandırılabilir. Sunucuya ayrı bir Gemini yedek modeli tanımlandıysa tek 503 tekrarı bu modele gider. Google 429 verdiğinde de yalnız tanımlı farklı model bir kez denenir. API başarılı yanıtı üreten model adını döndürür. Anahtar sunucu ortamındadır.
-Kamera/galeri izni gerektiğinde istenir. Aktarım öncesi kullanıcıya Google işleme bilgisi verilir.
+Görsel boyutu sınırlıdır. Android etiket OCR'ı cihazda çalışır. Bulut isteklerinde zaman aşımı, iptal ve kota koruması bulunur.
+Üretim sağlayıcısı GPT-6 Luna. API başarılı yanıtı üreten model adını döndürür. Anahtar sunucu ortamındadır. Üretim akışına Gemini yedeği eklenmez.
+Kamera/galeri izni gerektiğinde istenir. Bulut aktarımından önce kullanıcıya OpenAI işleme bilgisi verilir.
 Kullanıcı alerjen tercihleri modele gönderilmez; cihazda sonuç üzerine uygulanır.
 Gerçek hizmet yoksa gerçekçi sahte analiz üretilmez. Örnek akış açıkça etiketlenir.
 
@@ -24,7 +24,7 @@ Güncel kaynaklar ve karar gerekçeleri `docs/DECISIONS.md` içinde tutulur.
 
 ## Kişisel yorum
 - Profil ve günlük şifreli vault içinde; native anahtar SecureStore, web sekme oturum depolaması.
-- Gemini’ye kişisel veri aktarımı ayrı açık izin ve düğme işlemi gerektirir. Normal Vision çağrısına sağlık profili eklenmez.
+- OpenAI’ye kişisel veri aktarımı ayrı açık izin ve düğme işlemi gerektirir. Önceki Gemini izni geçerli sayılmaz. Görsel isteğine sağlık profili eklenmez.
 - Genel bilgi, kişi bildirimi ve günlük ilişkisi ayrı evidence ID taşır; korelasyon nedensellik sayılmaz.
 - Nicel porsiyon hesabı modelden alınmaz. Besin tablosu yoksa kalori/makro/mikro bilinmiyor kalır.
 - Model sağlayıcı çıktısı kaynak ID ve şema bakımından doğrulanır; bu kontrol klinik doğruluk garantisi değildir.

@@ -2,21 +2,31 @@
 
 10 Kasım 2026. Nazif: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
 Kullanıcı tüm fazları özerk uygulama, test ve sonunda https://github.com/0gsar1m/Food_label_reader.git repoya normal push yetkisi verdi. Fazlar arasında onay isteme.
-Son direktif: My GutIQ'yu ayrıntılı araştır, düşük maliyetle yakın Türkçe deneyimi uygula.
-Etkin faz: 14. Kod, yerel kabul ve kaynak kod push tamamlandı. Sonraki işler dış hesap/cihaz kabulüdür.
+Son direktif: Android etiketi çevrimdışı oku, kişisel yorum ve profil soruları için GPT-6 Luna kullan. Üretimde Gemini'ye dönüş yok.
+Etkin faz: 20. v5 yayınlandı. Sonraki iş fiziksel Android cihaz kabulü.
+
+## Claude Code için devam noktası
+
+- Yayın: [Nazif v5 APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v5/Nazif.apk). Paket `com.ogsarim.etiket`, sürüm kodu 5, ARM64, önceki APK'larla aynı geliştirme imzası. Kod etiketi `nazif-android-v5`, commit `aa49eda`.
+- Android: `App.tsx` → `src/lib/offlineOcr.ts` → `modules/nazif-ocr` → `shared/labelText.ts`. APK gömülü ML Kit Latin modelini içerir. Etiket fotoğrafı Android'de sunucuya gitmez. Belirsiz besin tablosu sütunlarından miktar hesaplanmaz.
+- Bulut: Railway `Nazif / nazif-api`, [sağlık ucu](https://nazif-api-production.up.railway.app/health). `server/index.ts` üretimde `OPENAI_API_KEY` ve `OPENAI_MODEL=gpt-6-luna` kullanır. `POST /api/personalize` yeni `openaiConsent` iznini arar. Önceki Gemini izni taşınmaz. Anahtar yerel git dışı `.env` ve Railway servis sırrında. Değeri yazdırma veya kopyalama. Anahtar 10 Kasım'da yedi gün için açıldı. Kullanıcı 5 USD kredi yükledi.
+- Misafir erişimi: İstanbul saatiyle 11 Kasım 2026 23.59 sonuna kadar ve Railway süreci başına toplam 60 istek. Bu süre ve kota yalnız bulut işlemlerini etkiler. Yerel tünel kapalı. Google OAuth yapılandırılmadı.
+- Doğrulandı: imza, herkese açık APK indirmesi ve SHA-256, 95 birim/API ve 3 profil tarayıcı testi, üç platform export, API smoke. Gerçek noodle fotoğrafı masaüstü OCR ile glüten ve kereviz beyanını verdi. Railway Luna gerçek etiket metniyle yorum ve üç profil sorusu döndürdü. Ayrı canlı testte iki sentetik öğün kaydına dayandı ve takip sorusu üretti.
+- İlk iş: v5'i mevcut uygulamanın üzerine kur. Uçak modunda galeriden kullanıcının `C:/Users/emir/Downloads/71IfuN7U2mL.jpg` görselini açıp **Etiketi cihazda oku** ile glüten ve kereviz beyanını kontrol et. Ardından interneti aç, OpenAI iznini seç, **Profilime göre soru öner** ve **Bulut modeliyle ayrıntılandır** akışlarını dene. Donanım sonucu gelmeden fiziksel kabulü kapatma. Kullanıcı görselini repoya ekleme.
+- Sorun çıktığında önce APK sürüm kodunu, hata metnini, uçak modu durumunu ve hangi adımda oluştuğunu ayır. Bulut için önce `/health`, sonra izinli sentetik `/api/personalize` isteği. Sağlık ucu anahtarın tanımlı olduğunu gösterir, kredi veya canlı model çağrısını doğrulamaz. Android için cihaz varsa uygulama paketine filtrelenmiş hata kaydı al ve özel veriyi loglama.
 
 ## Önce okunacaklar
 AGENTS.md → bu dosya → MASTER_PLAN.md / PHASE_STATUS.md. AI_GUIDELINES.md ve AI_SLOP_AVOIDANCE.md bağlayıcı.
 GUTIQ_RESEARCH.md araştırma, parite tablosu ve bilinmeyenleri; INVESTOR_COSTS.md giderleri; VERIFICATION.md gerçek kabul sınırlarını içerir.
 Eski çiftlik projesi yalnız metodoloji için okundu, değiştirilmedi. Kod/yorum/commit İngilizce, UI/belgeler Türkçe; strict TS ve Zod. Secret mobil bundle/git/loga girmez.
 
-## Hazır ürün
-- Kamera/galeri, EXIF taşımayan küçültülmüş JPEG önizlemesi; tek Vision çağrısı, isteğe bağlı ikinci besin tablosu.
+## Ürün kapsamı
+- Kamera/galeri ve EXIF taşımayan küçültülmüş JPEG önizlemesi. Android etiketinde yerel OCR, çevrimiçi görsel yollarında OpenAI. İsteğe bağlı ikinci besin tablosu fotoğrafı.
 - Kanıt metinli içerik/alerjen/katkı, contains/may_contain ayrımı, besin tablosu ve deterministik porsiyon.
 - Altı adımlı amaç/semptom/tanı-şüphe/rutin profili, koşullu sorular ve kendi kaçınma listesi.
 - Google GIS web / Nitro Credential Manager native, server Google JWK/audience/issuer/expiry/verified email; 24h uygulama JWT. Gmail mesaj izni yok.
 - Hesap/misafir ayrımı, geçmiş/tercih/profil/günlük izolasyonu. Sağlık vault AES-256-GCM; native key SecureStore; web sekme oturumunda. Bulut sync yok.
-- Yerel kişisel yorum kurallıdır, API çağırmaz; ayrı izin/düğmeyle kaynaklı Gemini açıklaması.
+- Yerel kişisel yorum kurallıdır, API çağırmaz. Ayrı izin ve düğmeyle GPT-6 Luna üzerinden kaynaklı yorum istenir.
 - Yeni günlük: scanId, tüketim teyidi, pending/symptom_free/symptoms, teyitli bileşenler, şiddet, gecikme, bağlam ve isteğe bağlı Bristol tipi. Yerel tarih girişidir, ISO protokolü kullanıcıya gösterilmez. En fazla 100 öğün.
 - Gözlemler dördüncü ana sekme: 7/30 gün, paydalı sayımlar. Demo/future dışlanır, pending belirtisiz sayılmaz, bilinmeyen bileşen karşılaştırma grubu olmaz. 3+3 yalnız sunum eşiğidir, klinik doğrulama değildir.
 - Restoran kartı yalnız seçili alerjen ve kendi kaçınma tercihini paylaşır, tanıyı paylaşmaz.
@@ -26,12 +36,10 @@ Eski çiftlik projesi yalnız metodoloji için okundu, değiştirilmedi. Kod/yor
 - Yeni API'ler aynı kimlik/IP10/dakika/timeout koruması altında. Fotoğraf ve sağlık içeriği server dosya/DB/loga yazılmaz.
 
 ## Model ve gider kararı
-Güncel seçim: normal API Gemini 3.8 Flash fotoğraf + Gemini 3.1 Flash-Lite yorum. İkisi aynı GEMINI_API_KEY kullanır. api:economy fotoğrafta da Lite seçer.
-Güncel tahmin: bir fotoğraf $0,00975, bir Flash-Lite yorum $0,0045. Cevap sonrası yorum ayrıca çağrılır.
-Geçmiş Sonnet maliyetleri INVESTOR_COSTS.md içinde tarihsel karşılaştırma olarak durur. Canlı Gemini ölçümleri PROD_FLOW_LOG.md içinde.
+Android yerel OCR için model API ücreti yoktur. GPT-6 Luna yorum, profil sorusu ve takip cevabı ayrı bulut istekleridir. Ölçülen Luna token sayıları [üretim akışı kaydında](PROD_FLOW_LOG.md). Eski model maliyet tabloları tarihsel karşılaştırmadır.
 Ücretli abonelik/tahsilat ve kullanıcı bazında ticari kota uygulanmadı; IP kotası finansal limit değildir.
 
-## Son doğrulama
+## Önceki fazların doğrulama geçmişi
 - npm run verify geçti: lint, strict typecheck, 87 birim/HTTP, Android/iOS/web export, API bundle ve bundle HTTP smoke.
 - Son npm run test:e2e: 14/14 geçti, tek worker, statik export/8082. İki e2e veya aynı dist'e export süreçlerini paralel çalıştırma.
 - expo-doctor20/20. npm audit0 yüksek/kritik,23 orta araç zinciri bulgusu; expo-sharing de config-plugins zincirinden etkileniyor. Force downgrade yapılmadı.

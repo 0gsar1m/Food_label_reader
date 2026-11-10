@@ -1,29 +1,24 @@
 # Çalıştırma ve yayın rehberi
 
-Faz 20 üretim hattı Android etiketi için gömülü ML Kit ve bulut kişisel yorum için GPT-6 Luna kullanır. Railway değişkeni ve yerel gizli ayar `OPENAI_API_KEY`, model `OPENAI_MODEL=gpt-6-luna`. Android fotoğrafı sunucuya gitmez. Önceki Gemini izni OpenAI için geçerli sayılmaz. Aşağıdaki eski Gemini kabul adımları önceki sürümlere aittir.
+Faz 20 üretim hattı Android etiketi için gömülü ML Kit ve bulut kişisel yorum için GPT-6 Luna kullanır. Son yayın ve açık cihaz kabulü [aktif bağlamda](ACTIVE_CONTEXT.md) listelenir.
 
 ## Profil, kişisel yorum ve Google giriş eki
 Profil/günlük native cihazda ayrı şifreli depoda; webde sekme oturumundadır. Google, misafir ve diğer hesaplar ayrı kayıt alanları kullanır.
-Kişisel yorum için aynı `GEMINI_API_KEY` ve varsayılan `PERSONAL_MODEL=gemini-3.5-flash-lite` kullanılır. Gerçek profil için Gemini’ye açık aktarım izni gerekir.
+Kişisel yorum için sunucuda `OPENAI_API_KEY` kullanılır. OpenAI aktarım izni ayrı alınır. Önceki Gemini izni yeni sağlayıcıya taşınmaz.
 Google giriş ortamı ve native yapılandırması GOOGLE_AUTH.md içinde. Google native SDK Expo Go'da bulunmaz; gerçek giriş için APK/development build gerekir.
 `npm run test:e2e` derlenmiş web önizlemesini 8082'de sınar. Tek Playwright çalıştırması kullan; geliştirme sunucusu HMR çıktısı test kanıtı değildir.
 Yatırımcı gider tablosu INVESTOR_COSTS.md, tekrar üretim `npm run costs`, demo akışı DEMO_SCRIPT.md içinde.
 
 ## Yerel ortam
 Node 24 LTS, `npm ci`. İlk terminal `npm run api`, ikinci terminal `npm start`.
-Web `npm run web`, telefon Expo Go QR. Android Studio yalnız yerel emülatör/yerel native build için gereklidir.
-SDK 58 projesidir; telefonundaki Expo Go sürümü SDK 58 desteklemiyorsa uygulamayı güncelle veya EAS development build kullan.
-create-expo-app başlangıç mesajı SDK 57 dese de çıkarılan gerçek paket SDK 58.0.22 idi; expo-doctor gerçek bağımlılıkları doğrular.
+Web için `npm run web`. SDK 58 Android OCR modülü için bağımsız APK veya development build kullanılır. Yerel derleme Android SDK komut satırı araçlarıyla yapılabilir.
 
-## Gerçek Vision
-1. Google AI Studio üzerinden sunucu hesabına ait API anahtarı oluştur.
-2. `.env` içindeki `GEMINI_API_KEY` değerini doldur. Anahtarı mobil ayarlara yazma.
-3. `GEMINI_MODEL=gemini-3.5-flash-lite` varsayılan. Model erişimini kendi hesap/bölgenle doğrula.
-4. API'yi başlat; `/health` configured=true olmalı. Bu yalnız anahtarın tanımlı olduğunu gösterir, geçerli olduğunu doğrulamaz.
-5. Düz, net ve tam bir etiketle gerçek okuma yap; her alerjen kanıtını ambalajla karşılaştır.
-6. Bulanık fotoğraf, kesik alerjen bölümü, yabancı dil, uzun içerik ve aynı ürünün değişmiş etiketini dene.
-7. En az 20 gerçek etiket için alerjen kaçırma/hatalı ekleme ve gecikme p50/p95 kaydı tut.
-10 Kasım canlı API kabulü PROD_FLOW_LOG.md dosyasındadır. Fiziksel ürün karşılaştırması ve 20 etiketlik örneklem henüz yapılmadı.
+## OCR ve model kabulü
+
+1. Android cihazda v5'i aç ve uçak modunda galeri fotoğrafı ile yeni okuma yap. Alerjen kanıtını fotoğrafla karşılaştır.
+2. İnterneti aç, OpenAI iznini ver, profil sorusu ve etiket sonucundan ayrıntılı yorum iste.
+3. Bulanık fotoğraf, kesik alerjen satırı, yabancı dil, uzun içerik ve besin tablosu sütunlarını ayrıca dene. Okunmayan satır veya belirsiz sütundan sonuç çıkarma.
+4. Bulut testi için önce `/health` üzerinde `personalConfigured=true` ve `personalModel=gpt-6-luna` kontrol et. Kredi ve canlı çıktı için izinli sentetik `/api/personalize` isteği kullan. Ölçümleri [üretim akışı kaydına](PROD_FLOW_LOG.md) ekle.
 
 ## Üretim API
 `npm run build:api`, ardından `node dist-api/server.cjs` veya çok aşamalı Dockerfile.
@@ -36,12 +31,11 @@ docker run --rm -p 8787:8787 --env-file .env etiket-api
 
 Gerekli ortam:
 - `NODE_ENV=production`
-- `GEMINI_API_KEY`: sağlayıcı sırrı
+- `OPENAI_API_KEY`: sağlayıcı sırrı. `OPENAI_MODEL=gpt-6-luna`.
 - `APP_ACCESS_TOKEN`: rastgele, en az 24 karakter; uygulamanın güvenli bağlantı ayarına girilir
 - `GUEST_ACCESS_UNTIL`: isteğe bağlı ISO 8601 bitiş tarihi. Google hesabı zorunlu değilse anahtarsız istekleri bitişe kadar sınırlar. `GUEST_REQUEST_LIMIT` süreç başına toplam hakkı belirler, varsayılan 30 ve üst sınır 90. Süreç yeniden başlarsa sayaç sıfırlanır. Sürekli yayında paylaşılan bütçe ve hesap bazlı yetkilendirme gerekir.
 - `ALLOWED_ORIGINS`: web önizlemesinin gerçek HTTPS origin'i, virgülle ayrılır
-- `GEMINI_MODEL`, `PORT`, gerekiyorsa `TRUST_PROXY_HOPS`
-- `GEMINI_FALLBACK_MODEL` ve `PERSONAL_FALLBACK_MODEL`: isteğe bağlı Gemini modelleri. Sağlayıcı 503 veya 429 döndürürse aynı genel süre sınırı içinde farklı model bir kez denenebilir.
+- `PORT`, gerekiyorsa `TRUST_PROXY_HOPS`
 
 Önüne HTTPS reverse proxy koy. TRUST_PROXY_HOPS değerini gerçek proxy zinciriyle eşleştir; herkese güven seçeneği kullanma.
 Native uygulamada CORS güvenlik kontrolü değildir; token ve API oran sınırı uygulanır.
@@ -54,11 +48,11 @@ Windows'ta Android SDK komut satırı araçları ve JDK ile bağımsız Android 
 
 Expo prebuild ile Android projesi üretildikten sonra android klasöründe Gradle görevi :app:assembleRelease çalıştırılır. Windows'ta -Pandroid.cmakeVersion=3.31.6 kullanılabilir. Yalnız modern ARM telefonları hedeflemek için -PreactNativeArchitectures=arm64-v8a eklenir.
 
-Çıktı android/app/build/outputs/apk/release altındadır. Yerel Expo şablonu bu APK için geliştirme imzası kullanır. HTTPS adresi ve iç kullanım erişim anahtarı uygulamadaki **Tercihler → Okuma hizmeti bağlantısı** bölümüne girilebilir. Sunucunun Gemini anahtarı APK'ya girmez.
+Çıktı android/app/build/outputs/apk/release altındadır. Yerel Expo şablonu bu APK için geliştirme imzası kullanır. HTTPS adresi ve iç kullanım erişim anahtarı uygulamadaki **Tercihler → Okuma hizmeti bağlantısı** bölümüne girilebilir. Sağlayıcı anahtarı APK'ya girmez.
 
 Bulut APK'sı için yalnız `EXPO_PUBLIC_API_URL` değerini bulut origin'i olarak ver. Bir önceki geçici origin cihazda kaydedilmişse `EXPO_PUBLIC_REPLACED_API_URL` ile yalnız o bağlantıyı taşı. Güncelleme eski sunucu anahtarını yeni origin'e göndermez. Mevcut imzayı koru ve Android versionCode değerini artır.
 
-Railway için mevcut Dockerfile kullanılır. Dağıtım arşivine yalnız Dockerfile, paket manifestleri, server ve shared kaynakları alınır. Gemini anahtarı ve sunucu erişim anahtarı servis değişkenleridir. Dış kabulde /health, anahtarsız izinli fotoğraf ve profil istekleri ile sunucu yeniden başlatma bağımlılığı kontrol edilir. APK GitHub Releases üzerinden dağıtılır.
+Railway için mevcut Dockerfile kullanılır. Dağıtım arşivine yalnız Dockerfile, paket manifestleri, server ve shared kaynakları alınır. OpenAI anahtarı ve sunucu erişim anahtarı servis sırlarıdır. APK GitHub Releases üzerinden dağıtılır. İndirme dosyasının SHA-256 özetini yerel imzalı dosyayla karşılaştır.
 
 EAS hesabıyla kendi terminalinde:
 
@@ -74,11 +68,11 @@ Paket adı `com.ogsarim.etiket`. Hesap sahibi değiştirirse bundle ID ve mağaz
 EAS hesabı/proje ID bulunmadığından bulut derlemesi yapılmadı. EAS build ücret/kota sınırları hesabına bağlıdır.
 
 ## Fiziksel cihaz kabulü
-- Expo Go/development build açılışı; geri tuşu, çentik ve alt güvenli alan.
+- APK/development build açılışı, geri tuşu, çentik ve alt güvenli alan.
 - Kamera izni reddi/kalıcı reddi, fener, yönlü fotoğraf, galeri HEIC/JPEG/PNG.
 - Android yazı ölçeği %100/%200, TalkBack; iOS VoiceOver ve dinamik yazı.
-- Uçak modunda eski kayıtlar; yeni okuma hatası; okuma sırasında iptal/arka plana alma.
-- Gerçek ağda 20 etiket kabulü; kişisel alerjen ile eser miktarda ayrımı.
+- Uçak modunda Android'de yeni etiket okuma, geçmişe ekleme ve okuma sırasında iptal/arka plana alma.
+- Fiziksel Android'de 20 etiketlik örneklem ve içerir/eser miktarda ayrımı. Bulut yorumunu internet açıldıktan sonra ayrı sına.
 - Geçmişi sil, uygulamayı yeniden başlat, silinmiş kayıt kalmadığını doğrula.
 
 ## Mağaza yayını öncesi
