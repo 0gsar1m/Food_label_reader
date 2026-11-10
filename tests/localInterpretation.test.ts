@@ -41,6 +41,38 @@ describe('offline personal interpretation', () => {
     });
     expect(result.findings.some((f) => f.text.includes('1 tanesinde belirti yok'))).toBe(true);
   });
+  it('connects an exact label ingredient to completed, real meal observations', () => {
+    const ingredient = demoAnalysis.ingredients[0];
+    const entry: HealthVault['diary'][number] = {
+      id: 'one',
+      at: '2026-01-01T12:00:00Z',
+      meal: 'Kahvaltı',
+      amount: '',
+      ingredients: [ingredient.name.toLocaleUpperCase('tr-TR')],
+      symptoms: ['bloating'],
+      delay: '',
+      notes: '',
+    };
+    const result = localInterpretation(demoAnalysis, {
+      ...vault,
+      diary: [
+        { ...entry, id: 'demo', meal: 'Kurgu öğün', demo: true },
+        { ...entry, id: 'pending', meal: 'Bekleyen öğün', outcome: 'pending', symptoms: [] },
+        {
+          ...entry,
+          id: 'different',
+          meal: 'Farklı öğün',
+          ingredients: [`${ingredient.name} aroması`],
+        },
+        entry,
+        { ...entry, id: 'free', symptoms: [] },
+      ],
+    });
+    const match = result.findings.find((finding) => finding.basis.includes(ingredient.evidence));
+    expect(match?.text).toContain('“Kahvaltı”');
+    expect(match?.text).toContain('Şişkinlik');
+    expect(match?.text).toContain('2 tamamlanmış öğünün 1 tanesinde belirti');
+  });
   it('separates reported diagnosis from suspicion', () => {
     const result = localInterpretation(demoAnalysis, {
       ...vault,

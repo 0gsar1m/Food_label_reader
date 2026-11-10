@@ -43,3 +43,7 @@ Faz14 kod/belge teslimi: ecfc221 origin/main dalına push edildi ve uzak hash te
 ## Faz 15 / Nazif adı
 
 Mobil ve web görünen adı, API servis adı ve rapor başlıkları güncellendi. Kurulum kimliği ve depolama anahtarları korundu. Verify ve 14 ekran testi geçti. Gerçek model ve fiziksel cihaz testi sırada.
+
+## Faz 16 / Yerel öğün eşleşmesi
+
+Etiket ve geçmiş öğün bileşeni eşleşmesi uygulandı. Verify, 88 birim/API testi ve üç platformun paketlemesi geçti. Fiziksel cihazda canlı okuma sırada.

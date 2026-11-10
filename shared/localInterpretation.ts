@@ -30,6 +30,30 @@ export function localInterpretation(analysis: Analysis, vault: HealthVault) {
   const recent = vault.diary
     .filter((entry) => !entry.demo && outcomeOf(entry) !== 'pending')
     .slice(0, 20);
+  const normalizeIngredient = (name: string): string =>
+    name.trim().normalize('NFC').toLocaleLowerCase('tr-TR');
+  const labelIngredients = new Map(
+    analysis.ingredients.map((item) => [normalizeIngredient(item.name), item]),
+  );
+  let diaryMatches = 0;
+  for (const [key, item] of labelIngredients) {
+    const matching = recent.filter(
+      (entry) =>
+        Date.parse(entry.at) <= Date.now() &&
+        entry.ingredients?.some((ingredient) => normalizeIngredient(ingredient) === key),
+    );
+    const observed = matching.filter((entry) => outcomeOf(entry) === 'symptoms');
+    const latest = observed[0];
+    if (!latest) continue;
+    const date = new Date(latest.at).toLocaleDateString('tr-TR');
+    const reported = latest.symptoms.map((id) => symptoms[id]).join(', ');
+    findings.push({
+      text: `Bu etikette ${item.name} var. ${date} tarihli “${latest.meal}” öğününde de bu bileşeni kaydettin. Öğün sonrasında bildirdiğin belirtiler: ${reported}. Bu bileşenin kayıtlı olduğu ${matching.length} tamamlanmış öğünün ${observed.length} tanesinde belirti, ${matching.length - observed.length} tanesinde belirti yok. Ürünü değerlendirirken bu gözlemi dikkate alabilirsin. Öğündeki diğer bileşenler de etkili olmuş olabilir.`,
+      basis: `Etikette “${item.evidence}” ve kendi öğün günlüğün`,
+    });
+    diaryMatches++;
+    if (diaryMatches === 3) break;
+  }
   if (recent.length) {
     const symptomatic = recent.filter((d) => d.symptoms.length).length;
     findings.push({

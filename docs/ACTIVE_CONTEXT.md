@@ -55,3 +55,5 @@ Yeni kapsam ecfc221ff3e595270cdea9eb2e8906053905c2d1 ile origin/main dalına pus
 Uygulamanın görünen adı, raporlar ve API servis adı Nazif oldu. Mevcut kurulum ve veri uyumluluğu için uygulama kimliği, Expo slug, URL şeması ve depolama anahtarları korundu.
 
 Faz 15 kabulü: lint/typecheck, 87 birim/API, 14 ekran, Android/iOS/web export ve API smoke geçti. Yerel telefon ayarı hazırlandı. Gerçek etiket denemesi için Gemini API anahtarı gerekiyor.
+
+Etiket sonuçlarında yerel kişisel yorum, bir bileşeni son 20 tamamlanmış gerçek öğün kaydıyla tam ad üzerinden eşleştirir. Öğün adı, tarih, belirtiler ve belirtisiz örnekler birlikte gösterilir. Sonnet anahtarı bu akış için gerekmez.

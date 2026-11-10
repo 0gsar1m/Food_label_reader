@@ -85,3 +85,6 @@ Kabul: bekleyen kayıt belirtisiz sayılmaz; örnek/future kayıt ve bilinmeyen 
 
 ## Faz 15 / Nazif adı
 Görünen ürün adı mobil, web, rapor ve proje metinlerinde Nazif olarak güncellenir. Kurulum kimliği ve yerel depolama uyumluluğu korunur.
+
+## Faz 16 / Etiketten öğün geçmişine
+Etiket bileşenini teyit edilmiş öğün bileşenleriyle cihazda eşleştir. Kullanıcının kaydettiği öğün ve belirtiyi, belirtisiz eşleşmeler ve etiket kanıtıyla birlikte göster.

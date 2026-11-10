@@ -47,3 +47,6 @@ Faz14 kod/belge teslimi: ecfc221 origin/main dalına push edildi ve uzak hash te
 
 ## Faz 15 / Nazif adı
 Görünen uygulama adı ve dışa aktarılan gözlem raporlarının markası Nazif olarak güncellendi.
+
+## Faz 16 / Etiketten öğün geçmişine
+Yerel kişisel yorum, geçmişteki tamamlanmış öğünlerde aynı adla kaydedilmiş bileşenleri etiket sonucuna bağlar. Demo ve bekleyen öğünler eşleşmeye katılmaz.
