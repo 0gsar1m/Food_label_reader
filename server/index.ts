@@ -14,6 +14,8 @@ const environment = z
       .string()
       .regex(/^[a-zA-Z0-9._-]+$/)
       .default('gemini-3.5-flash-lite'),
+    GEMINI_FALLBACK_MODEL: z.string().regex(/^[a-zA-Z0-9._-]+$/).optional(),
+    PERSONAL_FALLBACK_MODEL: z.string().regex(/^[a-zA-Z0-9._-]+$/).optional(),
     GOOGLE_CLIENT_IDS: z.string().default(''),
     SESSION_SECRET: z.string().min(32).optional(),
     REQUIRE_GOOGLE_AUTH: z.enum(['true', 'false']).default('false'),
@@ -34,7 +36,9 @@ const app = createApi({
   requireGoogleAuth: environment.REQUIRE_GOOGLE_AUTH === 'true',
   personalKey: environment.GEMINI_API_KEY,
   personalModel: environment.PERSONAL_MODEL,
+  personalFallbackModel: environment.PERSONAL_FALLBACK_MODEL,
   model: environment.GEMINI_MODEL,
+  fallbackModel: environment.GEMINI_FALLBACK_MODEL,
   accessToken: environment.APP_ACCESS_TOKEN,
   guestAccessUntil: environment.GUEST_ACCESS_UNTIL
     ? Date.parse(environment.GUEST_ACCESS_UNTIL)

@@ -174,19 +174,23 @@ export function createApi(config: ApiConfig): express.Express {
     res.on('close', cancel);
     try {
       let usage: { inputTokens: number; outputTokens: number } | undefined;
+      let model = config.model;
       const result = await analyzeFood(
         input.data.image,
         input.data.mimeType,
         input.data.mode,
         {
           ...config,
+          reportModel: (value) => {
+            model = value;
+          },
           reportUsage: (value) => {
             usage = value;
           },
         },
         controller.signal,
       );
-      if (!res.destroyed) res.json({ result, model: config.model, ...(usage ? { usage } : {}) });
+      if (!res.destroyed) res.json({ result, model, ...(usage ? { usage } : {}) });
     } catch (error) {
       const code = controller.signal.aborted
         ? 'TIMEOUT'
@@ -226,11 +230,15 @@ export function createApi(config: ApiConfig): express.Express {
     res.on('close', cancel);
     try {
       let usage: { inputTokens: number; outputTokens: number } | undefined;
+      let model = config.model;
       const analysis = await analyzeImage(
         input.data.image,
         input.data.mimeType,
         {
           ...config,
+          reportModel: (value) => {
+            model = value;
+          },
           reportUsage: (value) => {
             usage = value;
           },
@@ -238,7 +246,7 @@ export function createApi(config: ApiConfig): express.Express {
         controller.signal,
         input.data.nutritionImage,
       );
-      res.json({ analysis, model: config.model, ...(usage ? { usage } : {}) });
+      res.json({ analysis, model, ...(usage ? { usage } : {}) });
     } catch (error) {
       const code = controller.signal.aborted
         ? 'TIMEOUT'

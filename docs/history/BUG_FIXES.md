@@ -29,3 +29,8 @@
 - Fotoğraf ve kişisel yorum için canlı test edilen Flash-Lite modeli varsayılan oldu. Takip cevabının getirdiği yeni ayrıntıyı açıkça kullanması model talimatına eklendi.
 - Gemini 503 verdiğinde mevcut süre sınırı içinde bir kez aynı model çağrılır. 503 ardından başarılı yanıtın API'den geçmesi test edildi.
 - Profil soru önerisinin yanıtı etiket özeti doğrulamasına takılıyordu. Sorular ayrı şemayla doğrulanır. Mobil profil ekranı beklemeyi, ağ ve yetki hatasını ayrı gösterir.
+
+## Faz 19 kabul düzeltmeleri
+
+- Android güncellemesi tanımlı eski tünel adresini bulut adresine taşır ve önceki sunucu anahtarını temizler. Kullanıcının diğer sunucu seçimleri korunur.
+- Gemini 503 yanıtında bir kez çağrılacak model sunucuda yapılandırılabilir. API, geçerli yanıtı döndüren gerçek model adını taşır.

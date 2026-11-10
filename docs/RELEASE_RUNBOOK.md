@@ -39,6 +39,7 @@ Gerekli ortam:
 - `GUEST_ACCESS_UNTIL`: isteğe bağlı ISO 8601 bitiş tarihi. Google hesabı zorunlu değilse anahtarsız istekleri bitişe kadar ve sunucu süreci başına toplam 30 istekle sınırlar. Süreç yeniden başlarsa sayaç sıfırlanır. Sürekli yayında paylaşılan bütçe ve hesap bazlı yetkilendirme gerekir.
 - `ALLOWED_ORIGINS`: web önizlemesinin gerçek HTTPS origin'i, virgülle ayrılır
 - `GEMINI_MODEL`, `PORT`, gerekiyorsa `TRUST_PROXY_HOPS`
+- `GEMINI_FALLBACK_MODEL` ve `PERSONAL_FALLBACK_MODEL`: isteğe bağlı Gemini modelleri. Yalnız 503 sonrasında, aynı genel süre sınırı içinde tek denemede kullanılır.
 
 Önüne HTTPS reverse proxy koy. TRUST_PROXY_HOPS değerini gerçek proxy zinciriyle eşleştir; herkese güven seçeneği kullanma.
 Native uygulamada CORS güvenlik kontrolü değildir; token ve API oran sınırı uygulanır.
@@ -52,6 +53,10 @@ Windows'ta Android SDK komut satırı araçları ve JDK ile bağımsız Android 
 Expo prebuild ile Android projesi üretildikten sonra android klasöründe Gradle görevi :app:assembleRelease çalıştırılır. Windows'ta -Pandroid.cmakeVersion=3.31.6 kullanılabilir. Yalnız modern ARM telefonları hedeflemek için -PreactNativeArchitectures=arm64-v8a eklenir.
 
 Çıktı android/app/build/outputs/apk/release altındadır. Yerel Expo şablonu bu APK için geliştirme imzası kullanır. HTTPS adresi ve iç kullanım erişim anahtarı uygulamadaki **Tercihler → Okuma hizmeti bağlantısı** bölümüne girilebilir. Sunucunun Gemini anahtarı APK'ya girmez.
+
+Bulut APK'sı için yalnız `EXPO_PUBLIC_API_URL` değerini bulut origin'i olarak ver. Bir önceki geçici origin cihazda kaydedilmişse `EXPO_PUBLIC_REPLACED_API_URL` ile yalnız o bağlantıyı taşı. Güncelleme eski sunucu anahtarını yeni origin'e göndermez. Mevcut imzayı koru ve Android versionCode değerini artır.
+
+Railway için mevcut Dockerfile kullanılır. Dağıtım arşivine yalnız Dockerfile, paket manifestleri, server ve shared kaynakları alınır. Gemini anahtarı ve sunucu erişim anahtarı servis değişkenleridir. Dış kabulde /health, anahtarsız izinli fotoğraf ve profil istekleri ile sunucu yeniden başlatma bağımlılığı kontrol edilir. APK GitHub Releases üzerinden dağıtılır.
 
 EAS hesabıyla kendi terminalinde:
 

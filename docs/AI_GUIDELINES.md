@@ -12,7 +12,7 @@
 ## Mühendislik
 Şema uygulama ve sunucu arasında ortaktır. Sunucu istemci ve model yanıtını ayrı doğrular.
 Görsel boyutu sınırlı; kontrollü zaman aşımı, iptal, hata kodları ve kota koruması bulunur. Gemini 503 döndürürse aynı zaman sınırı içinde bir kez yeniden denenir.
-Model/sağlayıcı yapılandırılabilir; sessizce başka modele geçiş yok. Anahtar sunucu ortamındadır.
+Model/sağlayıcı yapılandırılabilir. Sunucuya açıkça Gemini yedek modeli tanımlandıysa tek 503 tekrarı bu modele gider. API başarılı yanıtı üreten model adını döndürür. Anahtar sunucu ortamındadır.
 Kamera/galeri izni gerektiğinde istenir. Aktarım öncesi kullanıcıya Google işleme bilgisi verilir.
 Kullanıcı alerjen tercihleri modele gönderilmez; cihazda sonuç üzerine uygulanır.
 Gerçek hizmet yoksa gerçekçi sahte analiz üretilmez. Örnek akış açıkça etiketlenir.

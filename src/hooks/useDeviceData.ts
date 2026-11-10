@@ -13,6 +13,27 @@ export function useDeviceData() {
     let active = true;
     async function restore(): Promise<void> {
       const [endpoint, secret] = await Promise.allSettled([loadApiUrl(), loadAccessToken()]);
+      const current = process.env.EXPO_PUBLIC_API_URL;
+      const replaced = process.env.EXPO_PUBLIC_REPLACED_API_URL;
+      if (
+        endpoint.status === 'fulfilled' &&
+        current &&
+        replaced &&
+        current !== replaced &&
+        endpoint.value === replaced
+      ) {
+        try {
+          await saveAccessToken('');
+          await saveApiUrl(current);
+        } catch {
+          if (active) setNotice('Yeni sunucu adresi kalıcı olarak kaydedilemedi.');
+        }
+        if (active) {
+          setApiUrl(current);
+          setReady(true);
+        }
+        return;
+      }
       if (!active) return;
       if (endpoint.status === 'fulfilled') setApiUrl(endpoint.value);
       if (secret.status === 'fulfilled') setToken(secret.value);

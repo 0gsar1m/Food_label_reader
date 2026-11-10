@@ -32,6 +32,7 @@ export const healthSources = [
 export type PersonalConfig = {
   personalKey?: string;
   personalModel?: string;
+  personalFallbackModel?: string;
   personalFetcher?: typeof fetch;
 };
 /** Builds explicitly attributed evidence without forwarding the whole photo or allergy preferences. */
@@ -136,7 +137,7 @@ export async function personalize(
         };
   const allowedQuestions = followUps(input.profile);
   const openQuestions = allowedQuestions.filter((id) => !input.profile.answers[id]?.trim());
-  const model = config.personalModel ?? 'gemini-3.5-flash-lite';
+  let model = config.personalModel ?? 'gemini-3.5-flash-lite';
   const requestingQuestions = input.task === 'questions';
   const questionResponse = personalResponseSchema.pick({ questionSuggestions: true }).required();
   let usage = { input_tokens: 0, output_tokens: 0 };
@@ -156,6 +157,10 @@ export async function personalize(
       {
         apiKey: config.personalKey ?? '',
         model,
+        fallbackModel: config.personalFallbackModel,
+        reportModel: (value) => {
+          model = value;
+        },
         fetcher: config.personalFetcher,
         reportUsage: ({ inputTokens, outputTokens }) => {
           usage = { input_tokens: inputTokens, output_tokens: outputTokens };

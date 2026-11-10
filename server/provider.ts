@@ -41,8 +41,10 @@ export class ProviderError extends Error {
 export type VisionConfig = {
   apiKey: string;
   model: string;
+  fallbackModel?: string;
   fetcher?: typeof fetch;
   reportUsage?: (usage: { inputTokens: number; outputTokens: number }) => void;
+  reportModel?: (model: string) => void;
 };
 
 // Gemini can reject the label schema when nested lists and strings carry length
@@ -114,7 +116,6 @@ export async function geminiJson(
   schema: object,
   maxOutputTokens: number,
 ): Promise<unknown> {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(config.model)}:generateContent`;
   const request: RequestInit = {
     method: 'POST',
     signal,
@@ -131,11 +132,18 @@ export async function geminiJson(
     }),
   };
   const fetcher = config.fetcher ?? fetch;
-  let response = await fetcher(url, request);
+  const call = (model: string) =>
+    fetcher(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+      request,
+    );
+  let model = config.model;
+  let response = await call(model);
   if (response.status === 503) {
     await response.body?.cancel();
     await delay(500, undefined, { signal });
-    response = await fetcher(url, request);
+    model = config.fallbackModel ?? model;
+    response = await call(model);
   }
   if (!response.ok)
     throw new ProviderError(response.status === 429 ? 'RATE_LIMITED' : 'PROVIDER_UNAVAILABLE');
@@ -154,7 +162,9 @@ export async function geminiJson(
       .filter((part) => !part.thought)
       .map((part) => part.text ?? '')
       .join('');
-    return JSON.parse(output ?? '') as unknown;
+    const result: unknown = JSON.parse(output ?? '');
+    config.reportModel?.(model);
+    return result;
   } catch {
     throw new ProviderError('INVALID_RESULT');
   }

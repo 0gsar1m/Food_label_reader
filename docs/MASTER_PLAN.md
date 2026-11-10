@@ -94,3 +94,6 @@ Fotoğraf ve metin aynı Gemini anahtarını kullanır. Kurgu senaryo gerçek ve
 
 ## Faz 18 / Android APK ve canlı okuma
 Normal Android paketini bağımsız kurulum için derle, imzayı ve gömülü uygulama paketini doğrula. Korumalı HTTPS üzerinden normal etiket, profil yorumu ve takip cevabı akışını canlı Gemini ile sına. Fiziksel cihaz, kalıcı barındırma ve Google oturumu kabulünü ayrı kaydet.
+
+## Faz 19 / Bulut API ve Android güncellemesi
+Nazif API'yi bilgisayardan bağımsız HTTPS adresine yayınla. Android güncellemesinde eski geçici adresi yeni hizmete taşı, eski erişim anahtarını yeni adrese gönderme. Canlı fotoğraf, profil sorusu ve takip cevabını bulut üzerinden sına. İmzayı ve herkese açık APK indirmesini ayrı doğrula.
