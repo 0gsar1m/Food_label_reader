@@ -3,16 +3,21 @@
 10 Kasım 2026. Nazif: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
 Kullanıcı tüm fazları özerk uygulama, test ve sonunda https://github.com/0gsar1m/Food_label_reader.git repoya normal push yetkisi verdi. Fazlar arasında onay isteme.
 Son direktif: Android etiketi çevrimdışı oku, kişisel yorum ve profil soruları için GPT-6 Luna kullan. Üretimde Gemini'ye dönüş yok.
-Etkin faz: 21. v7 yayınlandı. Sonraki iş Railway redeploy onayı ve fiziksel Android cihaz kabulü.
+Etkin faz: 21. v10 yayınlandı. Tarama cihazda onaylandı ("tamam çalıştı"). Sonraki iş Luna yorumunun gerçek cihazda granola senaryosu ile doğrulanması.
 
 ## Claude Code için devam noktası
 
-- Yayın: Nazif v7 APK — `C:\Users\emir\Downloads\Nazif-v7.apk`, SHA-256 8892E30226E132D0BC5F4806B9B8ECC7353393705FA8A3E24800DEF8DDBA3EB9. Paket com.ogsarim.etiket, sürüm kodu 7, geliştirme imzalı. Commit 16f588f, etiket v1.0.7.
-- Android: Etiket fotoğrafı artık tüm platformlarda GPT-6 Luna üzerinden `/api/analyze` ile okunuyor. Offline OCR kaldırıldı. Besin tablosu fotoğrafı ve makro görüntüleme kaldırıldı. Profil amaçları yalnız "İçeriği anlamak" ve "Belirtilerimi anlamak". Choice bileşeni görsel checkbox/radio sembol kullanıyor.
+- Yayın: Nazif v10 APK — `C:\Users\emir\Downloads\Nazif-v10.apk`, 43 MB, ARM64. Paket com.ogsarim.etiket, sürüm kodu 10, geliştirme imzalı. Commit b293f18, etiket v1.0.10. Önceki v7 commit 16f588f.
+- Android: Etiket fotoğrafı GPT-6 Luna üzerinden `/api/analyze` ile okunuyor. Offline OCR kaldırıldı. Review ekranında gönder düğmesi yerine yerleşik spinner + "Etiket okunuyor…" gösteriliyor; gövde ve onay metni yükleme sırasında gizli. İkinci fotoğraf yerine iptal düğmesi çıkıyor. Çift gönderim engellendi.
+- shared/analysis.ts `normalized()` işlevi noktalama işaretlerini de temizleyecek şekilde güncellendi (`[^\p{L}\p{N}]+` → boşluk). Bu INVALID_RESULT hatasını çözdü; hem server hem APK etkilendiğinden v10 gerekli oldu.
+- server/personal.ts Luna yorum istemi yeniden yazıldı: ilk cümle bulunan kaçınılan içeriği adlandırır, süt gibi faktörler günlükteki o öğüne atfedilir, tüketim bilinmiyorsa "Yediysen…" koşullu çerçevesi, "buradan anlayamıyorum" ve benzeri hedge ifadeler engellendi.
+- server/prompt.ts kanıt talimatı güçlendirildi: evidence rawText'ten birebir karakter kopyasıdır, parafraz/çeviri/ellipsis yasak.
+- android/app/build.gradle: `splits { abi { include 'arm64-v8a'; universalApk false } }` bloğu eklendi → APK 43 MB (önceki 138 MB evrensel build).
 - Bulut: Railway `Nazif / nazif-api`, [sağlık ucu](https://nazif-api-production.up.railway.app/health). `server/index.ts` üretimde `OPENAI_API_KEY` ve `OPENAI_MODEL=gpt-6-luna` kullanır. `POST /api/personalize` yeni `openaiConsent` iznini arar. Önceki Gemini izni taşınmaz. Anahtar yerel git dışı `.env` ve Railway servis sırrında. Değeri yazdırma veya kopyalama. Anahtar 10 Kasım'da yedi gün için açıldı. Kullanıcı 5 USD kredi yükledi.
 - Misafir erişimi: İstanbul saatiyle 11 Kasım 2026 23.59 sonuna kadar ve Railway süreci başına toplam 60 istek. Bu süre ve kota yalnız bulut işlemlerini etkiler. Yerel tünel kapalı. Google OAuth yapılandırılmadı.
-- Doğrulandı: imza, herkese açık APK indirmesi ve SHA-256, 95 birim/API ve 3 profil tarayıcı testi, üç platform export, API smoke. Gerçek noodle fotoğrafı masaüstü OCR ile glüten ve kereviz beyanını verdi. Railway Luna gerçek etiket metniyle yorum ve üç profil sorusu döndürdü. Ayrı canlı testte iki sentetik öğün kaydına dayandı ve takip sorusu üretti.
-- İlk iş: v6'yı mevcut uygulamanın üzerine kur. Uçak modunda galeriden kullanıcının `C:/Users/emir/Downloads/71IfuN7U2mL.jpg` görselini açıp **Etiketi cihazda oku** ile glüten ve kereviz beyanını kontrol et. Ardından interneti aç, OpenAI iznini seç, **Profilime göre soru öner** ve **Bulut modeliyle ayrıntılandır** akışlarını dene. Donanım sonucu gelmeden fiziksel kabulü kapatma. Kullanıcı görselini repoya ekleme.
+- Doğrulandı: v10 APK gerçek Android cihazda çalıştı ("tamam çalıştı"). Railway sağlık ucu `{"status":"ok","configured":true,"model":"gpt-6-luna","personalConfigured":true}`. 95 birim/API ve 3 profil tarayıcı testi, üç platform export, API smoke. Gerçek noodle fotoğrafı tarama v10 sonrası başarılı.
+- Build zorunluluğu: `.env` dosyası APK derleme anında kök dizinde bulunmalı (`EXPO_PUBLIC_API_URL=https://nazif-api-production.up.railway.app`). Gitignored; her yeni derleme ortamında elle oluşturulmalı.
+- Sonraki iş: Luna yorumunun granola senaryosunda (tüketim bilinmiyor / onaylandı / günlükte benzer öğün var) gerçek cihazda doğrulanması. Yorum ilk cümlesinde bulunan kaçınılan içeriği adlandırmalı; süt gibi faktörler günlükteki öğüne atfedilmeli; hedge ifade olmadan yanıt üretmeli.
 - Sorun çıktığında önce APK sürüm kodunu, hata metnini, uçak modu durumunu ve hangi adımda oluştuğunu ayır. Bulut için önce `/health`, sonra izinli sentetik `/api/personalize` isteği. Sağlık ucu anahtarın tanımlı olduğunu gösterir, kredi veya canlı model çağrısını doğrulamaz. Android için cihaz varsa uygulama paketine filtrelenmiş hata kaydı al ve özel veriyi loglama.
 
 ## Önce okunacaklar

@@ -83,3 +83,23 @@ Android sürüm kodu 5 derlendi ve GitHub Releases üzerinden yayınlandı. APK 
 Açık kabul: fiziksel Android'de uçak modunda gerçek fotoğrafı okut, ardından interneti açıp OpenAI izniyle soru ve kişisel yorum iste. Sonuçlar kullanıcıdan veya cihaz testinden gelene kadar fazın donanım kabulü açık. [Uygulama adımları](ACTIVE_CONTEXT.md#claude-code-için-devam-noktası)
 
 10 Kasım 2026: Android v6 (ad6fafb) GitHub Releases üzerinden yayımlandı. APK sürüm kodu, geliştirme imzası, yükleme özeti ve herkese açık indirme doğrulandı. Railway v6 dağıtımı başarılı; gerçek noodle etiketinin masaüstü OCR metni ve sentetik günlükle canlı Luna yorumu doğrulandı. Fiziksel Android kabulü açık.
+
+## Faz 21 / v8–v10 düzeltmeleri ve Luna yorum iyileştirmesi
+
+APK versionCode sırası: v8 (aaac034) → v9 (0b5b94e, .env Railway URL) → v10 (b293f18, evidence normalization fix).
+
+| Değişiklik | Commit | Durum |
+|---|---|---|
+| Review ekranı yerleşik spinner + iptal | aaac034 | Tamamlandı |
+| Luna yorum istemi yeniden yazıldı | aaac034 | Tamamlandı |
+| server/prompt.ts kanıt talimatı güçlendirildi | 02f4247 | Tamamlandı |
+| shared/analysis.ts noktalama normalizasyonu | 02f4247 | Tamamlandı — INVALID_RESULT sorunu çözüldü |
+| .env ile Railway URL APK'ya bake | 0b5b94e | Tamamlandı |
+| build.gradle ARM64 ABI splits (43 MB) | b293f18 | Tamamlandı |
+| versionCode 10, etiket v1.0.10 | b293f18 | Tamamlandı |
+
+Kabul kanıtı: kullanıcı v10 APK ile gerçek cihazda noodle etiketini başarıyla taradı ("tamam çalıştı"). Railway sağlık ucu `configured: true, personalConfigured: true`. 95/95 birim/API testi, TypeScript strict temiz.
+
+Açık: Luna granola senaryosu (3 tüketim durumu) cihazda formal test edilmedi. GitHub Releases v10 manuel yükleme bekliyor (gh CLI yok).
+
+Derleme zorunluluğu: Kök dizinde `.env` → `EXPO_PUBLIC_API_URL=https://nazif-api-production.up.railway.app` (gitignored).
