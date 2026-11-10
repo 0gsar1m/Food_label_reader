@@ -265,7 +265,9 @@ export function createApi(config: ApiConfig): express.Express {
     const parsed = personalRequestSchema.safeParse(req.body);
     if (
       !parsed.success ||
-      !parsed.data.profile.geminiConsent ||
+      !(config.personalProvider === 'openai'
+        ? parsed.data.profile.openaiConsent
+        : parsed.data.profile.geminiConsent) ||
       (parsed.data.task === 'interpret' && !parsed.data.analysis)
     ) {
       res.status(400).json({ error: 'CONSENT_OR_INPUT_REQUIRED' });

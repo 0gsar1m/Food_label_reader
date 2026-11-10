@@ -73,3 +73,7 @@ Railway üretim dağıtımı başarılı. Önceki yerel tünel ve ona bağlı su
 Lint, strict typecheck, 92 birim/API testi, üç platform export, Android release ve derlenmiş API smoke geçti. Canlı kabul ve Gemini yedek model kanıtı PROD_FLOW_LOG.md dosyasında.
 
 Android profil sonucu düzeltmesinde 92 birim/API testi ve üç profil tarayıcı testi geçti. Tarayıcı testinde başarısız istekten sonra sayfa yenilendi, beşinci adım ve izin seçimi geri geldi, tekrar denemede öneri gösterildi. Bulut Gemini profil isteği 200 ve üç öneri döndürdü. Kullanıcının telefonundan native çökme kaydı alınmadı.
+
+## Faz 20 / Çevrimdışı OCR ve GPT-6 Luna
+
+Gerçek noodle fotoğrafı masaüstü OCR ile işlendi. Aynı metin ayrıştırıcı glüten ve kereviz beyanını etiket kanıtıyla çıkardı. Railway'de GPT-6 Luna 200 ile yorum ve üç soru döndürdü. Android derlemesi ve fiziksel cihaz kabulü ayrı izlenir. Besin tablosunda doğrulanmamış sütunlardan miktar hesaplanmaz.

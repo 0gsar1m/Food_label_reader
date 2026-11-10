@@ -79,3 +79,9 @@ Bulut API `https://nazif-api-production.up.railway.app`. Yerel tünel ve geçici
 Android profil sonucu düzeltmesi: React Native Android'in desteklemediği status erişilebilirlik rolü sonuç metninden kaldırıldı, web rolü ve canlı duyuru korundu. Soru isteği öncesi taslak mevcut şifreli kasaya yazılır. Uygulama yeniden açılırsa soru adımı ve girilen bilgiler geri gelir. Profil kaydedilir veya silinirse taslak temizlenir.
 
 Sürüm 4 APK GitHub Releases üzerinden yayınlandı. Railway'de misafir sınırı 60 isteğe çıkarıldı, mevcut süre sonu korundu. Sağlayıcı 429 döndürdüğünde farklı Gemini modeli bir kez denenir. Fotoğraf yedeği 3.6 Flash. Aynı etiket yerel sağlayıcı çağrısında iki Flash modeliyle okunurken yeni Railway dağıtımında 429 sürdü. Üretim kabulü açık. Kullanıcı cihazda çevrimdışı OCR ve metin temelli kişisel yorum alternatifini gündeme getirdi.
+
+Faz 20 etkin. Android etiket okuması için yerel Expo modülü ve APK'ya gömülü ML Kit eklendi. Yerel ayrıştırıcı etiket kanıtı olmadan alerjen sonucu üretmez. Kullanıcının noodle fotoğrafı çalışma alanı dışından masaüstü OCR ile okutuldu, gerçek metinde glüten ve kereviz beyanı doğrulandı. Bu test Android ML Kit cihaz testi yerine geçmez.
+
+OpenAI projesinde Responses yazma kapsamlı, yedi günlük Nazif anahtarı oluşturuldu ve git dışında .env'e yazıldı. Kullanıcı 5 USD API kredisi yükledi. Üretim hedefi GPT-6 Luna ve bağımsız OpenAI aktarım izni. APK sürüm kodu 5. Bulut kabulü, fiziksel Android OCR ve APK yayın durumu ayrı doğrulanacak. Devam edecek agent .env değerlerini yazdırmadan Railway servisini ve Gradle çıktısını doğrulamalı.
+
+Railway üretim API'sinde gerçek noodle etiketinden masaüstünde çıkarılan metinle GPT-6 Luna kişisel yorum ve soru seçimi ayrı ayrı HTTP 200 döndürdü. Yeni API başlangıç yapılandırması yalnız OpenAI kullanır. OCR'ın Android cihaz kabulü ve APK teslimini aşağıdaki faz kaydından takip et.

@@ -131,7 +131,7 @@ export function Settings({
       {expanded && (
         <View style={{ gap: 14 }}>
           <Text style={ui.small}>
-            Gemini anahtarı sunucuda tutulur. Buraya Gemini anahtarı yazma. Yalnız kendi API
+            OpenAI anahtarı sunucuda tutulur. Buraya OpenAI anahtarı yazma. Yalnız kendi API
             sunucunun adresini ve varsa erişim anahtarını gir.
           </Text>
           <Text style={ui.strong}>Sunucu adresi</Text>

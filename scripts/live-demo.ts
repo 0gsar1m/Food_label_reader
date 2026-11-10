@@ -8,56 +8,22 @@ import { makeDemoVault } from '../shared/demoScenario';
 import { demoAnalysis } from '../src/data/demo';
 import { personalEnvelope } from '../src/lib/personalApi';
 
-const key = process.env.GEMINI_API_KEY ?? '';
-const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
-const personalModel = process.env.PERSONAL_MODEL?.startsWith('gemini-')
-  ? process.env.PERSONAL_MODEL
-  : 'gemini-3.5-flash-lite';
+const key = process.env.OPENAI_API_KEY ?? '';
+const model = 'gpt-6-luna';
 const token = randomUUID();
 const origin = 'http://localhost:8082';
 const provider: typeof fetch = async (input, init) => {
   const response = await fetch(input, init);
   console.log(JSON.stringify({ event: 'provider', status: response.status }));
-  if (process.argv.includes('--inspect-synthetic') && response.ok) {
-    const candidate = z
-      .object({
-        candidates: z.array(
-          z.object({
-            finishReason: z.string().optional(),
-            content: z
-              .object({
-                parts: z.array(
-                  z.object({
-                    text: z.string().optional(),
-                    thought: z.boolean().optional(),
-                  }),
-                ),
-              })
-              .optional(),
-          }),
-        ),
-      })
-      .safeParse(await response.clone().json());
-    const first = candidate.success ? candidate.data.candidates[0] : undefined;
-    console.log(
-      JSON.stringify({
-        event: 'synthetic-output',
-        finish: first?.finishReason,
-        text: first?.content?.parts
-          .filter((part) => !part.thought)
-          .map((part) => part.text)
-          .join('')
-          .slice(0, 2400),
-      }),
-    );
-  }
   return response;
 };
 const app = createApi({
   apiKey: key,
+  provider: 'openai',
   model,
   personalKey: key,
-  personalModel,
+  personalModel: model,
+  personalProvider: 'openai',
   fetcher: provider,
   personalFetcher: provider,
   accessToken: token,
@@ -137,7 +103,7 @@ async function main(): Promise<void> {
     const scenario = makeDemoVault();
     const request = {
       consent: true,
-      profile: { ...scenario.profile, geminiConsent: true },
+      profile: { ...scenario.profile, openaiConsent: true },
       diary: scenario.diary,
       analysis: demoAnalysis,
       task: 'interpret',

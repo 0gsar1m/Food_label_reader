@@ -20,6 +20,7 @@ import { IconButton } from './src/components/Controls';
 import { useDeviceData } from './src/hooks/useDeviceData';
 import { pickPhoto, type PreparedPhoto } from './src/lib/photo';
 import { requestAnalysis, ScanError } from './src/lib/api';
+import { readOfflineLabel } from './src/lib/offlineOcr';
 import { makeDemoVault } from './shared/demoScenario';
 import { demoAnalysis } from './src/data/demo';
 import type { ScanRecord } from './shared/analysis';
@@ -155,13 +156,16 @@ function Application() {
       controller.abort();
     }, 40_000);
     try {
-      const analysis = await requestAnalysis(
-        device.apiUrl,
-        photo.base64,
-        effectiveToken,
-        controller.signal,
-        nutritionPhoto?.base64,
-      );
+      const analysis =
+        Platform.OS === 'android'
+          ? await readOfflineLabel(photo, nutritionPhoto)
+          : await requestAnalysis(
+              device.apiUrl,
+              photo.base64,
+              effectiveToken,
+              controller.signal,
+              nutritionPhoto?.base64,
+            );
       if (controller.signal.aborted) return;
       const record: ScanRecord = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,

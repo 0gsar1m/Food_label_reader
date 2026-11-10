@@ -7,7 +7,7 @@ import {
   promptForAnswer,
 } from '../shared/profile';
 import { validateAnalysis } from '../shared/analysis';
-import { geminiJson, ProviderError } from './provider';
+import { modelJson, ProviderError } from './provider';
 import { outcomeOf } from '../shared/observations';
 
 /** Curated source snippets are versioned; no live retrieval or invented references. */
@@ -31,6 +31,7 @@ export const healthSources = [
 /** Separately configured health-language provider, with injectable transport for tests. */
 export type PersonalConfig = {
   personalKey?: string;
+  personalProvider?: 'openai';
   personalModel?: string;
   personalFallbackModel?: string;
   personalFetcher?: typeof fetch;
@@ -142,7 +143,7 @@ export async function personalize(
   const questionResponse = personalResponseSchema.pick({ questionSuggestions: true }).required();
   let usage = { input_tokens: 0, output_tokens: 0 };
   try {
-    const raw = await geminiJson(
+    const raw = await modelJson(
       [
         {
           text: JSON.stringify({
@@ -157,6 +158,7 @@ export async function personalize(
       {
         apiKey: config.personalKey ?? '',
         model,
+        provider: config.personalProvider,
         fallbackModel: config.personalFallbackModel,
         reportModel: (value) => {
           model = value;

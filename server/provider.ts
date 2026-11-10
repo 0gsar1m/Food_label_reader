@@ -41,6 +41,7 @@ export class ProviderError extends Error {
 export type VisionConfig = {
   apiKey: string;
   model: string;
+  provider?: 'openai';
   fallbackModel?: string;
   fetcher?: typeof fetch;
   reportUsage?: (usage: { inputTokens: number; outputTokens: number }) => void;
@@ -93,7 +94,7 @@ async function visionJson(
   schema: object,
   nutritionImage?: string,
 ): Promise<unknown> {
-  return geminiJson(
+  return modelJson(
     [
       { inlineData: { mimeType, data: image } },
       ...(nutritionImage ? [{ inlineData: { mimeType: 'image/jpeg', data: nutritionImage } }] : []),
@@ -108,7 +109,7 @@ async function visionJson(
 }
 
 /** Shared Gemini JSON transport for image and text tasks. */
-export async function geminiJson(
+export async function modelJson(
   parts: ({ text: string } | { inlineData: { mimeType: string; data: string } })[],
   config: VisionConfig,
   signal: AbortSignal,
@@ -116,6 +117,71 @@ export async function geminiJson(
   schema: object,
   maxOutputTokens: number,
 ): Promise<unknown> {
+  if (config.provider === 'openai') {
+    const response = await (config.fetcher ?? fetch)('https://api.openai.com/v1/responses', {
+      method: 'POST',
+      signal,
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${config.apiKey}` },
+      body: JSON.stringify({
+        model: config.model,
+        store: false,
+        reasoning: { effort: 'low' },
+        instructions: `${prompt}\nReturn a JSON object matching this schema: ${JSON.stringify(schema)}`,
+        input: [
+          {
+            role: 'user',
+            content: [
+              { type: 'input_text', text: 'Return the result as JSON.' },
+              ...parts.map((part) =>
+                'text' in part
+                  ? { type: 'input_text', text: part.text }
+                  : {
+                      type: 'input_image',
+                      detail: 'high',
+                      image_url: `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`,
+                    },
+              ),
+            ],
+          },
+        ],
+        text: { format: { type: 'json_object' } },
+        max_output_tokens: maxOutputTokens + 1024,
+      }),
+    });
+    if (!response.ok)
+      throw new ProviderError(response.status === 429 ? 'RATE_LIMITED' : 'PROVIDER_UNAVAILABLE');
+    try {
+      const result = z
+        .object({
+          status: z.literal('completed'),
+          usage: z.object({ input_tokens: z.number(), output_tokens: z.number() }).nullish(),
+          output: z.array(
+            z.object({
+              type: z.string(),
+              content: z
+                .array(z.object({ type: z.string(), text: z.string().optional() }))
+                .optional(),
+            }),
+          ),
+        })
+        .parse(await response.json());
+      const text = result.output
+        .flatMap((item) => (item.type === 'message' ? (item.content ?? []) : []))
+        .filter((part) => part.type === 'output_text')
+        .map((part) => part.text ?? '')
+        .join('');
+      const value: unknown = JSON.parse(text);
+      if (result.usage)
+        config.reportUsage?.({
+          inputTokens: result.usage.input_tokens,
+          outputTokens: result.usage.output_tokens,
+        });
+      config.reportModel?.(config.model);
+      return value;
+    } catch {
+      throw new ProviderError('INVALID_RESULT');
+    }
+  }
   const request: RequestInit = {
     method: 'POST',
     signal,

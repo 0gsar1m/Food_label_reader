@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Platform, ScrollView, Text, View } from 'react-native';
 import { Button, Notice, ScreenHeader } from '../components/Controls';
 import { ui, theme } from '../theme';
 import { copy } from '../content';
@@ -59,7 +59,9 @@ export function Review({
               </Text>
             </View>
             <Text style={ui.small}>
-              Bağlantıya ve görselin okunabilirliğine göre biraz sürebilir. Bu ekranı açık tut.
+              {Platform.OS === 'android'
+                ? 'Fotoğraf cihazında okunuyor.'
+                : 'Bağlantıya ve görselin okunabilirliğine göre biraz sürebilir.'}
             </Text>
             <Button label="Okumayı iptal et" secondary onPress={onCancel} />
           </View>
@@ -90,7 +92,11 @@ export function Review({
               </>
             )}
             <View style={{ gap: 8 }}>
-              <Text style={ui.small}>{copy.photoConsent}</Text>
+              <Text style={ui.small}>
+                {Platform.OS === 'android'
+                  ? 'Etiket fotoğrafı cihazında işlenir ve sunucuya gönderilmez.'
+                  : copy.photoConsent}
+              </Text>
               <Text
                 accessibilityRole="link"
                 onPress={onPrivacy}
@@ -106,7 +112,11 @@ export function Review({
                 Gizlilik politikasını oku
               </Text>
             </View>
-            <Button label="Fotoğrafı gönder ve oku" icon="scan" onPress={onScan} />
+            <Button
+              label={Platform.OS === 'android' ? 'Etiketi cihazda oku' : 'Fotoğrafı gönder ve oku'}
+              icon="scan"
+              onPress={onScan}
+            />
             <Button label="Başka fotoğraf çek" secondary onPress={onRetake} />
           </>
         )}

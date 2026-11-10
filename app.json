@@ -16,7 +16,7 @@
     },
     "android": {
       "package": "com.ogsarim.etiket",
-      "versionCode": 4,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#F6F4ED"

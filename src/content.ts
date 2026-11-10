@@ -9,10 +9,10 @@ export const copy = {
   safety:
     'Bu okuma tüketim güvenliği garantisi vermez. Alerjin varsa ambalajı ve üretici bilgisini ayrıca kontrol et.',
   photoConsent:
-    'Fotoğraf, açıklama oluşturmak için sunucun üzerinden Google Gemini hizmetine gönderilir. Kişisel bilgi içeren alanları kadraja alma. Sunucumuz fotoğrafı kaydetmez.',
+    'Fotoğraf, açıklama oluşturmak için sunucun üzerinden OpenAI hizmetine gönderilir. Kişisel bilgi içeren alanları kadraja alma. Sunucumuz fotoğrafı kaydetmez.',
   errors: {
     NOT_CONFIGURED:
-      'Sunucuda Gemini anahtarı henüz tanımlanmamış. Bağlantı ayarlarını kontrol edebilir veya örnek sonucu inceleyebilirsin.',
+      'Sunucuda OpenAI anahtarı henüz tanımlanmamış. Bağlantı ayarlarını kontrol edebilir veya örnek sonucu inceleyebilirsin.',
     UNAUTHORIZED:
       'Sunucu erişim anahtarı eşleşmedi. Tercihler bölümündeki bağlantı ayarını kontrol et.',
     INVALID_IMAGE: 'Bu fotoğraf işlenemedi. Etiketi yeniden çek veya başka bir görsel seç.',

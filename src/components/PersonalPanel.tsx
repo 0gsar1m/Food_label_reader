@@ -30,7 +30,7 @@ export function PersonalPanel({
   onDiary: () => void;
 }) {
   const [scenarioConsent, setScenarioConsent] = useState(false);
-  const hasConsent = scenario ? scenarioConsent : vault.profile.geminiConsent;
+  const hasConsent = scenario ? scenarioConsent : vault.profile.openaiConsent;
   const [scenarioDiary, setScenarioDiary] = useState(vault.diary);
   const [rehearsal, setRehearsal] = useState(false);
   const [answer, setAnswer] = useState('');
@@ -60,7 +60,7 @@ export function PersonalPanel({
       setReply(
         await requestPersonal(apiUrl, token, {
           consent: true,
-          profile: { ...vault.profile, geminiConsent: hasConsent },
+          profile: { ...vault.profile, openaiConsent: hasConsent },
           ...(scenario ? { scenario: true as const } : {}),
           diary: records.slice(0, 20),
           analysis,
@@ -207,7 +207,7 @@ export function PersonalPanel({
             </Text>
           ))}
           <Choice
-            label="Kurgu profili ve örnek öğünleri Gemini’ye gönder"
+            label="Kurgu profili ve örnek öğünleri OpenAI’ye gönder"
             checked={scenarioConsent}
             onPress={() => setScenarioConsent(!scenarioConsent)}
           />
@@ -234,9 +234,9 @@ export function PersonalPanel({
       )}
       <Text style={ui.small}>
         {hasConsent
-          ? 'Yorum isteğinde profil özeti, son 20 öğün kaydı ve bu etiket metni sunucu üzerinden Google Gemini’e gönderilir.'
+          ? 'Yorum isteğinde profil özeti, son 20 öğün kaydı ve bu etiket metni sunucu üzerinden OpenAI’e gönderilir.'
           : scenario
-            ? 'Gemini yanıtını görmek için örnek verinin gönderimine izin ver.'
+            ? 'OpenAI yanıtını görmek için örnek verinin gönderimine izin ver.'
             : 'Kişisel LLM yorumu için profilinde aktarım iznini aç. Yerel porsiyon hesabı izin gerektirmez.'}
       </Text>
       <Button
@@ -250,7 +250,7 @@ export function PersonalPanel({
       {savedAnswer ? <Text style={ui.small}>Öğüne eklenen cevap: {savedAnswer}</Text> : null}
       {reply && (
         <View style={{ gap: 16 }}>
-          {rehearsal && <Notice>Hazır kurgu yanıt. Bu prova Gemini’ye istek göndermez.</Notice>}
+          {rehearsal && <Notice>Hazır kurgu yanıt. Bu prova OpenAI’ye istek göndermez.</Notice>}
           <Text style={ui.body}>{reply.result.summary}</Text>
           {reply.result.findings.map((f, i) => (
             <View key={i} style={{ gap: 8 }}>

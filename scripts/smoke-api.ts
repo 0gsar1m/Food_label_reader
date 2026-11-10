@@ -9,7 +9,7 @@ async function main(): Promise<void> {
       PORT: '8788',
       NODE_ENV: 'production',
       APP_ACCESS_TOKEN: 'local-smoke-token-32-characters-long',
-      GEMINI_API_KEY: '',
+      OPENAI_API_KEY: '',
     },
     stdio: ['ignore', 'pipe', 'pipe'],
   });

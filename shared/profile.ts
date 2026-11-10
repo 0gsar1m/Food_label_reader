@@ -30,6 +30,7 @@ export const profileSchema = z.object({
   timing: z.string().max(400),
   routine: z.string().max(600),
   geminiConsent: z.boolean().default(false),
+  openaiConsent: z.boolean().optional(),
   answers: z.partialRecord(questionId, z.string().max(600)),
   answerPrompts: z.partialRecord(questionId, questionText).optional(),
   avoidedFoods: z.array(z.string().trim().min(1).max(80)).max(20).optional(),

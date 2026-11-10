@@ -9,7 +9,7 @@ const privacy = [
   ],
   [
     'Menü, tabak ve barkod',
-    'Menü/tabak fotoğrafı yalnız gönder düğmesiyle aynı Google Gemini hizmetine aktarılır; sağlık profili eklenmez. Menü/tabak görsel sonucu geçmişe kaydedilmez; teyit ettiğin öğün günlüğe eklenebilir. Barkod araması sunucu üzerinden Open Food Facts açık kataloğuna yalnız barkodu gönderir. Bu servis barkod ve sunucu bağlantı bilgisini görür; fotoğraf, profil veya kullanıcı kimliği gönderilmez. Katalog verisi fotoğraftan okunmuş etiket yerine geçmez.',
+    'Menü/tabak fotoğrafı yalnız gönder düğmesiyle OpenAI hizmetine aktarılır; sağlık profili eklenmez. Menü/tabak görsel sonucu geçmişe kaydedilmez; teyit ettiğin öğün günlüğe eklenebilir. Barkod araması sunucu üzerinden Open Food Facts açık kataloğuna yalnız barkodu gönderir. Bu servis barkod ve sunucu bağlantı bilgisini görür; fotoğraf, profil veya kullanıcı kimliği gönderilmez. Katalog verisi fotoğraftan okunmuş etiket yerine geçmez.',
   ],
   [
     'Google hesabı',
@@ -21,11 +21,11 @@ const privacy = [
   ],
   [
     'Kişisel model yorumu',
-    'Yalnız aktarım iznini açıp ilgili yorum veya soru özelleştirme düğmesine bastığında profil özeti, yorum için son 20 öğün kaydı ve etiket metni sunucu üzerinden Google Gemini hizmetine gönderilir. Soru özelleştirmesinde öğün ve etiket gönderilmez. Alerjen tercihleri Google görsel isteğine eklenmez. Sunucu sağlık içeriğini kaydetmez. Sağlayıcının saklama koşulları kendi hesabının sözleşmesine bağlıdır. İzni kapatmak yeni aktarımı durdurur; daha önce sağlayıcıya aktarılan veriyi bu uygulamadan geri çekmez.',
+    'Yalnız aktarım iznini açıp ilgili yorum veya soru özelleştirme düğmesine bastığında profil özeti, yorum için son 20 öğün kaydı ve etiket metni sunucu üzerinden OpenAI hizmetine gönderilir. Soru özelleştirmesinde öğün ve etiket gönderilmez. Alerjen tercihleri görsel isteğine eklenmez. Sunucu sağlık içeriğini kaydetmez. Sağlayıcının saklama koşulları kendi hesabının sözleşmesine bağlıdır. İzni kapatmak yeni aktarımı durdurur; daha önce sağlayıcıya aktarılan veriyi bu uygulamadan geri çekmez.',
   ],
   [
     'İşlenen veriler',
-    'Seçtiğin fotoğraf, yalnız fotoğrafı gönderme işleminden sonra yapılandırılmış API sunucusuna, ardından Google Gemini API hizmetine gönderilir. Fotoğrafa kişisel bilgi eklememeni öneririz. API anahtarı yalnız sunucuda tutulur.',
+    'Android etiket fotoğrafı cihazda okunur. Diğer platformlarda etiket fotoğrafı, gönderme işlemiyle sunucu üzerinden OpenAI API hizmetine aktarılır. API anahtarı yalnız sunucuda tutulur.',
   ],
   [
     'Cihazdaki kayıtlar',
@@ -37,7 +37,7 @@ const privacy = [
   ],
   [
     'Üçüncü taraflar',
-    'Google tarafından veri işleme ve saklama, kullanılan Gemini hesabının planına ve geçerli şartlarına tabidir. Ücretsiz ve ücretli hizmet koşulları farklı olabilir. Barındırma sağlayıcısı IP ve teknik bağlantı günlükleri tutabilir. Yurt dışı işleme söz konusu olabilir.',
+    'OpenAI tarafından veri işleme ve saklama, kullanılan API hesabının geçerli şartlarına tabidir. Ücretsiz ve ücretli hizmet koşulları farklı olabilir. Barındırma sağlayıcısı IP ve teknik bağlantı günlükleri tutabilir. Yurt dışı işleme söz konusu olabilir.',
   ],
   [
     'İzinler ve erişim',
@@ -63,7 +63,7 @@ const terms = [
   ],
   [
     'Bağlantı ve maliyet',
-    'Gerçek fotoğraf okuması internet bağlantısı ve sunucuda geçerli Gemini API anahtarı gerektirir. Model sağlayıcısı ve barındırma maliyetleri yapılandırılan hesap sahibine aittir. Bu sürümde ödeme veya abonelik sistemi bulunmaz.',
+    'Android etiket okuması cihazda çalışır. Bulut yorumu ve diğer çevrimiçi analizler internet bağlantısı gerektirir. Model sağlayıcısı ve barındırma maliyetleri yapılandırılan hesap sahibine aittir. Bu sürümde ödeme veya abonelik sistemi bulunmaz.',
   ],
   [
     'Uygun kullanım',
@@ -99,10 +99,12 @@ export function Legal({ kind, onBack }: { kind: 'privacy' | 'terms'; onBack: () 
             accessibilityRole="link"
             style={[ui.body, { textDecorationLine: 'underline', paddingVertical: 14 }]}
             onPress={() => {
-              void Linking.openURL('https://ai.google.dev/gemini-api/terms').catch(() => undefined);
+              void Linking.openURL('https://openai.com/policies/business-terms/').catch(
+                () => undefined,
+              );
             }}
           >
-            Google Gemini API hizmet koşulları
+            OpenAI API hizmet koşulları
           </Text>
         )}
       </ScrollView>

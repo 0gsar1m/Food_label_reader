@@ -5,17 +5,8 @@ import { createApi } from './app';
 const environment = z
   .object({
     PORT: z.coerce.number().int().min(1).max(65535).default(8787),
-    GEMINI_API_KEY: z.string().default(''),
-    GEMINI_MODEL: z
-      .string()
-      .regex(/^[a-zA-Z0-9._-]+$/)
-      .default('gemini-3.5-flash-lite'),
-    PERSONAL_MODEL: z
-      .string()
-      .regex(/^[a-zA-Z0-9._-]+$/)
-      .default('gemini-3.5-flash-lite'),
-    GEMINI_FALLBACK_MODEL: z.string().regex(/^[a-zA-Z0-9._-]+$/).optional(),
-    PERSONAL_FALLBACK_MODEL: z.string().regex(/^[a-zA-Z0-9._-]+$/).optional(),
+    OPENAI_API_KEY: z.string().default(''),
+    OPENAI_MODEL: z.literal('gpt-6-luna').default('gpt-6-luna'),
     GOOGLE_CLIENT_IDS: z.string().default(''),
     SESSION_SECRET: z.string().min(32).optional(),
     REQUIRE_GOOGLE_AUTH: z.enum(['true', 'false']).default('false'),
@@ -29,17 +20,17 @@ const environment = z
   .parse(process.env);
 
 const app = createApi({
-  apiKey: environment.GEMINI_API_KEY,
+  apiKey: environment.OPENAI_API_KEY,
+  provider: 'openai',
   googleClientIds: environment.GOOGLE_CLIENT_IDS.split(',')
     .map((v) => v.trim())
     .filter(Boolean),
   sessionSecret: environment.SESSION_SECRET,
   requireGoogleAuth: environment.REQUIRE_GOOGLE_AUTH === 'true',
-  personalKey: environment.GEMINI_API_KEY,
-  personalModel: environment.PERSONAL_MODEL,
-  personalFallbackModel: environment.PERSONAL_FALLBACK_MODEL,
-  model: environment.GEMINI_MODEL,
-  fallbackModel: environment.GEMINI_FALLBACK_MODEL,
+  personalKey: environment.OPENAI_API_KEY,
+  personalProvider: 'openai',
+  personalModel: environment.OPENAI_MODEL,
+  model: environment.OPENAI_MODEL,
   accessToken: environment.APP_ACCESS_TOKEN,
   guestAccessUntil: environment.GUEST_ACCESS_UNTIL
     ? Date.parse(environment.GUEST_ACCESS_UNTIL)
@@ -51,7 +42,7 @@ const app = createApi({
 });
 const server = app.listen(environment.PORT, '0.0.0.0', () =>
   console.info(
-    `Nazif API listening on port ${environment.PORT}; model ${environment.GEMINI_MODEL}`,
+    `Nazif API listening on port ${environment.PORT}; model ${environment.OPENAI_MODEL}`,
   ),
 );
 server.requestTimeout = 45_000;

@@ -97,3 +97,7 @@ Normal Android paketini bağımsız kurulum için derle, imzayı ve gömülü uy
 
 ## Faz 19 / Bulut API ve Android güncellemesi
 Nazif API'yi bilgisayardan bağımsız HTTPS adresine yayınla. Android güncellemesinde eski geçici adresi yeni hizmete taşı, eski erişim anahtarını yeni adrese gönderme. Canlı fotoğraf, profil sorusu ve takip cevabını bulut üzerinden sına. İmzayı ve herkese açık APK indirmesini ayrı doğrula.
+
+## Faz 20 / Android çevrimdışı etiket ve Luna
+
+Android etiket fotoğrafını gömülü ML Kit ile cihazda metne çevir. Etiket kanıtını koru ve belirsiz besin tablosu değerlerinden hesap yapma. GPT-6 Luna, yeni OpenAI aktarım izniyle etiket metni ve ilgili profil/günlük bağlamını yorumlar. Gerçek fotoğraf, bulut çağrısı, Android paketi ve fiziksel cihaz kabulünü ayrı kaydet.

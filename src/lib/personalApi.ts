@@ -28,7 +28,7 @@ export async function requestPersonal(
   input: z.infer<typeof personalRequestSchema>,
 ) {
   const parsed = personalRequestSchema.parse(input);
-  if (!parsed.profile.geminiConsent)
+  if (!parsed.profile.openaiConsent)
     throw new Error('Kişisel yorum için profil aktarım iznini aç.');
   let response: Response;
   try {
@@ -51,7 +51,7 @@ export async function requestPersonal(
   if (!response.ok)
     throw new Error(
       response.status === 503
-        ? 'Sunucuda kişisel yorum için Google Gemini anahtarı eksik. Profilin cihazda kullanılabilir.'
+        ? 'Sunucuda kişisel yorum için OpenAI anahtarı eksik. Profilin cihazda kullanılabilir.'
         : 'Kişisel yorum tamamlanamadı. Biraz sonra tekrar dene.',
     );
   return personalEnvelope.parse(await response.json());

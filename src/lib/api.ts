@@ -87,5 +87,5 @@ export async function checkConnection(url: string): Promise<string> {
     .parse(await response.json());
   return health.configured
     ? `Sunucu hazır. Model: ${health.model}.${health.authenticationRequired ? ' Erişim anahtarı gerekli.' : ''}`
-    : 'Sunucuya bağlanıldı. Sunucuda Gemini API anahtarı eksik.';
+    : 'Sunucuya bağlanıldı. Sunucuda OpenAI API anahtarı eksik.';
 }

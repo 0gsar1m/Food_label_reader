@@ -75,3 +75,7 @@ Yerel süreçler durdurulduktan sonraki tam akış denemesinde yeni fotoğraf ve
 ### 429 incelemesi
 
 Railway gerçek fotoğraf isteği, dakikalık sayaçta 9 istek hakkı görünürken yaklaşık 5,3 saniyede 429 döndürdü. Aynı görsel ile doğrudan Gemini 3.5 Flash ve 3.6 Flash çağrıları okunabilir çıktı verdi. Railway'e 429 için tek farklı model denemesi ve 60 misafir isteği ayarı yayınlandı. Üretim tekrarında iki fotoğraf isteği 429, soru isteği 502 döndürdü. Google projesinin ödeme/kota durumu doğrulanmadı. Yedek davranışı ve API smoke geçti, toplam 93 birim/API testi geçti.
+
+### Çevrimdışı OCR ve GPT-6 Luna
+
+Kullanıcının noodle etiket fotoğrafı yerelde Türkçe OCR ile işlendi. Ürün metni ayrıştırıcısı glüten ve kereviz için aynı basılı alerjen satırını gösterdi. Railway'de yeni OpenAI aktarım izniyle kişisel yorum HTTP 200 döndü (1.536 giriş, 237 çıkış tokenı). Profil soruları HTTP 200 ve üç öneri döndürdü (595 giriş, 244 çıkış tokenı). Test profili sentetikti, fotoğraf Luna'ya gönderilmedi. Masaüstü OCR, APK içindeki ML Kit'in cihazda çalıştığını tek başına kanıtlamaz.

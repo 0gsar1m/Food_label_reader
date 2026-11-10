@@ -311,25 +311,25 @@ export function ProfileScreen({
               );
             })}
             <Text style={ui.small}>
-              Bu sorular seçimlerine göre hazırlanır. İzin verip düğmeye basarsan Gemini, henüz
+              Bu sorular seçimlerine göre hazırlanır. İzin verip düğmeye basarsan OpenAI, henüz
               yanıtlamadığın konular için profiline göre yeni sorular önerebilir.
             </Text>
             <Choice
-              label="Profil özetimi kişisel yorum ve soru seçimi için sunucu üzerinden Google Gemini’ye göndermeye izin veriyorum"
-              checked={draft.geminiConsent}
-              onPress={() => change('geminiConsent', !draft.geminiConsent)}
+              label="Profil özetimi kişisel yorum ve soru seçimi için sunucu üzerinden OpenAI’ye göndermeye izin veriyorum"
+              checked={draft.openaiConsent ?? false}
+              onPress={() => change('openaiConsent', !draft.openaiConsent)}
             />
             <Button
               label={questionLoading ? 'Sorular hazırlanıyor…' : 'Profilime göre soru öner'}
               secondary
-              disabled={!draft.geminiConsent || busy}
+              disabled={!draft.openaiConsent || busy}
               onPress={() => {
                 void adapt();
               }}
             />
             {questionLoading && (
               <ActivityIndicator
-                accessibilityLabel="Gemini yanıtı bekleniyor"
+                accessibilityLabel="OpenAI yanıtı bekleniyor"
                 color={theme.color.green}
               />
             )}
@@ -366,10 +366,10 @@ export function ProfileScreen({
         {step === 5 && (
           <>
             <Text style={ui.body}>
-              Profilin ve öğün günlüğün cihazında şifreli saklanır. Etiket okurken Gemini’ye
-              yalnızca çektiğin fotoğraflar gönderilir. Soru önerisi istersen, izninle profil özetin
-              kullanılır. İzin verip ayrıntılı yorum istediğinde etiket metni, profil özetin ve son
-              20 öğün kaydın, yorumun kendi deneyimlerine dayanması için Gemini’ye gönderilir.
+              Profilin ve öğün günlüğün cihazında şifreli saklanır. Android’de etiket fotoğrafın
+              cihazda okunur. Soru önerisi istersen, izninle profil özetin kullanılır. İzin verip
+              ayrıntılı yorum istediğinde etiket metni, profil özetin ve son 20 öğün kaydın, yorumun
+              kendi deneyimlerine dayanması için OpenAI’ye gönderilir.
             </Text>
             {Platform.OS === 'web' && (
               <Notice>
@@ -378,9 +378,9 @@ export function ProfileScreen({
               </Notice>
             )}
             <Choice
-              label="Profil ve günlüğüm kişisel yorum için Google Gemini’ye aktarılabilir"
-              checked={draft.geminiConsent}
-              onPress={() => change('geminiConsent', !draft.geminiConsent)}
+              label="Profil ve günlüğüm kişisel yorum için OpenAI’ye aktarılabilir"
+              checked={draft.openaiConsent ?? false}
+              onPress={() => change('openaiConsent', !draft.openaiConsent)}
             />
             <Button
               label="Sağlık verisini JSON olarak dışa aktar"

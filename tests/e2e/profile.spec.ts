@@ -98,9 +98,9 @@ test('explicit consent enables grounded model interpretation and question select
     calls++;
     const input = route.request().postDataJSON();
     expect(input.consent).toBe(true);
-    expect(input.profile.geminiConsent).toBe(true);
+    expect(input.profile.openaiConsent).toBe(true);
     if (calls === 1) {
-      await expect(page.getByLabel('Gemini yanıtı bekleniyor')).toBeVisible();
+      await expect(page.getByLabel('OpenAI yanıtı bekleniyor')).toBeVisible();
       await route.fulfill({ status: 503, json: { error: 'PROVIDER_UNAVAILABLE' } });
       return;
     }
@@ -108,7 +108,7 @@ test('explicit consent enables grounded model interpretation and question select
       ...emptyProfile,
       goals: ['symptoms' as const],
       symptoms: ['bloating' as const],
-      geminiConsent: true,
+      openaiConsent: true,
     };
     const result = {
       summary: 'Bu kontrollü model test yanıtıdır.',
@@ -182,7 +182,7 @@ test('isolated demo asks a follow-up and sends the saved answer on re-evaluation
   await page.route('**/api/personalize', async (route) => {
     const input = route.request().postDataJSON();
     expect(input.scenario).toBe(true);
-    expect(input.profile.geminiConsent).toBe(true);
+    expect(input.profile.openaiConsent).toBe(true);
     expect(input.diary.every((entry: { demo?: boolean }) => entry.demo)).toBe(true);
     calls++;
     const second = calls === 2;
@@ -209,7 +209,7 @@ test('isolated demo asks a follow-up and sends the saved answer on re-evaluation
   const cloud = page.getByRole('button', { name: 'Bulut modeliyle ayrıntılandır' });
   await expect(cloud).toBeDisabled();
   await page
-    .getByRole('checkbox', { name: 'Kurgu profili ve örnek öğünleri Gemini’ye gönder' })
+    .getByRole('checkbox', { name: 'Kurgu profili ve örnek öğünleri OpenAI’ye gönder' })
     .click();
   await cloud.click();
   await expect(page.getByText('Yulafı neyle yedin?')).toBeVisible();
@@ -222,7 +222,7 @@ test('isolated demo asks a follow-up and sends the saved answer on re-evaluation
   expect(await page.evaluate(() => sessionStorage.getItem('etiket.health.v1'))).toBe(vaultBefore);
   await page.getByRole('button', { name: 'Hazır yanıtlarla prova yap' }).click();
   await expect(
-    page.getByText('Hazır kurgu yanıt. Bu prova Gemini’ye istek göndermez.'),
+    page.getByText('Hazır kurgu yanıt. Bu prova OpenAI’ye istek göndermez.'),
   ).toBeVisible();
   await page
     .getByRole('textbox', { name: 'Takip sorusuna cevap' })
