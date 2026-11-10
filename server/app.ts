@@ -24,6 +24,7 @@ export type ApiConfig = VisionConfig &
     trustProxy?: number;
     catalogueFetcher?: typeof fetch;
     guestAccessUntil?: number;
+    guestRequestLimit?: number;
   };
 
 function authorized(expected: string, header: string | undefined): boolean {
@@ -56,7 +57,7 @@ export function createApi(config: ApiConfig): express.Express {
   if (config.requireGoogleAuth && !googleConfigured(config))
     throw new Error('Google authentication is required but not configured.');
   const app = express();
-  let guestRequestsRemaining = 30;
+  let guestRequestsRemaining = config.guestRequestLimit ?? 30;
   const guestAccessOpen = () =>
     !requireAccount && Boolean(config.guestAccessUntil && Date.now() < config.guestAccessUntil);
   app.disable('x-powered-by');

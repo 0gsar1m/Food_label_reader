@@ -139,10 +139,11 @@ export async function geminiJson(
     );
   let model = config.model;
   let response = await call(model);
-  if (response.status === 503) {
+  const backup = config.fallbackModel !== model ? config.fallbackModel : undefined;
+  if (response.status === 503 || (response.status === 429 && backup)) {
     await response.body?.cancel();
     await delay(500, undefined, { signal });
-    model = config.fallbackModel ?? model;
+    model = backup ?? model;
     response = await call(model);
   }
   if (!response.ok)

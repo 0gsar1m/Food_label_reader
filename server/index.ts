@@ -21,6 +21,7 @@ const environment = z
     REQUIRE_GOOGLE_AUTH: z.enum(['true', 'false']).default('false'),
     APP_ACCESS_TOKEN: z.string().min(24).optional(),
     GUEST_ACCESS_UNTIL: z.iso.datetime({ offset: true }).optional(),
+    GUEST_REQUEST_LIMIT: z.coerce.number().int().min(1).max(90).optional(),
     ALLOWED_ORIGINS: z.string().default('http://localhost:8081,http://localhost:8082'),
     NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
     TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(5).default(0),
@@ -43,6 +44,7 @@ const app = createApi({
   guestAccessUntil: environment.GUEST_ACCESS_UNTIL
     ? Date.parse(environment.GUEST_ACCESS_UNTIL)
     : undefined,
+  guestRequestLimit: environment.GUEST_REQUEST_LIMIT,
   origins: environment.ALLOWED_ORIGINS.split(',').map((origin) => origin.trim()),
   production: environment.NODE_ENV === 'production',
   trustProxy: environment.TRUST_PROXY_HOPS,

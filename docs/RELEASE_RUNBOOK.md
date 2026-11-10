@@ -36,10 +36,10 @@ Gerekli ortam:
 - `NODE_ENV=production`
 - `GEMINI_API_KEY`: sağlayıcı sırrı
 - `APP_ACCESS_TOKEN`: rastgele, en az 24 karakter; uygulamanın güvenli bağlantı ayarına girilir
-- `GUEST_ACCESS_UNTIL`: isteğe bağlı ISO 8601 bitiş tarihi. Google hesabı zorunlu değilse anahtarsız istekleri bitişe kadar ve sunucu süreci başına toplam 30 istekle sınırlar. Süreç yeniden başlarsa sayaç sıfırlanır. Sürekli yayında paylaşılan bütçe ve hesap bazlı yetkilendirme gerekir.
+- `GUEST_ACCESS_UNTIL`: isteğe bağlı ISO 8601 bitiş tarihi. Google hesabı zorunlu değilse anahtarsız istekleri bitişe kadar sınırlar. `GUEST_REQUEST_LIMIT` süreç başına toplam hakkı belirler, varsayılan 30 ve üst sınır 90. Süreç yeniden başlarsa sayaç sıfırlanır. Sürekli yayında paylaşılan bütçe ve hesap bazlı yetkilendirme gerekir.
 - `ALLOWED_ORIGINS`: web önizlemesinin gerçek HTTPS origin'i, virgülle ayrılır
 - `GEMINI_MODEL`, `PORT`, gerekiyorsa `TRUST_PROXY_HOPS`
-- `GEMINI_FALLBACK_MODEL` ve `PERSONAL_FALLBACK_MODEL`: isteğe bağlı Gemini modelleri. Yalnız 503 sonrasında, aynı genel süre sınırı içinde tek denemede kullanılır.
+- `GEMINI_FALLBACK_MODEL` ve `PERSONAL_FALLBACK_MODEL`: isteğe bağlı Gemini modelleri. Sağlayıcı 503 veya 429 döndürürse aynı genel süre sınırı içinde farklı model bir kez denenebilir.
 
 Önüne HTTPS reverse proxy koy. TRUST_PROXY_HOPS değerini gerçek proxy zinciriyle eşleştir; herkese güven seçeneği kullanma.
 Native uygulamada CORS güvenlik kontrolü değildir; token ve API oran sınırı uygulanır.

@@ -71,3 +71,7 @@ Bulut dağıtımında anahtarsız /health 200, profil sorusu 200 ve test etiketi
 Yerel tünel ve önceki API kapatıldı. Railway /health çalışmaya devam etti. GitHub Releases APK dosyası indirildi ve SHA-256 imzalı derleme ile eşleşti. Anahtar APK içeriğinde bulunmadı. [Android sürümü](https://github.com/0gsar1m/Food_label_reader/releases/tag/nazif-android-v3)
 
 Yerel süreçler durdurulduktan sonraki tam akış denemesinde yeni fotoğraf ve ilk kişisel yorum 200 döndü. Cevap sonrası istek 502 PROVIDER_UNAVAILABLE döndürdü. Önceki başarılı yanıt süreklilik garantisi değildir.
+
+### 429 incelemesi
+
+Railway gerçek fotoğraf isteği, dakikalık sayaçta 9 istek hakkı görünürken yaklaşık 5,3 saniyede 429 döndürdü. Aynı görsel ile doğrudan Gemini 3.5 Flash ve 3.6 Flash çağrıları okunabilir çıktı verdi. Railway'e 429 için tek farklı model denemesi ve 60 misafir isteği ayarı yayınlandı. Üretim tekrarında iki fotoğraf isteği 429, soru isteği 502 döndürdü. Google projesinin ödeme/kota durumu doğrulanmadı. Yedek davranışı ve API smoke geçti, toplam 93 birim/API testi geçti.

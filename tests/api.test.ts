@@ -148,16 +148,19 @@ describe('HTTP API', () => {
     expect(fetcher).toHaveBeenCalledTimes(2);
     expect(fetcher.mock.calls[1]?.[1]?.signal).toBe(fetcher.mock.calls[0]?.[1]?.signal);
   });
-  it('uses the configured backup model on 503 and reports the model that answered', async () => {
-    const fetcher = vi
-      .fn<typeof fetch>()
-      .mockResolvedValueOnce(new Response(null, { status: 503 }))
-      .mockResolvedValueOnce(providerSuccess());
-    const response = await post(await serve({ fetcher, fallbackModel: 'gemini-backup' }));
-    expect(response.status).toBe(200);
-    expect(await response.json()).toMatchObject({ model: 'gemini-backup' });
-    expect(fetcher.mock.calls[1]?.[0]).toContain('/models/gemini-backup:generateContent');
-  });
+  it.each([503, 429])(
+    'uses the configured backup on %i and reports the answering model',
+    async (status) => {
+      const fetcher = vi
+        .fn<typeof fetch>()
+        .mockResolvedValueOnce(new Response(null, { status }))
+        .mockResolvedValueOnce(providerSuccess());
+      const response = await post(await serve({ fetcher, fallbackModel: 'gemini-backup' }));
+      expect(response.status).toBe(200);
+      expect(await response.json()).toMatchObject({ model: 'gemini-backup' });
+      expect(fetcher.mock.calls[1]?.[0]).toContain('/models/gemini-backup:generateContent');
+    },
+  );
   it('requires a long service token in production', () => {
     expect(() => createApi({ apiKey: '', model: 'test', origins: [], production: true })).toThrow(
       'APP_ACCESS_TOKEN',
