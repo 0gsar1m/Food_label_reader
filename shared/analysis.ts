@@ -81,7 +81,11 @@ export const analysisSchema = z.object({
 export type Analysis = z.infer<typeof analysisSchema>;
 
 const normalized = (value: string): string =>
-  value.toLocaleLowerCase('tr-TR').replace(/\s+/g, ' ').trim();
+  value
+    .toLocaleLowerCase('tr-TR')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
 /** Rejects fabricated evidence and internally inconsistent readable outputs. */
 export function validateAnalysis(input: unknown): Analysis {
