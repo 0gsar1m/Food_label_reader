@@ -1,6 +1,17 @@
 import { z } from 'zod';
 import { personalRequestSchema, personalResponseSchema } from '../../shared/profile';
 import { validateApiUrl } from '../../shared/connection';
+import { fetchWithTimeout } from './fetchWithTimeout';
+
+export class PersonalConnectionError extends Error {
+  constructor(public readonly code: 'network' | 'unauthorized') {
+    super(
+      code === 'unauthorized'
+        ? 'Sunucu erişim anahtarı eşleşmedi.'
+        : 'Kişisel yorum hizmetine ulaşılamadı. Ağını kontrol et.',
+    );
+  }
+}
 /** Attributions returned by the API are rendered with their original evidence labels. */
 export const personalEnvelope = z.object({
   result: personalResponseSchema,
@@ -21,25 +32,27 @@ export async function requestPersonal(
     throw new Error('Kişisel yorum için profil aktarım iznini aç.');
   let response: Response;
   try {
-    response = await fetch(`${validateApiUrl(url)}/api/personalize`, {
-      method: 'POST',
-      signal: AbortSignal.timeout(40000),
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    response = await fetchWithTimeout(
+      `${validateApiUrl(url)}/api/personalize`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify(parsed),
       },
-      body: JSON.stringify(parsed),
-    });
+      40000,
+    );
   } catch {
-    throw new Error('Kişisel yorum hizmetine ulaşılamadı. Ağını kontrol et.');
+    throw new PersonalConnectionError('network');
   }
+  if (response.status === 401) throw new PersonalConnectionError('unauthorized');
   if (!response.ok)
     throw new Error(
       response.status === 503
         ? 'Sunucuda kişisel yorum için Google Gemini anahtarı eksik. Profilin cihazda kullanılabilir.'
-        : response.status === 401
-          ? 'Sunucu erişim anahtarı eşleşmedi.'
-          : 'Kişisel yorum tamamlanamadı. Biraz sonra tekrar dene.',
+        : 'Kişisel yorum tamamlanamadı. Biraz sonra tekrar dene.',
     );
   return personalEnvelope.parse(await response.json());
 }

@@ -68,4 +68,6 @@ Kullanım profilinde başlangıç süresi, sıklık, öğün saati ve son belirt
 
 Faz 18: kullanıcı bağımsız kurulan normal Android APK ve canlı Gemini istiyor. Vision ve kişisel yorum varsayılanı Gemini 3.5 Flash-Lite. Modelin fotoğraf şeması hafifletildi, sunucu doğrulaması korundu. Geçici HTTPS üzerinden test etiketinin normal okuma ve kişisel yorum istekleri 200 döndü. Kalıcı HTTPS barındırması, yapılandırılmış Google hesabı girişi ve fiziksel cihaz kabulü ayrı adımlardır.
 
-Yerel Gradle release derlemesi başarılı. Nazif APK ARM64 ve Android 7.0+ için, geliştirme imzası ve gömülü uygulama paketiyle doğrulandı. Geçici HTTPS servisi sunucu bilgisayarının ve tünelin açık kalmasına bağlı. APK için servis adresi ve erişim anahtarı Tercihler ekranında bir kez girilir.
+Yerel Gradle release derlemesi başarılı. Nazif APK ARM64 ve Android 7.0+ için, geliştirme imzası ve gömülü uygulama paketiyle doğrulandı. Geçici HTTPS servisi sunucu bilgisayarının ve tünelin açık kalmasına bağlı. İlk APK servis adresi ve erişim anahtarının Tercihler ekranında girilmesini bekliyordu.
+
+Android bağlantı düzeltmesi: ikinci APK derlemesinde geçici HTTPS adresi varsayılan olarak kullanılır. Kurulumda Gemini anahtarı girilmez. Sunucuya 11 Kasım 2026 sonuna kadar toplam 30 isteklik anahtarsız misafir erişimi açıldı. Soru isteği kendi Gemini yanıt şemasını kullanır, etiket özeti gerektirmez. Bekleme göstergesi ile bağlantı ve yetki hataları ayrı gösterilir.

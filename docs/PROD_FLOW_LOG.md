@@ -57,3 +57,9 @@ Farklı çağrılarda sağlayıcı 503 döndürdü. Tam canlı provada etiket, y
 Sonraki canlı cevap testi 200 döndü ve model 60 g yulaf ile 200 ml süt içeren öğünü 30 g yulaf ve su ile hazırlanan belirtisiz öğünle karşılaştırdı. Gemini 503 için ilk isteğin süre sınırı içinde tek tekrar eklendi.
 
 Öncelikli Gemini isteği mevcut anahtarla 200 döndü, yanıt başlığındaki gerçekleşen hizmet seviyesi standard oldu. Mevcut anahtarla öncelikli işleme doğrulanmadı. Ölçülen 4.854 giriş ve 1.395 çıkış tokenı, 10 Kasım standart ücretli tarifesiyle (milyonda 0,30 ve 2,50 USD) tam akış başına yaklaşık 0,00494 USD eder. Bu rakam tek örneklemden hesaplandı ve barındırma dahil değildir. [Gemini ücretleri](https://ai.google.dev/gemini-api/docs/pricing)
+
+## Mobil bağlantı ve profil sorusu düzeltmesi
+
+Sentetik profille yeniden üretimde Gemini soru önerisi döndürdü. Boş etiket özeti ortak yanıt şeması tarafından reddedildi ve API 502 verdi. Soru görevi için ayrı şemaya geçildi. Ardından telefonun kullandığı HTTPS adresinde, erişim başlığı olmadan profil sorusu 200 ve test etiket fotoğrafı 200 döndü. Aynı servis başka denemelerde geçici sağlayıcı hatası veya zaman aşımı da döndürdü.
+
+Sunum için erişim 11 Kasım İstanbul gün sonuna kadar ve sunucu süreci başına 30 anahtarsız istekle sınırlıdır. Gemini anahtarı sunucuda kalır. Telefon kurulum ve kamera kabulü fiziksel cihazda yapılır.

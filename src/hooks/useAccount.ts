@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { sessionSchema, type AuthSession } from '../../shared/auth';
 import { validateApiUrl } from '../../shared/connection';
+import { fetchWithTimeout } from '../lib/fetchWithTimeout';
 const key = 'etiket.account.v1';
 async function persist(session: AuthSession | null): Promise<void> {
   if (Platform.OS === 'web') {
@@ -41,12 +42,15 @@ export function useAccount(origin: string) {
   const session =
     stored?.origin === origin && Date.parse(stored.expiresAt) > Date.now() ? stored : null;
   async function login(idToken: string): Promise<void> {
-    const response = await fetch(`${validateApiUrl(origin)}/api/auth/google`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: AbortSignal.timeout(15000),
-      body: JSON.stringify({ idToken }),
-    });
+    const response = await fetchWithTimeout(
+      `${validateApiUrl(origin)}/api/auth/google`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idToken }),
+      },
+      15000,
+    );
     if (!response.ok) throw new Error('Google kimliği doğrulanamadı.');
     const value = sessionSchema.parse({
       ...(await response.json()),

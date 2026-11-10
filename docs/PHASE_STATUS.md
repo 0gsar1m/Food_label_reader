@@ -63,3 +63,5 @@ Profil soru metni ve veri açıklaması: 89 birim/API, verify ve 3 profil ekran 
 Gemini 3.5 Flash-Lite ile korumalı HTTPS üzerinden etiket okuma, kişisel yorum ve cevap sonrası yeniden yorum 200 döndü. Etiket fotoğrafı ve günlük verileri test girdisiydi, normal API yolu kullanıldı. Fiziksel telefon, Google giriş ortamı ve kalıcı API barındırması dış kabulde.
 
 Lint, strict typecheck, 90 test, üç platform export ve derlenmiş API smoke geçti. Windows Gradle release APK, geliştirme imzası v2, ARM64 hedefi, Nazif adı ve gömülü Android bundle doğrulandı. Geçici HTTPS üzerinden APK yanıtı 200 döndü.
+
+Bağlantı ve soru önerisi düzeltmesinden sonra 91 birim/API testi, üç profil ekran testi, üç platform export ve derlenmiş API smoke geçti. Süreli misafir erişiminde gerçek Gemini soru ve fotoğraf uçları erişim başlığı olmadan 200 döndü.

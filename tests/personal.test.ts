@@ -136,6 +136,7 @@ describe('grounded health-language contract', () => {
         personalKey: 'test',
         personalFetcher: transport({
           ...success,
+          summary: '',
           findings: [],
           questionIds: [],
           questionSuggestions: [

@@ -100,6 +100,7 @@ test('explicit consent enables grounded model interpretation and question select
     expect(input.consent).toBe(true);
     expect(input.profile.geminiConsent).toBe(true);
     if (calls === 1) {
+      await expect(page.getByLabel('Gemini yanıtı bekleniyor')).toBeVisible();
       await route.fulfill({ status: 503, json: { error: 'PROVIDER_UNAVAILABLE' } });
       return;
     }

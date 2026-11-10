@@ -167,6 +167,20 @@ describe('HTTP API', () => {
         .status,
     ).toBe(200);
   });
+  it('caps temporary guest requests without affecting the service credential', async () => {
+    const token = 'test-service-token-with-24-characters';
+    const base = await serve({
+      production: true,
+      accessToken: token,
+      guestAccessUntil: Date.now() + 60_000,
+      trustProxy: 1,
+    });
+    for (let index = 1; index <= 30; index++) {
+      expect((await post(base, '{}', { 'X-Forwarded-For': `192.0.2.${index}` })).status).toBe(400);
+    }
+    expect((await post(base, body, { 'X-Forwarded-For': '192.0.2.31' })).status).toBe(429);
+    expect((await post(base, body, { Authorization: `Bearer ${token}` })).status).toBe(200);
+  });
   it('rejects fake bytes, remote URLs and invalid JSON', async () => {
     const base = await serve();
     expect(

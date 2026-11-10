@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { Platform, Pressable, ScrollView, Share, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  Pressable,
+  ScrollView,
+  Share,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import {
   goals,
   symptoms,
@@ -11,7 +20,7 @@ import {
 } from '../../shared/profile';
 import { Button, Notice, ScreenHeader } from '../components/Controls';
 import { theme, ui } from '../theme';
-import { requestPersonal } from '../lib/personalApi';
+import { PersonalConnectionError, requestPersonal } from '../lib/personalApi';
 
 /** Reusable choice exposes checked state on native and web without relying on color. */
 export function Choice({
@@ -90,9 +99,10 @@ export function ProfileScreen({
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [erase, setErase] = useState(false);
-  const [questionStatus, setQuestionStatus] = useState<'idle' | 'ready' | 'empty' | 'failed'>(
-    'idle',
-  );
+  const [questionStatus, setQuestionStatus] = useState<
+    'idle' | 'loading' | 'ready' | 'empty' | 'failed' | 'network' | 'unauthorized'
+  >('idle');
+  const questionLoading = questionStatus === 'loading';
   const titles = [
     'Sana ne iyi gelir?',
     'Neleri takip edelim?',
@@ -129,7 +139,7 @@ export function ProfileScreen({
   }
   async function adapt(): Promise<void> {
     setBusy(true);
-    setQuestionStatus('idle');
+    setQuestionStatus('loading');
     try {
       const reply = await requestPersonal(apiUrl, token, {
         consent: true,
@@ -149,8 +159,8 @@ export function ProfileScreen({
         return { ...old, answerPrompts };
       });
       setQuestionStatus(suggestions.length ? 'ready' : 'empty');
-    } catch {
-      setQuestionStatus('failed');
+    } catch (error) {
+      setQuestionStatus(error instanceof PersonalConnectionError ? error.code : 'failed');
     } finally {
       setBusy(false);
     }
@@ -302,13 +312,30 @@ export function ProfileScreen({
               onPress={() => change('geminiConsent', !draft.geminiConsent)}
             />
             <Button
-              label={busy ? 'Sorular hazırlanıyor…' : 'Profilime göre soru öner'}
+              label={questionLoading ? 'Sorular hazırlanıyor…' : 'Profilime göre soru öner'}
               secondary
               disabled={!draft.geminiConsent || busy}
               onPress={() => {
                 void adapt();
               }}
             />
+            {questionLoading && (
+              <ActivityIndicator
+                accessibilityLabel="Gemini yanıtı bekleniyor"
+                color={theme.color.green}
+              />
+            )}
+            {questionStatus === 'network' && (
+              <Notice>
+                Sunucuya ulaşılamadı. İnternet bağlantını ve Tercihler’deki sunucu adresini kontrol
+                et.
+              </Notice>
+            )}
+            {questionStatus === 'unauthorized' && (
+              <Notice>
+                Sunucu erişim anahtarı eksik veya hatalı. Tercihler’den bağlantı ayarını kontrol et.
+              </Notice>
+            )}
             {questionStatus === 'failed' && (
               <Notice>
                 Sorular şu anda özelleştirilemedi. Daha sonra tekrar deneyin. Mevcut sorularla devam

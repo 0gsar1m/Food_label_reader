@@ -23,6 +23,7 @@ export type ApiConfig = VisionConfig &
     timeoutMs?: number;
     trustProxy?: number;
     catalogueFetcher?: typeof fetch;
+    guestAccessUntil?: number;
   };
 
 function authorized(expected: string, header: string | undefined): boolean {
@@ -55,6 +56,9 @@ export function createApi(config: ApiConfig): express.Express {
   if (config.requireGoogleAuth && !googleConfigured(config))
     throw new Error('Google authentication is required but not configured.');
   const app = express();
+  let guestRequestsRemaining = 30;
+  const guestAccessOpen = () =>
+    !requireAccount && Boolean(config.guestAccessUntil && Date.now() < config.guestAccessUntil);
   app.disable('x-powered-by');
   if (config.trustProxy) app.set('trust proxy', config.trustProxy);
   app.use(helmet());
@@ -74,7 +78,7 @@ export function createApi(config: ApiConfig): express.Express {
       model: config.model,
       personalConfigured: Boolean(config.personalKey),
       personalModel: config.personalModel ?? 'gemini-3.5-flash-lite',
-      authenticationRequired: Boolean(config.accessToken) || requireAccount,
+      authenticationRequired: (Boolean(config.accessToken) || requireAccount) && !guestAccessOpen(),
       googleConfigured: googleConfigured(config),
     }),
   );
@@ -125,6 +129,15 @@ export function createApi(config: ApiConfig): express.Express {
       requireAccount ||
       (config.accessToken && !authorized(config.accessToken, req.headers.authorization))
     ) {
+      if (!bearer && guestAccessOpen()) {
+        if (guestRequestsRemaining <= 0) {
+          res.status(429).json({ error: 'RATE_LIMITED' });
+          return;
+        }
+        guestRequestsRemaining--;
+        next();
+        return;
+      }
       res.status(401).json({ error: 'UNAUTHORIZED' });
       return;
     }

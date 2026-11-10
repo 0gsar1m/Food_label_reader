@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { analysisSchema, validateAnalysis, type Analysis } from '../../shared/analysis';
 import { copy } from '../content';
 import { validateApiUrl } from '../../shared/connection';
+import { fetchWithTimeout } from './fetchWithTimeout';
 
 let webToken = '';
 const secretKey = 'etiket.api-token';
@@ -74,9 +75,7 @@ export async function requestAnalysis(
 
 /** Health checks are bounded and expose only deployment readiness, never the API key. */
 export async function checkConnection(url: string): Promise<string> {
-  const response = await fetch(`${validateApiUrl(url)}/health`, {
-    signal: AbortSignal.timeout(8000),
-  });
+  const response = await fetchWithTimeout(`${validateApiUrl(url)}/health`, {}, 8000);
   if (!response.ok) throw new Error('Sunucuya ulaşılamadı.');
   const health = z
     .object({

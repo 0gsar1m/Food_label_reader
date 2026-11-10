@@ -36,6 +36,7 @@ Gerekli ortam:
 - `NODE_ENV=production`
 - `GEMINI_API_KEY`: sağlayıcı sırrı
 - `APP_ACCESS_TOKEN`: rastgele, en az 24 karakter; uygulamanın güvenli bağlantı ayarına girilir
+- `GUEST_ACCESS_UNTIL`: isteğe bağlı ISO 8601 bitiş tarihi. Google hesabı zorunlu değilse anahtarsız istekleri bitişe kadar ve sunucu süreci başına toplam 30 istekle sınırlar. Süreç yeniden başlarsa sayaç sıfırlanır. Sürekli yayında paylaşılan bütçe ve hesap bazlı yetkilendirme gerekir.
 - `ALLOWED_ORIGINS`: web önizlemesinin gerçek HTTPS origin'i, virgülle ayrılır
 - `GEMINI_MODEL`, `PORT`, gerekiyorsa `TRUST_PROXY_HOPS`
 
