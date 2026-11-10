@@ -3,12 +3,12 @@
 10 Kasım 2026. Nazif: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
 Kullanıcı tüm fazları özerk uygulama, test ve sonunda https://github.com/0gsar1m/Food_label_reader.git repoya normal push yetkisi verdi. Fazlar arasında onay isteme.
 Son direktif: Android etiketi çevrimdışı oku, kişisel yorum ve profil soruları için GPT-6 Luna kullan. Üretimde Gemini'ye dönüş yok.
-Etkin faz: 20. v6 yayınlandı. Sonraki iş fiziksel Android cihaz kabulü.
+Etkin faz: 21. v7 yayınlandı. Sonraki iş Railway redeploy onayı ve fiziksel Android cihaz kabulü.
 
 ## Claude Code için devam noktası
 
-- Yayın: [Nazif v6 APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v6/Nazif.apk). Paket com.ogsarim.etiket, sürüm kodu 6, geliştirme imzalı. Kod etiketi nazif-android-v6, commit ad6fafb.
-- Android: `App.tsx` → `src/lib/offlineOcr.ts` → `modules/nazif-ocr` → `shared/labelText.ts`. APK gömülü ML Kit Latin modelini içerir. Etiket fotoğrafı Android'de sunucuya gitmez. Belirsiz besin tablosu sütunlarından miktar hesaplanmaz.
+- Yayın: Nazif v7 APK — `C:\Users\emir\Downloads\Nazif-v7.apk`, SHA-256 8892E30226E132D0BC5F4806B9B8ECC7353393705FA8A3E24800DEF8DDBA3EB9. Paket com.ogsarim.etiket, sürüm kodu 7, geliştirme imzalı. Commit 16f588f, etiket v1.0.7.
+- Android: Etiket fotoğrafı artık tüm platformlarda GPT-6 Luna üzerinden `/api/analyze` ile okunuyor. Offline OCR kaldırıldı. Besin tablosu fotoğrafı ve makro görüntüleme kaldırıldı. Profil amaçları yalnız "İçeriği anlamak" ve "Belirtilerimi anlamak". Choice bileşeni görsel checkbox/radio sembol kullanıyor.
 - Bulut: Railway `Nazif / nazif-api`, [sağlık ucu](https://nazif-api-production.up.railway.app/health). `server/index.ts` üretimde `OPENAI_API_KEY` ve `OPENAI_MODEL=gpt-6-luna` kullanır. `POST /api/personalize` yeni `openaiConsent` iznini arar. Önceki Gemini izni taşınmaz. Anahtar yerel git dışı `.env` ve Railway servis sırrında. Değeri yazdırma veya kopyalama. Anahtar 10 Kasım'da yedi gün için açıldı. Kullanıcı 5 USD kredi yükledi.
 - Misafir erişimi: İstanbul saatiyle 11 Kasım 2026 23.59 sonuna kadar ve Railway süreci başına toplam 60 istek. Bu süre ve kota yalnız bulut işlemlerini etkiler. Yerel tünel kapalı. Google OAuth yapılandırılmadı.
 - Doğrulandı: imza, herkese açık APK indirmesi ve SHA-256, 95 birim/API ve 3 profil tarayıcı testi, üç platform export, API smoke. Gerçek noodle fotoğrafı masaüstü OCR ile glüten ve kereviz beyanını verdi. Railway Luna gerçek etiket metniyle yorum ve üç profil sorusu döndürdü. Ayrı canlı testte iki sentetik öğün kaydına dayandı ve takip sorusu üretti.
