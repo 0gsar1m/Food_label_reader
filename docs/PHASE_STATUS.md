@@ -81,3 +81,5 @@ Gerçek noodle fotoğrafı masaüstü OCR ile işlendi. Aynı metin ayrıştır�
 Android sürüm kodu 5 derlendi ve GitHub Releases üzerinden yayınlandı. APK imzası, paketlenmiş çevrimdışı model ve sunucu adresi doğrulandı. Lint, typecheck, 95 birim/API, üç profil tarayıcı testi, üç platform export ve API smoke geçti.
 
 Açık kabul: fiziksel Android'de uçak modunda gerçek fotoğrafı okut, ardından interneti açıp OpenAI izniyle soru ve kişisel yorum iste. Sonuçlar kullanıcıdan veya cihaz testinden gelene kadar fazın donanım kabulü açık. [Uygulama adımları](ACTIVE_CONTEXT.md#claude-code-için-devam-noktası)
+
+10 Kasım 2026: Android v6 (ad6fafb) GitHub Releases üzerinden yayımlandı. APK sürüm kodu, geliştirme imzası, yükleme özeti ve herkese açık indirme doğrulandı. Railway v6 dağıtımı başarılı; gerçek noodle etiketinin masaüstü OCR metni ve sentetik günlükle canlı Luna yorumu doğrulandı. Fiziksel Android kabulü açık.
