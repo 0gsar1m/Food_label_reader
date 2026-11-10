@@ -1,4 +1,4 @@
-# Etiket: AI Slop Avoidance Guide
+# Nazif: AI Slop Avoidance Guide
 
 Kullanıcının sağladığı rehber mobil ürüne uyarlanmıştır. Tasarım rolü: kıdemli mobil ürün tasarımcısı ve React Native mühendisi.
 

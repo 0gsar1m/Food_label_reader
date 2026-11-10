@@ -23,7 +23,7 @@ export default function configureApp({ config }: ConfigContext): ExpoConfig {
   }
   return {
     ...config,
-    name: config.name ?? 'Etiket',
+    name: config.name ?? 'Nazif',
     slug: config.slug ?? 'etiket-food-label-reader',
     plugins,
   };

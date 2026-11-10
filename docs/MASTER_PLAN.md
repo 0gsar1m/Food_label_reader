@@ -82,3 +82,6 @@ Kabul: sıfır yerel API çağrısı, kaynaklı yerel sayısal bilgi, bilinmeyen
 Kaynak: GUTIQ_RESEARCH.md. Amaç: tarama → tüketim teyidi → öğün sonrası kontrol → kişisel gözlemler döngüsünü düşük maliyetle uygula.
 Çıktı: bağlı/bekleyen kontroller, şiddet/bağlam/dışkı tipi, örneksiz 7/30 gün sayımları, restoran kartı, görüşme raporu; ayrı menü/tabak Vision ve barkod kataloğu.
 Kabul: bekleyen kayıt belirtisiz sayılmaz; örnek/future kayıt ve bilinmeyen bileşenler karşılaştırmayı bozmaz; menü kanıtı ve tabak belirsizliği ayrılır; katalog profil almaz. Yerel akış sıfır API çağrısıyla test edilir. Mobil görsel, kontrat/HTTP, tüm verify ve e2e; native/canlı sağlayıcı ayrı kalır.
+
+## Faz 15 / Nazif adı
+Görünen ürün adı mobil, web, rapor ve proje metinlerinde Nazif olarak güncellenir. Kurulum kimliği ve yerel depolama uyumluluğu korunur.

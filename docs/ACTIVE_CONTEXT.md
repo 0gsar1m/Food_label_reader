@@ -1,6 +1,6 @@
 # Aktif bağlam
 
-1 Kasım 2026. Etiket: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
+10 Kasım 2026. Nazif: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
 Kullanıcı tüm fazları özerk uygulama, test ve sonunda https://github.com/0gsar1m/Food_label_reader.git repoya normal push yetkisi verdi. Fazlar arasında onay isteme.
 Son direktif: My GutIQ'yu ayrıntılı araştır, düşük maliyetle yakın Türkçe deneyimi uygula.
 Etkin faz: 14. Kod, yerel kabul ve kaynak kod push tamamlandı. Sonraki işler dış hesap/cihaz kabulüdür.
@@ -50,3 +50,8 @@ My GutIQ resmi site/mağaza/gizlilik/koşullar/blog dizini, kamuya açık web gi
 
 ## Teslim sırası
 Yeni kapsam ecfc221ff3e595270cdea9eb2e8906053905c2d1 ile origin/main dalına push edildi; git ls-remote ile uzak hash eşleşti. Çalışma ağacı temizdi. Bu teslim kaydı ayrı docs commit ile gönderilir. Sonraki agent uygulamayı yeniden yazmamalı; RELEASE_RUNBOOK içindeki dış kabul adımlarından veya kullanıcının yeni yönlendirmesinden devam etmelidir. Force push veya git kimlik değişimi yapılmadı.
+
+## Nazif adı
+Uygulamanın görünen adı, raporlar ve API servis adı Nazif oldu. Mevcut kurulum ve veri uyumluluğu için uygulama kimliği, Expo slug, URL şeması ve depolama anahtarları korundu.
+
+Faz 15 kabulü: lint/typecheck, 87 birim/API, 14 ekran, Android/iOS/web export ve API smoke geçti. Yerel telefon ayarı hazırlandı. Gerçek etiket denemesi için Gemini API anahtarı gerekiyor.

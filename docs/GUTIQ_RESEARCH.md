@@ -1,4 +1,4 @@
-# My GutIQ araştırması ve Etiket uyarlaması
+# My GutIQ araştırması ve Nazif uyarlaması
 
 İnceleme tarihi: 1 Kasım 2026. Kapsam: resmi site, hakkında, blog dizini, gizlilik, koşullar, çerez politikası, ABD App Store, Google Play, kamuya açık web giriş ekranı ve üç mağaza görseli. Kaynak metinler aşağıda özetlenmiştir; ekran görüntüleri araştırma referansıdır, uygulamanın varlıkları değildir.
 
@@ -6,7 +6,7 @@
 
 [Resmi site](https://gutiq.app/) etiket, yemek, menü ve barkod taramasını kişisel sağlık bağlamıyla birleştiriyor. Ardından öğün sonrası kontrol ve zaman içinde kişisel gözlemler geliyor. IBS, reflü, intolerans ve tanı olmadan sindirim yakınmaları önemli kullanım grupları. İnternet, AI tarama ve senkronizasyon için gerekli. Sitedeki üç saniye, yüzdeli tetikleyici ve güvenli gıda örnekleri pazarlama anlatımıdır; bu incelemede doğrulukları ölçülmedi.
 
-Çıkarımımız: Etiket'in değerini yalnız fotoğraf açıklamasıyla sınırlamamalıyız. Kalıcı bağlam, tüketim teyidi ve sonradan nasıl hissedildiği aynı ürün döngüsünün parçaları olmalı. Her adımda yeni LLM çağrısı gerekmiyor. Etiketin okunmasıyla yemeğin gerçekten tüketilmesi ayrı olaylar olmalı.
+Çıkarımımız: Nazif’in değerini yalnız fotoğraf açıklamasıyla sınırlamamalıyız. Kalıcı bağlam, tüketim teyidi ve sonradan nasıl hissedildiği aynı ürün döngüsünün parçaları olmalı. Her adımda yeni LLM çağrısı gerekmiyor. Etiketin okunmasıyla yemeğin gerçekten tüketilmesi ayrı olaylar olmalı.
 
 ## Mağazalar ve gerçek kullanıcı kanıtı
 
@@ -20,7 +20,7 @@
 
 Referans: [web giriş görüntüsü](screenshots/gutiq-public-entry.png), [üç mağaza görseli](screenshots/gutiq-store-reference.png). Mağaza görselinde tarama, kişisel sonuç ve gözlem haritası gösteriliyor. Gözlem ekranı farklı sayıda tamamlanmış kontrole göre kategori eşikleri tarif ediyor. Bu bir mağaza maketidir; uygulamanın gerçek istatistik yöntemini veya klinik doğruluğunu doğrulamaz.
 
-Etiket'e görsel uyarlama kararı: mevcut Newsreader/DM Sans, kırık beyaz ve zeytin kimliği korunur. Rakibin logosu, İngilizce metni, daire dekorları, ekranları ve güven yüzdeleri taşınmaz. Araştırma ekran görüntüleri yalnız bu belgeye referanstır. Gözlemler ekranı sade sayılar, ince ayırıcılar ve örneklem büyüklüğü kullanır.
+Nazif’e görsel uyarlama kararı: mevcut Newsreader/DM Sans, kırık beyaz ve zeytin kimliği korunur. Rakibin logosu, İngilizce metni, daire dekorları, ekranları ve güven yüzdeleri taşınmaz. Araştırma ekran görüntüleri yalnız bu belgeye referanstır. Gözlemler ekranı sade sayılar, ince ayırıcılar ve örneklem büyüklüğü kullanır.
 
 ## Açıklanan teknik yapı ve veri akışı
 
@@ -30,7 +30,7 @@ Etiket'e görsel uyarlama kararı: mevcut Newsreader/DM Sans, kırık beyaz ve z
 
 [Çerez politikası](https://gutiq.app/cookies) zorunlu depolamayla isteğe bağlı ölçümü ayırıyor. [Hakkında](https://gutiq.app/about) sayfasında kamuya açık klinik doğrulama raporu veya isimlendirilmiş klinik ekip kanıtı görülmedi. [Blog dizini](https://gutiq.app/blog) IBS, FODMAP, günlük, uyku ve bağırsak-beyin ilişkisi konularını kapsıyor; bir anlatı açıkça birleşik eğitim hikâyesi diye işaretli. Blog varlığı klinik doğrulama sayılmaz. Makalelerin tüm kaynak zincirleri bu çalışmada tek tek denetlenmedi.
 
-## Etiket'e uygulanan karşılıklar
+## Nazif’e uygulanan karşılıklar
 
 | Ürün ihtiyacı | Uygulanan deneyim | İlave LLM tüketimi |
 |---|---|---|

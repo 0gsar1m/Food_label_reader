@@ -1,6 +1,6 @@
 /** Central product copy includes clear distinctions between examples and real extraction. */
 export const copy = {
-  brand: 'etiket.',
+  brand: 'Nazif',
   tagline: 'GIDA ETİKETİ OKUYUCU',
   heading: 'Etikette\nne var?',
   intro: 'İçindekileri, alerjenleri ve katkı maddelerini sade bir dille oku.',

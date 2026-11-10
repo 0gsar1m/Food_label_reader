@@ -27,7 +27,7 @@ export async function lookupBarcode(
       signal: AbortSignal.timeout(8000),
       redirect: 'error',
       headers: {
-        'User-Agent': 'Etiket/1.0 (https://github.com/0gsar1m/Food_label_reader)',
+        'User-Agent': 'Nazif/1.0 (https://github.com/0gsar1m/Food_label_reader)',
         Accept: 'application/json',
       },
     },

@@ -42,7 +42,7 @@ const app = createApi({
 });
 const server = app.listen(environment.PORT, '0.0.0.0', () =>
   console.info(
-    `Etiket API listening on port ${environment.PORT}; model ${environment.GEMINI_MODEL}`,
+    `Nazif API listening on port ${environment.PORT}; model ${environment.GEMINI_MODEL}`,
   ),
 );
 server.requestTimeout = 45_000;

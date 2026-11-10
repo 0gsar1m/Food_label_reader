@@ -51,7 +51,7 @@ const privacy = [
 const terms = [
   [
     'Uygulamanın amacı',
-    'Etiket, fotoğrafta görülen gıda etiketi metnini okumaya ve sade dille açıklamaya yardımcı olur. Etiketin güncelliği veya tamlığı doğrulanamaz. Uygulama bir tıbbi cihaz veya kişisel beslenme tedavisi hizmeti değildir.',
+    'Nazif, fotoğrafta görülen gıda etiketi metnini okumaya ve sade dille açıklamaya yardımcı olur. Etiketin güncelliği veya tamlığı doğrulanamaz. Uygulama bir tıbbi cihaz veya kişisel beslenme tedavisi hizmeti değildir.',
   ],
   [
     'Sonucu kontrol et',

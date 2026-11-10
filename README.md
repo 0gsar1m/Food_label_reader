@@ -1,6 +1,6 @@
 > Güncel demo ayarı: `npm run api` Gemini 3.8 Flash + Claude Sonnet 5.5 kullanır. Ekonomik sunucu `npm run api:economy`. Yerel profil yorumu API çağırmaz; model yorumu ayrı bulut düğmesidir. Maliyetler docs/INVESTOR_COSTS.md içinde.
 
-# Etiket
+# Nazif
 
 Gıda etiketi fotoğrafını okuyup içerik, alerjen ve katkı maddelerini Türkçe açıklayan Android öncelikli React Native uygulama.
 
@@ -9,7 +9,7 @@ My GutIQ araştırması sonrasında menü/tabak incelemesi, barkod kataloğu, t�
 Kamera veya galeri → yerel önizleme → açık gönderim işlemi → kanıt metinleriyle açıklama.
 Her alerjen beyanı **içerir** veya **eser miktarda içerebilir** olarak ayrılır. Sağlık puanı ve tüketim güvenliği garantisi üretilmez.
 
-<img src="docs/screenshots/home-390.png" width="280" alt="Etiket ana ekranı" /> <img src="docs/screenshots/result-summary.png" width="280" alt="Açıkça işaretli örnek etiket sonucu" />
+<img src="docs/screenshots/home-390.png" width="280" alt="Nazif ana ekranı" /> <img src="docs/screenshots/result-summary.png" width="280" alt="Açıkça işaretli örnek etiket sonucu" />
 
 ## Çalıştırma
 

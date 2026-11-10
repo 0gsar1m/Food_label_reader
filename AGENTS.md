@@ -1,4 +1,4 @@
-# Etiket agent çalışma kuralları
+# Nazif agent çalışma kuralları
 
 Önce `docs/ACTIVE_CONTEXT.md`, sonra etkin fazı `docs/MASTER_PLAN.md` içinde oku.
 Kullanıcı bütün fazların özerk tamamlanmasını ve en sonda GitHub push işlemini yetkilendirdi.

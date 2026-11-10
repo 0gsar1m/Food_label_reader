@@ -71,7 +71,7 @@ export function healthReport(vault: HealthVault, days: number, now = Date.now())
       !entry.demo && Date.parse(entry.at) <= now && Date.parse(entry.at) > now - days * 86_400_000,
   );
   return [
-    `Etiket / Son ${days} gün gözlem raporu`,
+    `Nazif / Son ${days} gün gözlem raporu`,
     `Oluşturulma: ${new Date(now).toLocaleDateString('tr-TR')}`,
     'Kişinin kendi kayıtlarıdır. Tanı, tetikleyici kanıtı veya tüketim güvenliği değerlendirmesi içermez.',
     `Amaçlar: ${vault.profile.goals.map((id) => goals[id]).join(', ') || 'Belirtilmedi'}`,
@@ -90,5 +90,5 @@ export function reportHtml(text: string): string {
     (char) =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char] ?? char,
   );
-  return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>Etiket gözlem raporu</title><style>body{font-family:Arial,sans-serif;color:#202820;padding:28px;font-size:13px;line-height:1.65}pre{white-space:pre-wrap;font:inherit;overflow-wrap:anywhere}</style></head><body><h1>Etiket / Gözlem raporu</h1><pre>${escaped}</pre></body></html>`;
+  return `<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>Nazif gözlem raporu</title><style>body{font-family:Arial,sans-serif;color:#202820;padding:28px;font-size:13px;line-height:1.65}pre{white-space:pre-wrap;font:inherit;overflow-wrap:anywhere}</style></head><body><h1>Nazif / Gözlem raporu</h1><pre>${escaped}</pre></body></html>`;
 }

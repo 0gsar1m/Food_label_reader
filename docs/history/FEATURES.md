@@ -44,3 +44,6 @@ Son demo/ekonomi kodu 69dc08a ile origin/main’e push edildi; 74 birim/HTTP, 11
 - Son güçlü demo kararı korundu; düşük giderli yerel takip ve %10 Sonnet senaryoları yatırımcı maliyet belgesine işlendi.
 
 Faz14 kod/belge teslimi: ecfc221 origin/main dalına push edildi ve uzak hash teyit edildi. 87 test, 14 ekran testi, üç platform/API paketleri ve expo-doctor20/20 geçti. Dış kabul sınırları değişmedi.
+
+## Faz 15 / Nazif adı
+Görünen uygulama adı ve dışa aktarılan gözlem raporlarının markası Nazif olarak güncellendi.

@@ -75,7 +75,7 @@ export default function App() {
         ) : (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14 }}>
             <ActivityIndicator color={theme.color.green} />
-            <Text>Etiket açılıyor.</Text>
+            <Text>Nazif açılıyor.</Text>
           </View>
         )}
       </SafeAreaView>

@@ -196,7 +196,7 @@ export function Settings({
           </Pressable>
         ))}
       </View>
-      <Text style={ui.small}>Etiket 1.0.0 · Fotoğraftan anlaşılır bilgi.</Text>
+      <Text style={ui.small}>Nazif 1.0.0 · Fotoğraftan anlaşılır bilgi.</Text>
     </ScrollView>
   );
 }

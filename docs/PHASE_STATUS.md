@@ -39,3 +39,7 @@ Profil/kişiselleştirme, maliyet modeli ve Google giriş kodu 45308ef ile main 
 Kaynak: GUTIQ_RESEARCH.md. Bu faz tam rakip klonu veya klinik doğrulama iddiası değildir; parite dışı alanlar ve test sınırları belgede açıkça listelidir.
 
 Faz14 kod/belge teslimi: ecfc221 origin/main dalına push edildi ve uzak hash teyit edildi. 87 test, 14 ekran testi, üç platform/API paketleri ve expo-doctor20/20 geçti. Dış kabul sınırları değişmedi.
+
+## Faz 15 / Nazif adı
+
+Mobil ve web görünen adı, API servis adı ve rapor başlıkları güncellendi. Kurulum kimliği ve depolama anahtarları korundu. Verify ve 14 ekran testi geçti. Gerçek model ve fiziksel cihaz testi sırada.
