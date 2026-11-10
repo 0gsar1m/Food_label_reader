@@ -202,6 +202,12 @@ export function ProfileScreen({
             ))}
           </>
         )}
+        {step >= 2 && step <= 4 && (
+          <Text style={ui.body}>
+            Bir arkadaşına mesaj atar gibi, kendi kelimelerinle yazabilirsin. Bir iki cümle yeter.
+            İstersen bazı soruları boş bırakabilirsin.
+          </Text>
+        )}
         {step === 2 && (
           <>
             <Text style={ui.small}>
@@ -240,6 +246,7 @@ export function ProfileScreen({
         )}
         {step === 3 && (
           <>
+            <Text style={ui.small}>Mesela “Sabah genelde peynirli tost yiyorum.”</Text>
             <Field
               label="Genellikle kahvaltıda ne yersin?"
               value={draft.breakfast}

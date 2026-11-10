@@ -59,3 +59,5 @@ Faz 15 kabulü: lint/typecheck, 87 birim/API, 14 ekran, Android/iOS/web export v
 Etiket sonuçlarında yerel kişisel yorum, bir bileşeni son 20 tamamlanmış gerçek öğün kaydıyla tam ad üzerinden eşleştirir. Öğün adı, tarih, belirtiler ve belirtisiz örnekler birlikte gösterilir. Sonnet anahtarı bu akış için gerekmez.
 
 Faz 17: kurgu senaryo ve takip sorusu tamamlandı. Gemini’ye özgü izin eski sağlayıcı iznini devralmaz. Ayrıntılı yorumda kullanıcı cevabı ilgili öğüne yazılır, sonra yeniden yorumlanır.
+
+Kullanım profilinin açık uçlu adımlarında kısa ve gündelik yazma yönlendirmesi var. Kahvaltı sorusu örnek bir cümleyle başlıyor.

@@ -53,3 +53,7 @@ Yerel kişisel yorum, geçmişteki tamamlanmış öğünlerde aynı adla kaydedi
 
 ## Faz 17 / Gemini yorum ve takip sorusu
 Flash-Lite yorum, kurgu yulaf senaryosu, öğüne bağlı cevap ve yeniden değerlendirme eklendi. Yeni Gemini veri izni açıkça istenir.
+
+### Kullanım profili metni
+
+Açık uçlu adımlara bir arkadaşına mesaj yazar gibi cevaplama önerisi ve kahvaltı örneği eklendi.
