@@ -1,8 +1,7 @@
-import { useState } from 'react';
-import { Linking, Text, TextInput, View } from 'react-native';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
+import { ActivityIndicator, Linking, Text, TextInput, View } from 'react-native';
 import type { Analysis } from '../../shared/analysis';
 import { type DiaryEntry, type HealthVault } from '../../shared/profile';
-import { localInterpretation } from '../../shared/localInterpretation';
 import { requestPersonal } from '../lib/personalApi';
 import { Choice } from '../screens/Profile';
 import { Button, Notice } from './Controls';
@@ -26,7 +25,7 @@ export function PersonalPanel({
   onUpdateDiary,
   apiUrl,
   token,
-  onProfile,
+  autoPersonal,
   onDiary,
 }: {
   analysis: Analysis;
@@ -35,7 +34,7 @@ export function PersonalPanel({
   onUpdateDiary: (entry: DiaryEntry) => Promise<void>;
   apiUrl: string;
   token: string;
-  onProfile: () => void;
+  autoPersonal?: boolean;
   onDiary: () => void;
 }) {
   const [scenarioConsent, setScenarioConsent] = useState(false);
@@ -48,7 +47,7 @@ export function PersonalPanel({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [reply, setReply] = useState<Awaited<ReturnType<typeof requestPersonal>> | null>(null);
-  const local = localInterpretation(analysis, { ...vault, diary }, scenario);
+  const sent = useRef(false);
   async function interpret(records = diary): Promise<void> {
     if (!hasConsent || busy) return;
     setRehearsal(false);
@@ -72,6 +71,15 @@ export function PersonalPanel({
       setBusy(false);
     }
   }
+  const startAutomatic = useEffectEvent(() => {
+    if (sent.current) return;
+    sent.current = true;
+    void interpret();
+  });
+  useEffect(() => {
+    if (autoPersonal && hasConsent) startAutomatic();
+  }, [autoPersonal, hasConsent]);
+
   function rehearse(detail?: string): void {
     setRehearsal(true);
     const sampleAnswer =
@@ -131,14 +139,13 @@ export function PersonalPanel({
 
   return (
     <View style={{ gap: 18, borderTopWidth: 1, borderColor: theme.color.line, paddingTop: 24 }}>
-      <Text style={ui.h2}>Senin amacın açısından</Text>
-      {local.title ? <Text style={ui.body}>{local.title}</Text> : null}
-      {local.findings.map((finding, index) => (
-        <View key={index} style={{ gap: 6 }}>
-          <Text style={ui.body}>{finding.text}</Text>
-          <Text style={ui.small}>Dayanak: {finding.basis}</Text>
+      {(scenario || autoPersonal) && <Text style={ui.h2}>Kişisel yorum</Text>}
+      {busy && (
+        <View accessibilityLiveRegion="polite" style={[ui.row, { gap: 10 }]}>
+          <ActivityIndicator color={theme.color.green} />
+          <Text style={ui.body}>Kişisel yorum hazırlanıyor…</Text>
         </View>
-      ))}
+      )}
       {scenario ? (
         <View style={{ gap: 10 }}>
           <Notice>Kurgu profil ve öğünler. Bu deneme kişisel günlüğüne yazılmaz.</Notice>
@@ -154,12 +161,7 @@ export function PersonalPanel({
             onPress={() => setScenarioConsent(!scenarioConsent)}
           />
         </View>
-      ) : (
-        <>
-          <Button label="Profilimi düzenle" secondary onPress={onProfile} />
-          <Button label="Bu öğünü günlüğe ekle" secondary onPress={onDiary} />
-        </>
-      )}
+      ) : null}
       {scenario && (
         <Button
           label="Hazır yanıtlarla prova yap"
@@ -174,21 +176,17 @@ export function PersonalPanel({
           }}
         />
       )}
-      <Text style={ui.small}>
-        {hasConsent
-          ? 'Yorum isteğinde profil özeti, son 20 öğün kaydı ve bu etiket metni sunucu üzerinden OpenAI’e gönderilir.'
-          : scenario
-            ? 'OpenAI yanıtını görmek için örnek verinin gönderimine izin ver.'
-            : 'Kişisel yorum için profilinde aktarım iznini aç.'}
-      </Text>
-      <Button
-        label={busy ? 'Kişisel yorum hazırlanıyor' : 'Bulut modeliyle ayrıntılandır'}
-        disabled={busy || !hasConsent || (Boolean(reply) && !rehearsal)}
-        onPress={() => {
-          void interpret();
-        }}
-      />
+      {scenario && (
+        <Button
+          label="Örnek bulut yorumunu al"
+          disabled={busy || !hasConsent || (Boolean(reply) && !rehearsal)}
+          onPress={() => void interpret()}
+        />
+      )}
       {error ? <Notice>{error}</Notice> : null}
+      {!scenario && error && !reply && hasConsent && !busy && (
+        <Button label="Yorumu yeniden dene" secondary onPress={() => void interpret()} />
+      )}
       {savedAnswer ? <Text style={ui.small}>Öğüne eklenen cevap: {savedAnswer}</Text> : null}
       {reply && (
         <View style={{ gap: 16 }}>
@@ -255,6 +253,7 @@ export function PersonalPanel({
           <Text style={ui.small}>Bu yorum tanı veya kişisel tetikleyici kanıtı değildir.</Text>
         </View>
       )}
+      {!scenario && <Button label="Bu öğünü günlüğe ekle" secondary onPress={onDiary} />}
     </View>
   );
 }

@@ -21,11 +21,11 @@ const privacy = [
   ],
   [
     'Kişisel model yorumu',
-    'Yalnız aktarım iznini açıp ilgili yorum veya soru özelleştirme düğmesine bastığında profil özeti, yorum için son 20 öğün kaydı ve etiket metni sunucu üzerinden OpenAI hizmetine gönderilir. Soru özelleştirmesinde öğün ve etiket gönderilmez. Alerjen tercihleri görsel isteğine eklenmez. Sunucu sağlık içeriğini kaydetmez. Sağlayıcının saklama koşulları kendi hesabının sözleşmesine bağlıdır. İzni kapatmak yeni aktarımı durdurur; daha önce sağlayıcıya aktarılan veriyi bu uygulamadan geri çekmez.',
+    'Aktarım izni açıksa yeni bir etiketi okumayı başlattığında, okuma sonrasında kişisel yorum için profil özeti, son 20 öğün kaydı ve okunan etiket metni sunucu üzerinden OpenAI hizmetine gönderilir. Soru özelleştirmesinde öğün ve etiket gönderilmez. Alerjen tercihleri görsel isteğine eklenmez. Sunucu sağlık içeriğini kaydetmez. Sağlayıcının saklama koşulları kendi hesabının sözleşmesine bağlıdır. İzni kapatmak yeni aktarımı durdurur; daha önce sağlayıcıya aktarılan veriyi bu uygulamadan geri çekmez.',
   ],
   [
     'İşlenen veriler',
-    'Android etiket fotoğrafı cihazda okunur. Diğer platformlarda etiket fotoğrafı, gönderme işlemiyle sunucu üzerinden OpenAI API hizmetine aktarılır. API anahtarı yalnız sunucuda tutulur.',
+    'Etiket fotoğrafı, gönderme işlemiyle sunucu üzerinden OpenAI API hizmetine aktarılır. API anahtarı yalnız sunucuda tutulur.',
   ],
   [
     'Cihazdaki kayıtlar',

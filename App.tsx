@@ -57,7 +57,7 @@ type Screen =
     }
   | { kind: 'diary'; meal?: string; seed?: Partial<DiaryEntry> }
   | { kind: 'review'; photo: PreparedPhoto }
-  | { kind: 'result'; record: ScanRecord; scenario?: boolean };
+  | { kind: 'result'; record: ScanRecord; scenario?: boolean; autoPersonal?: boolean };
 
 /** Native entry point loads bundled Turkish-capable fonts and never embeds service secrets. */
 export default function App() {
@@ -169,7 +169,7 @@ function Application() {
       if (analysis.readability !== 'unreadable') device.addRecord(record);
       setStack((past) => [
         ...past.filter((item) => item.kind !== 'review' && item.kind !== 'camera'),
-        { kind: 'result', record },
+        { kind: 'result', record, autoPersonal: health.vault.profile.openaiConsent },
       ]);
     } catch (error) {
       if (timedOut) setScanError(copy.errors.TIMEOUT);
@@ -256,7 +256,11 @@ function Application() {
         />
       </View>
     );
-  if (!health.vault.profile.completed) return profileView;
+  if (
+    !health.vault.profile.completed ||
+    !health.vault.profile.goals.some((goal) => goal === 'awareness' || goal === 'symptoms')
+  )
+    return profileView;
   return (
     <View
       style={{
@@ -343,6 +347,7 @@ function Application() {
         <Review
           photo={screen.photo}
           busy={busy}
+          personalConsent={Boolean(health.vault.profile.openaiConsent)}
           error={scanError}
           onBack={back}
           onScan={() => {
@@ -358,6 +363,7 @@ function Application() {
           key={screen.record.id}
           vault={screen.scenario ? makeDemoVault() : health.vault}
           scenario={screen.scenario}
+          autoPersonal={screen.autoPersonal}
           onUpdateDiary={(entry) =>
             health.update((old) => ({
               ...old,
@@ -366,7 +372,6 @@ function Application() {
           }
           apiUrl={device.apiUrl}
           token={effectiveToken}
-          onProfile={() => push({ kind: 'profile' })}
           onDiary={() =>
             push({
               kind: 'diary',

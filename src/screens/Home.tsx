@@ -1,4 +1,5 @@
-import { Pressable, ScrollView, Text, View, StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { Modal, Pressable, ScrollView, Text, View, StyleSheet } from 'react-native';
 import { theme, ui } from '../theme';
 import { copy } from '../content';
 import { Button } from '../components/Controls';
@@ -38,6 +39,7 @@ export function Home({
   recent?: ScanRecord;
   onRecent: (record: ScanRecord) => void;
 }) {
+  const [tutorial, setTutorial] = useState(false);
   return (
     <ScrollView contentContainerStyle={[ui.content, { gap: 22 }]}>
       <View style={[ui.between, { marginBottom: 9 }]}>
@@ -71,17 +73,61 @@ export function Home({
       </View>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Örnek etiketi incele"
-        onPress={onDemo}
+        accessibilityLabel="Öğreticiyi aç"
+        onPress={() => setTutorial(true)}
         style={s.example}
       >
         <View style={{ gap: 4, flex: 1 }}>
-          <Text style={ui.eyebrow}>ÖNCE BİR GÖZ AT</Text>
-          <Text style={ui.strong}>Örnek etiketi incele</Text>
+          <Text style={ui.eyebrow}>ÖĞRETİCİ</Text>
+          <Text style={ui.strong}>Bir okuma nasıl görünür?</Text>
         </View>
         <Icon name="arrow" size={22} />
       </Pressable>
-      <Button label="Örnek profille kişisel yorumu dene" secondary onPress={onScenario} />
+      <Modal
+        visible={tutorial}
+        transparent
+        animationType="none"
+        onRequestClose={() => setTutorial(false)}
+      >
+        <View
+          style={{ flex: 1, backgroundColor: '#20282099', justifyContent: 'center', padding: 28 }}
+        >
+          <View
+            accessibilityViewIsModal
+            style={{
+              backgroundColor: theme.color.paper,
+              padding: 24,
+              gap: 16,
+              width: '100%',
+              maxWidth: 400,
+              alignSelf: 'center',
+            }}
+          >
+            <Text accessibilityRole="header" style={ui.h2}>
+              Örnek okuma
+            </Text>
+            <Text style={ui.body}>
+              Kakaolu yulaflı bisküviyle etiket özetini ve örnek bir günlük yorumunu gör.
+            </Text>
+            <Button
+              label="Örnek etiketi incele"
+              onPress={() => {
+                setTutorial(false);
+                onDemo();
+              }}
+            />
+            <Button
+              label="Örnek profille kişisel yorumu dene"
+              secondary
+              onPress={() => {
+                setTutorial(false);
+                onScenario();
+              }}
+            />
+            <Button label="Kapat" secondary onPress={() => setTutorial(false)} />
+          </View>
+        </View>
+      </Modal>
       <Button label="Hesabım" secondary onPress={onAccount} />
       <Button label="Kullanım profilim" secondary onPress={onProfile} />
       <Button label="Öğün ve belirti günlüğüm" secondary onPress={onDiary} />

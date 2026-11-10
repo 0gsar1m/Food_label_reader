@@ -8,6 +8,7 @@ import type { PreparedPhoto } from '../lib/photo';
 export function Review({
   photo,
   busy,
+  personalConsent,
   error,
   onBack,
   onScan,
@@ -17,6 +18,7 @@ export function Review({
 }: {
   photo: PreparedPhoto;
   busy: boolean;
+  personalConsent: boolean;
   error: string;
   onBack: () => void;
   onScan: () => void;
@@ -36,6 +38,12 @@ export function Review({
           <Text style={ui.title}>
             {busy ? 'İçindekiler\naçıklanıyor.' : 'Yazılar net\ngörünüyor mu?'}
           </Text>
+          {busy && (
+            <View accessibilityLiveRegion="polite" style={[ui.row, { gap: 10 }]}>
+              <ActivityIndicator size="large" color={theme.color.green} />
+              <Text style={ui.body}>Etiket okunuyor…</Text>
+            </View>
+          )}
         </View>
         <Image
           source={{ uri: photo.uri }}
@@ -46,13 +54,19 @@ export function Review({
         {error ? <Notice>{error}</Notice> : null}
         {!busy && (
           <Text style={ui.body}>
-            İçindekiler listesi ve alerjen uyarısının tamamı görünsün. Bulanık veya kesik alan
-            varsa tekrar çek.
+            İçindekiler listesi ve alerjen uyarısının tamamı görünsün. Bulanık veya kesik alan varsa
+            tekrar çek.
           </Text>
         )}
         {!busy && (
           <View style={{ gap: 8 }}>
             <Text style={ui.small}>{copy.photoConsent}</Text>
+            {personalConsent && (
+              <Text style={ui.small}>
+                Okuma tamamlanınca kişisel yorum için etiket metni, profil özetin ve son 20 öğün
+                kaydın OpenAI’ye gönderilir.
+              </Text>
+            )}
             <Text
               accessibilityRole="link"
               onPress={onPrivacy}
@@ -65,18 +79,7 @@ export function Review({
             </Text>
           </View>
         )}
-        {busy ? (
-          <View
-            accessibilityLiveRegion="polite"
-            accessibilityLabel="Etiket okunuyor"
-            style={[ui.row, { gap: 10, paddingVertical: 14 }]}
-          >
-            <ActivityIndicator color={theme.color.green} />
-            <Text style={[ui.body, { flex: 1 }]}>Etiket okunuyor…</Text>
-          </View>
-        ) : (
-          <Button label="Fotoğrafı buluta gönder ve oku" icon="scan" onPress={onScan} />
-        )}
+        {!busy && <Button label="Fotoğrafı buluta gönder ve oku" icon="scan" onPress={onScan} />}
         {busy ? (
           <Button label="Okumayı iptal et" secondary onPress={onCancel} />
         ) : (

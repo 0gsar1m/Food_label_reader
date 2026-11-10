@@ -24,13 +24,13 @@ Güncel kaynaklar ve karar gerekçeleri `docs/DECISIONS.md` içinde tutulur.
 
 ## Kişisel yorum
 - Profil ve günlük şifreli vault içinde; native anahtar SecureStore, web sekme oturum depolaması.
-- OpenAI’ye kişisel veri aktarımı ayrı açık izin ve düğme işlemi gerektirir. Önceki Gemini izni geçerli sayılmaz. Görsel isteğine sağlık profili eklenmez.
+- OpenAI’ye kişisel veri aktarımı açık profil izni gerektirir. Fotoğrafı gönderme eylemi, ekranda açıklanan otomatik kişisel yorumu başlatır. Önceki Gemini izni geçerli sayılmaz. Görsel isteğine sağlık profili eklenmez.
 - Genel bilgi, kişi bildirimi ve günlük ilişkisi ayrı evidence ID taşır; korelasyon nedensellik sayılmaz.
 - Nicel porsiyon hesabı modelden alınmaz. Besin tablosu yoksa kalori/makro/mikro bilinmiyor kalır.
 - Model sağlayıcı çıktısı kaynak ID ve şema bakımından doğrulanır; bu kontrol klinik doğruluk garantisi değildir.
 
 ## Ekonomik varsayılan
-Yerel profil değerlendirmesi deterministik kurallardır, üretken LLM veya klinik çıkarım diye sunulmaz. Gözlemlerden gıda tetikleyicisi üretilmez. Ayrı bulut ayrıntılandırması yalnız açık işlemle çalışır; pahalı modele otomatik yükseltme yok.
+Yerel profil değerlendirmesi deterministik kurallardır, üretken LLM veya klinik çıkarım diye sunulmaz. Gözlemlerden gıda tetikleyicisi üretilmez. Bulut yorumu yalnız açık izinle başlatılan yeni okumada otomatik çalışır; pahalı modele otomatik yükseltme yok.
 
 ## Menü, tabak ve takip
 - Menü, tabak ve barkod etiket kanıtı olarak sunulmaz. Menü yalnız yazılı kanıt; tabak görünüşe dayalı belirsiz gözlem; barkod topluluk kataloğudur.

@@ -15,7 +15,7 @@ export function Result({
   onUpdateDiary,
   apiUrl,
   token,
-  onProfile,
+  autoPersonal,
   onDiary,
   preferences,
   onBack,
@@ -27,7 +27,7 @@ export function Result({
   onUpdateDiary: (entry: DiaryEntry) => Promise<void>;
   apiUrl: string;
   token: string;
-  onProfile: () => void;
+  autoPersonal?: boolean;
   onDiary: () => void;
   preferences: AllergenId[];
   onBack: () => void;
@@ -62,7 +62,7 @@ export function Result({
           />
         }
       />
-      <ScrollView contentContainerStyle={ui.content}>
+      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={ui.content}>
         {record.demo && (
           <View style={{ padding: 12, backgroundColor: theme.color.pale }}>
             <Text style={[ui.small, { color: theme.color.green }]}>
@@ -149,8 +149,16 @@ export function Result({
                 </Pressable>
               ))}
             </View>
-            {tab === 'summary' && (
-              <>
+            <View style={{ display: tab === 'summary' ? 'flex' : 'none' }}>
+              {record.demo && !scenario ? (
+                <View style={{ gap: 8 }}>
+                  <Text style={ui.h2}>Örnek kişisel yorum</Text>
+                  <Text style={ui.body}>
+                    Bu bisküvide yulaf var. Örnek günlüğünde sütlü yulaftan sonra şişkinlik kaydı
+                    var. Daha önce yulafı suyla yediğinde de şişkinlik olmuş muydu?
+                  </Text>
+                </View>
+              ) : (
                 <PersonalPanel
                   analysis={analysis}
                   vault={vault}
@@ -158,9 +166,13 @@ export function Result({
                   onUpdateDiary={onUpdateDiary}
                   apiUrl={apiUrl}
                   token={token}
-                  onProfile={onProfile}
+                  autoPersonal={autoPersonal}
                   onDiary={onDiary}
                 />
+              )}
+            </View>
+            {tab === 'summary' && (
+              <>
                 <Text style={[ui.body, { fontSize: 17, lineHeight: 26 }]}>{analysis.summary}</Text>
                 <View style={{ gap: 18 }}>
                   <Text style={ui.h2}>Alerjen beyanları</Text>

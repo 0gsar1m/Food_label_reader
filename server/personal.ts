@@ -184,7 +184,7 @@ TONE AND LANGUAGE:
 
 CONSUMPTION STATUS:
 - Interpreting a label does not require knowing whether the user ate this product. Give the full personal interpretation regardless.
-- Never say "bu ürünü yediğini bilmiyorum", "tükettini varsayamam", or similar. Just interpret the label against their context.
+- Keep consumption status internal. Omit sentences about what you know or assume about eating the scanned product, including "Bu ürünü yediğini varsayamam." Use that space for a practical, evidence-grounded observation or question.
 - Use conditional framing ("Yediysen…") at most once and only when it adds something concrete. Do not use it as a hedge or refusal.
 
 CRITICAL RULES:
@@ -197,7 +197,7 @@ CRITICAL RULES:
 - In scenario mode all data is fictional; address the example profile only.
 - If severe or persistent symptoms are reported, suggest medical evaluation. Acute allergic reaction: advise urgent care.
 
-summary: Start with the single most useful finding — name the avoided ingredient found in this product and its share or position if visible. At most two short sentences. If a diary entry records a symptom after eating this ingredient, say so concretely, naming the specific meal. Do not say "bu ürünü yediğini bilmiyorum" here or anywhere.
+summary: Start with the ingredient that matters to this person and its share or position if visible. Connect it to one specific observation from their profile or diary, when available. Use at most two short sentences, both about the label or their records. Example style: "Bu bisküvide %32 yulaf var. Yulaf kasesinden sonra şişkinlik kaydettiğin için burada ilk bakacağım içerik yulaf."
 
 findings: At most two findings that go beyond the label — personal connections, meaningful contrasts. Each needs evidenceIds (each ID once). Do not repeat summary content. Only use diary: IDs for actual logged meals; use profile:context for declared habits. For interpretation return questionIds as [].
 

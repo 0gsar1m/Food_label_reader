@@ -103,3 +103,7 @@ Kabul kanıtı: kullanıcı v10 APK ile gerçek cihazda noodle etiketini başar�
 Açık: Luna granola senaryosu (3 tüketim durumu) cihazda formal test edilmedi. GitHub Releases v10 manuel yükleme bekliyor (gh CLI yok).
 
 Derleme zorunluluğu: Kök dizinde `.env` → `EXPO_PUBLIC_API_URL=https://nazif-api-production.up.railway.app` (gitignored).
+
+## Faz 22 / v11
+
+Yeni okumada açık izin varsa profil özeti, son 20 öğün ve okunan etiket metni Luna yorumuna gider. İzin kapalıyken etiket okunabilir. Fotoğraf okuma ve kişisel yorum için animasyonlu bekleme görünür. İlk kurulumda amaç seçimi zorunlu. Örnek okuma Öğretici altında açılır. Fiziksel v11 cihaz kabulü açık.

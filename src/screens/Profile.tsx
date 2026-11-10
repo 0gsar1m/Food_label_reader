@@ -15,7 +15,6 @@ import {
   promptForAnswer,
   followUps,
   profileSchema,
-  emptyProfile,
   type Profile as ProfileData,
   type ProfileDraft,
 } from '../../shared/profile';
@@ -54,7 +53,7 @@ export function Choice({
           { fontSize: 18, color: checked ? theme.color.green : theme.color.muted },
         ]}
       >
-        {radio ? (checked ? '●' : '○') : (checked ? '✓' : '□')}
+        {radio ? (checked ? '●' : '○') : checked ? '✓' : '□'}
       </Text>
     </Pressable>
   );
@@ -129,23 +128,20 @@ export function ProfileScreen({
   ];
   const change = <K extends keyof ProfileData>(key: K, value: ProfileData[K]): void =>
     setDraft((old) => ({ ...old, [key]: value }));
-  async function finish(skip = false): Promise<void> {
+  async function finish(): Promise<void> {
     setBusy(true);
     setError('');
     try {
       await onSave(
-        profileSchema.parse(
-          skip
-            ? { ...emptyProfile, completed: true }
-            : {
-                ...draft,
-                avoidedFoods: avoidedText
-                  .split(',')
-                  .map((v) => v.trim())
-                  .filter(Boolean),
-                completed: true,
-              },
-        ),
+        profileSchema.parse({
+          ...draft,
+          goals: draft.goals.filter((goal) => goal === 'awareness' || goal === 'symptoms'),
+          avoidedFoods: avoidedText
+            .split(',')
+            .map((v) => v.trim())
+            .filter(Boolean),
+          completed: true,
+        }),
       );
     } catch {
       setError('Profil kaydedilemedi. Yeniden dene.');
@@ -185,7 +181,13 @@ export function ProfileScreen({
   return (
     <View style={ui.page}>
       <ScreenHeader title="Kullanım profilin" onBack={step ? () => setStep(step - 1) : onBack} />
-      <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={ui.content}>
+      <ScrollView
+        style={{ flex: 1 }}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="none"
+        automaticallyAdjustKeyboardInsets={Platform.OS === 'ios'}
+        contentContainerStyle={ui.content}
+      >
         <Text style={ui.eyebrow}>TANIŞMA / {step + 1} / 6</Text>
         <Text accessibilityRole="header" style={ui.title}>
           {titles[step]}
@@ -376,10 +378,9 @@ export function ProfileScreen({
         {step === 5 && (
           <>
             <Text style={ui.body}>
-              Profilin ve öğün günlüğün cihazında şifreli saklanır. Android’de etiket fotoğrafın
-              cihazda okunur. Soru önerisi istersen, izninle profil özetin kullanılır. İzin verip
-              ayrıntılı yorum istediğinde etiket metni, profil özetin ve son 20 öğün kaydın, yorumun
-              kendi deneyimlerine dayanması için OpenAI’ye gönderilir.
+              Profilin ve öğün günlüğün cihazında şifreli saklanır. İzin verirsen her yeni etiket
+              okumasında profilin ve son öğünlerin kişisel yoruma dahil edilir. İzni dilediğin
+              zaman profilinden değiştirebilirsin.
             </Text>
             {Platform.OS === 'web' && (
               <Notice>
@@ -388,7 +389,7 @@ export function ProfileScreen({
               </Notice>
             )}
             <Choice
-              label="Profil ve günlüğüm kişisel yorum için OpenAI’ye aktarılabilir"
+              label="Etiket okuduğumda kişisel yorum için etiket metnimin, profil özetimin ve son 20 öğün kaydımın OpenAI’ye gönderilmesine izin veriyorum"
               checked={draft.openaiConsent ?? false}
               onPress={() => change('openaiConsent', !draft.openaiConsent)}
             />
@@ -428,20 +429,16 @@ export function ProfileScreen({
           label={step === 5 ? 'Profili kaydet' : 'Devam et'}
           disabled={busy}
           onPress={() => {
+            if (!draft.goals.some((goal) => goal === 'awareness' || goal === 'symptoms')) {
+              setStep(0);
+              setError('Devam etmek için en az bir amaç seç.');
+              return;
+            }
+            setError('');
             if (step < 5) setStep(step + 1);
             else void finish();
           }}
         />
-        {!initial.completed && (
-          <Button
-            label="Şimdilik geç"
-            secondary
-            disabled={busy}
-            onPress={() => {
-              void finish(true);
-            }}
-          />
-        )}
       </ScrollView>
     </View>
   );

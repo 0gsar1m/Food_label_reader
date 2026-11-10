@@ -103,3 +103,7 @@ Nazif API'yi bilgisayardan bağımsız HTTPS adresine yayınla. Android güncell
 Android etiket fotoğrafını gömülü ML Kit ile cihazda metne çevir. Etiket kanıtını koru ve belirsiz besin tablosu değerlerinden hesap yapma. GPT-6 Luna, yeni OpenAI aktarım izniyle etiket metni ve ilgili profil/günlük bağlamını yorumlar. Gerçek fotoğraf, bulut çağrısı, Android paketi ve fiziksel cihaz kabulünü ayrı kaydet.
 
 Durum: v5 yayınlandı, bulut Luna ve APK bütünlüğü doğrulandı. Açık kabul fiziksel Android'de uçak modu OCR, ardından çevrimiçi kişisel yorum. Test sırası [aktif bağlamda](ACTIVE_CONTEXT.md).
+
+## Faz 22 / Otomatik kişisel yorum ve ilk profil
+
+Yeni etiket taraması, açık profil aktarım izniyle Luna yorumunu Özet sekmesinde hazırlar. İlk kurulumda amaç seçilir, örnek okuma Öğretici altında açılır. Canlı uç, tarayıcı ve fiziksel Android cihaz kabulü ayrı kaydedilir.
