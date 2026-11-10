@@ -14,7 +14,7 @@ import { estimateCosts, baseCosts } from '../shared/costs';
 const profile = {
   ...emptyProfile,
   completed: true,
-  cloudConsent: true,
+  geminiConsent: true,
   goals: ['weight' as const],
   symptoms: ['bloating' as const],
 };
@@ -30,12 +30,16 @@ const success = {
   findings: [{ text: 'Yulaf etikette belirtilmiş.', evidenceIds: ['label:text'] }],
   questionIds: ['context'],
 };
-function transport(result: unknown = success, stop = 'end_turn') {
+function transport(result: unknown = success, stop = 'STOP') {
   return vi.fn<typeof fetch>().mockResolvedValue(
     Response.json({
-      stop_reason: stop,
-      content: [{ type: 'thinking' }, { type: 'text', text: JSON.stringify(result) }],
-      usage: { input_tokens: 1600, output_tokens: 800 },
+      candidates: [
+        {
+          finishReason: stop,
+          content: { parts: [{ thought: true }, { text: JSON.stringify(result) }] },
+        },
+      ],
+      usageMetadata: { promptTokenCount: 1600, candidatesTokenCount: 700, thoughtsTokenCount: 100 },
     }),
   );
 }
@@ -114,10 +118,10 @@ describe('grounded health-language contract', () => {
     expect(result.usage.output_tokens).toBe(800);
     const body = JSON.parse(String(fetcher.mock.calls[0]?.[1]?.body));
     expect(body.tool_choice).toBeUndefined();
-    expect(body.output_config.format.type).toBe('json_schema');
-    expect(body.output_config.format.schema.properties.summary.maxLength).toBeUndefined();
-    expect(body.system).toContain('not causation');
-    expect(body.messages[0].content).not.toContain('image/jpeg');
+    expect(body.generationConfig.responseMimeType).toBe('application/json');
+    expect(body.generationConfig.responseJsonSchema.properties.summary.type).toBe('string');
+    expect(body.systemInstruction.parts[0].text).toContain('not causation');
+    expect(body.contents[0].parts[0].text).not.toContain('image/jpeg');
   });
   it('rejects invented medical citations', async () => {
     await expect(
@@ -147,7 +151,7 @@ describe('grounded health-language contract', () => {
     await expect(
       personalize(
         input,
-        { personalKey: 'test', personalFetcher: transport(success, 'max_tokens') },
+        { personalKey: 'test', personalFetcher: transport(success, 'MAX_TOKENS') },
         new AbortController().signal,
       ),
     ).rejects.toThrow('INVALID_RESULT');

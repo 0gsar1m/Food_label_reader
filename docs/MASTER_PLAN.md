@@ -88,3 +88,6 @@ Görünen ürün adı mobil, web, rapor ve proje metinlerinde Nazif olarak günc
 
 ## Faz 16 / Etiketten öğün geçmişine
 Etiket bileşenini teyit edilmiş öğün bileşenleriyle cihazda eşleştir. Kullanıcının kaydettiği öğün ve belirtiyi, belirtisiz eşleşmeler ve etiket kanıtıyla birlikte göster.
+
+## Faz 17 / Gemini yorum ve takip sorusu
+Fotoğraf ve metin aynı Gemini anahtarını kullanır. Kurgu senaryo gerçek veriden ayrılır. Ayrıntılı yorum, dayanakları, bir takip sorusu ve cevap sonrası yeniden değerlendirmeyi kapsar. Üretim provası ve canlı/denetimli test ayrımı PROD_FLOW_LOG.md dosyasında.

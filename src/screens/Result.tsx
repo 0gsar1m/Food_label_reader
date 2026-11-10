@@ -5,12 +5,14 @@ import { Button, IconButton, Notice, ScreenHeader } from '../components/Controls
 import { theme, ui } from '../theme';
 import { copy } from '../content';
 import { PersonalPanel } from '../components/PersonalPanel';
-import type { HealthVault } from '../../shared/profile';
+import type { DiaryEntry, HealthVault } from '../../shared/profile';
 
 /** Evidence is visible next to every explanation, including personalized allergen highlights. */
 export function Result({
   record,
   vault,
+  scenario,
+  onUpdateDiary,
   apiUrl,
   token,
   onProfile,
@@ -21,6 +23,8 @@ export function Result({
 }: {
   record: ScanRecord;
   vault: HealthVault;
+  scenario?: boolean;
+  onUpdateDiary: (entry: DiaryEntry) => Promise<void>;
   apiUrl: string;
   token: string;
   onProfile: () => void;
@@ -150,6 +154,8 @@ export function Result({
                 <PersonalPanel
                   analysis={analysis}
                   vault={vault}
+                  scenario={scenario}
+                  onUpdateDiary={onUpdateDiary}
                   apiUrl={apiUrl}
                   token={token}
                   onProfile={onProfile}

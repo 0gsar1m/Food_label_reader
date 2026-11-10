@@ -3,7 +3,7 @@ import { goals, symptoms, type HealthVault } from './profile';
 import { outcomeOf } from './observations';
 
 /** Offline, deterministic profile interpretation; it makes no provider call or disease inference. */
-export function localInterpretation(analysis: Analysis, vault: HealthVault) {
+export function localInterpretation(analysis: Analysis, vault: HealthVault, scenario = false) {
   const findings: { text: string; basis: string }[] = [];
   const profile = vault.profile;
   if (profile.goals.includes('protein'))
@@ -28,7 +28,7 @@ export function localInterpretation(analysis: Analysis, vault: HealthVault) {
       basis: 'Profilindeki kendi bildirimin',
     });
   const recent = vault.diary
-    .filter((entry) => !entry.demo && outcomeOf(entry) !== 'pending')
+    .filter((entry) => Boolean(entry.demo) === scenario && outcomeOf(entry) !== 'pending')
     .slice(0, 20);
   const normalizeIngredient = (name: string): string =>
     name.trim().normalize('NFC').toLocaleLowerCase('tr-TR');

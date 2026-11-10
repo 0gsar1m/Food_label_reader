@@ -1,4 +1,11 @@
-# Demo ayarı: Vision + Sonnet
+# Güncel ayar / Gemini fotoğraf ve yorum
+
+10 Kasım 2026. Fotoğraf Gemini 3.8 Flash, ayrıntılı yorum Gemini 3.1 Flash-Lite. Önceki 3.000/2.000 fotoğraf ve 6.000/2.000 yorum tokenı varsayımıyla fotoğraf $0,00975, bir yorum $0,0045, fotoğraf ve bir yorum $0,01425. Takip cevabından sonraki yeniden yorum ayrı bir çağrıdır. Canlı provadaki ölçümler PROD_FLOW_LOG.md dosyasında. [Google tarifesi](https://ai.google.dev/gemini-api/docs/pricing?frmapp=yes)
+
+## Eski Sonnet senaryoları
+
+Aşağıdaki hesaplar önceki sağlayıcı seçiminin tarihsel karşılaştırmasıdır.
+
 
 ## My GutIQ benzeri deneyimin gideri
 

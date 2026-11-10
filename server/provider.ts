@@ -80,6 +80,29 @@ async function visionJson(
   schema: object,
   nutritionImage?: string,
 ): Promise<unknown> {
+  return geminiJson(
+    [
+      { inlineData: { mimeType, data: image } },
+      ...(nutritionImage ? [{ inlineData: { mimeType: 'image/jpeg', data: nutritionImage } }] : []),
+      { text: 'Görseli belirtilen görev ve şemaya göre Türkçe incele.' },
+    ],
+    config,
+    signal,
+    prompt,
+    schema,
+    8192,
+  );
+}
+
+/** Shared Gemini JSON transport for image and text tasks. */
+export async function geminiJson(
+  parts: ({ text: string } | { inlineData: { mimeType: string; data: string } })[],
+  config: VisionConfig,
+  signal: AbortSignal,
+  prompt: string,
+  schema: object,
+  maxOutputTokens: number,
+): Promise<unknown> {
   const response = await (config.fetcher ?? fetch)(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(config.model)}:generateContent`,
     {
@@ -88,22 +111,11 @@ async function visionJson(
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': config.apiKey },
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: prompt }] },
-        contents: [
-          {
-            role: 'user',
-            parts: [
-              { inlineData: { mimeType, data: image } },
-              ...(nutritionImage
-                ? [{ inlineData: { mimeType: 'image/jpeg', data: nutritionImage } }]
-                : []),
-              { text: 'Görseli belirtilen görev ve şemaya göre Türkçe incele.' },
-            ],
-          },
-        ],
+        contents: [{ role: 'user', parts }],
         generationConfig: {
           responseMimeType: 'application/json',
           responseJsonSchema: schema,
-          maxOutputTokens: 8192,
+          maxOutputTokens,
           thinkingConfig: { thinkingLevel: 'low' },
         },
       }),

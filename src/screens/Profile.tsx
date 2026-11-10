@@ -269,18 +269,18 @@ export function ProfileScreen({
               />
             ))}
             <Text style={ui.small}>
-              Sorular seçimlerine göre bu cihazda hazırlanır. İstersen aktarım iznini açıp Claude
+              Sorular seçimlerine göre bu cihazda hazırlanır. İstersen aktarım iznini açıp Gemini
               ile sırasını özelleştirebilirsin.
             </Text>
             <Choice
-              label="Profil özetimi kişisel yorum ve soru seçimi için sunucu üzerinden Anthropic'e göndermeye izin veriyorum"
-              checked={draft.cloudConsent}
-              onPress={() => change('cloudConsent', !draft.cloudConsent)}
+              label="Profil özetimi kişisel yorum ve soru seçimi için sunucu üzerinden Google Gemini'e göndermeye izin veriyorum"
+              checked={draft.geminiConsent}
+              onPress={() => change('geminiConsent', !draft.geminiConsent)}
             />
             <Button
               label="Soruları modelle özelleştir"
               secondary
-              disabled={!draft.cloudConsent || busy}
+              disabled={!draft.geminiConsent || busy}
               onPress={() => {
                 void adapt();
               }}
@@ -292,7 +292,7 @@ export function ProfileScreen({
             <Text style={ui.body}>
               Profilin ve öğün günlüğün cihazda AES-GCM ile şifrelenir. Google'a gönderilen etiket
               fotoğrafına profil eklenmez. Kişisel yorum isteğinde yalnız izin verdiğin profil ve
-              son 20 günlük kaydı Anthropic'e aktarılır.
+              son 20 günlük kaydı Google Gemini'e aktarılır.
             </Text>
             {Platform.OS === 'web' && (
               <Notice>
@@ -301,9 +301,9 @@ export function ProfileScreen({
               </Notice>
             )}
             <Choice
-              label="Profil ve günlüğüm kişisel yorum için Anthropic'e aktarılabilir"
-              checked={draft.cloudConsent}
-              onPress={() => change('cloudConsent', !draft.cloudConsent)}
+              label="Profil ve günlüğüm kişisel yorum için Google Gemini'e aktarılabilir"
+              checked={draft.geminiConsent}
+              onPress={() => change('geminiConsent', !draft.geminiConsent)}
             />
             <Button
               label="Sağlık verisini JSON olarak dışa aktar"

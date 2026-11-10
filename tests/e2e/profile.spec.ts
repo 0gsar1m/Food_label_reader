@@ -95,12 +95,12 @@ test('explicit consent enables grounded model interpretation and question select
     calls++;
     const input = route.request().postDataJSON();
     expect(input.consent).toBe(true);
-    expect(input.profile.cloudConsent).toBe(true);
+    expect(input.profile.geminiConsent).toBe(true);
     const data = {
       ...emptyProfile,
       goals: ['symptoms' as const],
       symptoms: ['bloating' as const],
-      cloudConsent: true,
+      geminiConsent: true,
     };
     const result = {
       summary: 'Bu kontrollü model test yanıtıdır.',
@@ -149,4 +149,61 @@ test('explicit consent enables grounded model interpretation and question select
   await expect(page.getByText('Bu kontrollü model test yanıtıdır.')).toBeVisible();
   await expect.poll(() => calls).toBe(2);
   await page.screenshot({ path: 'docs/screenshots/personal-model-attribution.png' });
+});
+
+test('isolated demo asks a follow-up and sends the saved answer on re-evaluation', async ({
+  page,
+}) => {
+  let calls = 0;
+  await page.route('**/api/personalize', async (route) => {
+    const input = route.request().postDataJSON();
+    expect(input.scenario).toBe(true);
+    expect(input.profile.geminiConsent).toBe(true);
+    expect(input.diary.every((entry: { demo?: boolean }) => entry.demo)).toBe(true);
+    calls++;
+    const second = calls === 2;
+    if (second) expect(input.diary[0].notes).toContain('Yanında 200 ml süt içtim.');
+    await route.fulfill({
+      json: {
+        model: 'gemini-3.1-flash-lite',
+        evidence: personalEvidence(input),
+        usage: { input_tokens: 1400, output_tokens: 220 },
+        result: {
+          summary: second ? 'Süt ve porsiyon aynı anda değişmiş.' : 'Yulaf iki öğünde de var.',
+          findings: [],
+          questionIds: [],
+          ...(second ? {} : { followUp: { diaryId: 'diary:0', question: 'Yulafı neyle yedin?' } }),
+        },
+      },
+    });
+  });
+  await start(page);
+  await page.getByRole('button', { name: 'Şimdilik geç' }).click();
+  const vaultBefore = await page.evaluate(() => sessionStorage.getItem('etiket.health.v1'));
+  await page.getByRole('button', { name: 'Örnek profille kişisel yorumu dene' }).click();
+  await expect(page.getByText('Yulaf kasesi', { exact: false }).first()).toBeVisible();
+  const cloud = page.getByRole('button', { name: 'Bulut modeliyle ayrıntılandır' });
+  await expect(cloud).toBeDisabled();
+  await page
+    .getByRole('checkbox', { name: 'Kurgu profili ve örnek öğünleri Gemini’ye gönder' })
+    .click();
+  await cloud.click();
+  await expect(page.getByText('Yulafı neyle yedin?')).toBeVisible();
+  await page
+    .getByRole('textbox', { name: 'Takip sorusuna cevap' })
+    .fill('Yanında 200 ml süt içtim.');
+  await page.getByRole('button', { name: 'Cevabı kaydet ve yeniden yorumla' }).click();
+  await expect(page.getByText('Süt ve porsiyon aynı anda değişmiş.')).toBeVisible();
+  expect(calls).toBe(2);
+  expect(await page.evaluate(() => sessionStorage.getItem('etiket.health.v1'))).toBe(vaultBefore);
+  await page.getByRole('button', { name: 'Hazır yanıtlarla prova yap' }).click();
+  await expect(
+    page.getByText('Hazır kurgu yanıt. Bu prova Gemini’ye istek göndermez.'),
+  ).toBeVisible();
+  await page
+    .getByRole('textbox', { name: 'Takip sorusuna cevap' })
+    .fill('Yanında 200 ml süt içtim.');
+  await page.getByRole('button', { name: 'Cevabı kaydet ve yeniden yorumla' }).click();
+  await expect(page.getByText(/İki ayrıntı birlikte değiştiği için/)).toBeVisible();
+  expect(calls).toBe(2);
 });

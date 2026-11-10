@@ -50,3 +50,6 @@ Görünen uygulama adı ve dışa aktarılan gözlem raporlarının markası Naz
 
 ## Faz 16 / Etiketten öğün geçmişine
 Yerel kişisel yorum, geçmişteki tamamlanmış öğünlerde aynı adla kaydedilmiş bileşenleri etiket sonucuna bağlar. Demo ve bekleyen öğünler eşleşmeye katılmaz.
+
+## Faz 17 / Gemini yorum ve takip sorusu
+Flash-Lite yorum, kurgu yulaf senaryosu, öğüne bağlı cevap ve yeniden değerlendirme eklendi. Yeni Gemini veri izni açıkça istenir.

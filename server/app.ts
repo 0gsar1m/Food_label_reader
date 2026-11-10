@@ -72,6 +72,8 @@ export function createApi(config: ApiConfig): express.Express {
       status: 'ok',
       configured: Boolean(config.apiKey),
       model: config.model,
+      personalConfigured: Boolean(config.personalKey),
+      personalModel: config.personalModel ?? 'gemini-3.1-flash-lite',
       authenticationRequired: Boolean(config.accessToken) || requireAccount,
       googleConfigured: googleConfigured(config),
     }),
@@ -241,7 +243,7 @@ export function createApi(config: ApiConfig): express.Express {
     const parsed = personalRequestSchema.safeParse(req.body);
     if (
       !parsed.success ||
-      !parsed.data.profile.cloudConsent ||
+      !parsed.data.profile.geminiConsent ||
       (parsed.data.task === 'interpret' && !parsed.data.analysis)
     ) {
       res.status(400).json({ error: 'CONSENT_OR_INPUT_REQUIRED' });

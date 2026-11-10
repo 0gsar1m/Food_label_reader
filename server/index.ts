@@ -10,11 +10,10 @@ const environment = z
       .string()
       .regex(/^[a-zA-Z0-9._-]+$/)
       .default('gemini-3.8-flash'),
-    ANTHROPIC_API_KEY: z.string().default(''),
     PERSONAL_MODEL: z
       .string()
       .regex(/^[a-zA-Z0-9._-]+$/)
-      .default('claude-sonnet-5-5'),
+      .default('gemini-3.1-flash-lite'),
     GOOGLE_CLIENT_IDS: z.string().default(''),
     SESSION_SECRET: z.string().min(32).optional(),
     REQUIRE_GOOGLE_AUTH: z.enum(['true', 'false']).default('false'),
@@ -32,7 +31,7 @@ const app = createApi({
     .filter(Boolean),
   sessionSecret: environment.SESSION_SECRET,
   requireGoogleAuth: environment.REQUIRE_GOOGLE_AUTH === 'true',
-  personalKey: environment.ANTHROPIC_API_KEY,
+  personalKey: environment.GEMINI_API_KEY,
   personalModel: environment.PERSONAL_MODEL,
   model: environment.GEMINI_MODEL,
   accessToken: environment.APP_ACCESS_TOKEN,

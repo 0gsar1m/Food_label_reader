@@ -24,7 +24,7 @@ Güncel kaynaklar ve karar gerekçeleri `docs/DECISIONS.md` içinde tutulur.
 
 ## Kişisel yorum
 - Profil ve günlük şifreli vault içinde; native anahtar SecureStore, web sekme oturum depolaması.
-- Anthropic aktarımı ayrı açık izin ve düğme işlemi gerektirir. Normal Vision çağrısına sağlık profili eklenmez.
+- Gemini’ye kişisel veri aktarımı ayrı açık izin ve düğme işlemi gerektirir. Normal Vision çağrısına sağlık profili eklenmez.
 - Genel bilgi, kişi bildirimi ve günlük ilişkisi ayrı evidence ID taşır; korelasyon nedensellik sayılmaz.
 - Nicel porsiyon hesabı modelden alınmaz. Besin tablosu yoksa kalori/makro/mikro bilinmiyor kalır.
 - Model sağlayıcı çıktısı kaynak ID ve şema bakımından doğrulanır; bu kontrol klinik doğruluk garantisi değildir.
@@ -38,3 +38,5 @@ Yerel profil değerlendirmesi deterministik kurallardır, üretken LLM veya klin
 - Pending kayıt belirtisiz değildir. Örnek kayıtlar ve gelecekteki kayıtlar istatistikten dışlanır. Bilinmeyen bileşen listesi karşılaştırma grubu olmaz.
 - Karşılaştırmadaki 3+3 kayıt sunum eşiğidir; klinik kanıt veya neden eşiği değildir. Güven yüzdesi, kesin tetikleyici ve güvenli gıda sınıfı üretilmez.
 - Restoran kartına tanı/rutin eklenmez. Rapor açık sağlık verisi içerir; paylaşım yalnız kullanıcı düğmesiyle açılır.
+
+- Ayrıntılı yorum, kaydedilmiş porsiyon ve eşlik eden gıdaları karşılaştırır. Eksik ayrıntı için bir öğüne bağlı takip sorusu sorabilir. Yanıt kullanıcı kaydı olarak işlenir. Kurgu akış gerçek günlüğe yazılmaz.

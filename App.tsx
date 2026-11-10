@@ -20,6 +20,7 @@ import { IconButton } from './src/components/Controls';
 import { useDeviceData } from './src/hooks/useDeviceData';
 import { pickPhoto, type PreparedPhoto } from './src/lib/photo';
 import { requestAnalysis, ScanError } from './src/lib/api';
+import { makeDemoVault } from './shared/demoScenario';
 import { demoAnalysis } from './src/data/demo';
 import type { ScanRecord } from './shared/analysis';
 import { theme, ui } from './src/theme';
@@ -56,7 +57,7 @@ type Screen =
     }
   | { kind: 'diary'; meal?: string; seed?: Partial<DiaryEntry> }
   | { kind: 'review'; photo: PreparedPhoto }
-  | { kind: 'result'; record: ScanRecord };
+  | { kind: 'result'; record: ScanRecord; scenario?: boolean };
 
 /** Native entry point loads bundled Turkish-capable fonts and never embeds service secrets. */
 export default function App() {
@@ -189,9 +190,10 @@ function Application() {
     setScanError('Okuma iptal edildi. Fotoğrafı tekrar gönderebilirsin.');
   }
   const camera = (): void => push({ kind: 'camera' });
-  const demo = (): void =>
+  const demo = (scenario = false): void =>
     push({
       kind: 'result',
+      scenario,
       record: {
         id: 'example',
         createdAt: new Date().toISOString(),
@@ -301,7 +303,8 @@ function Application() {
           onGallery={() => {
             void gallery();
           }}
-          onDemo={demo}
+          onDemo={() => demo()}
+          onScenario={() => demo(true)}
           recent={device.records[0]}
           onRecent={(record) => push({ kind: 'result', record })}
         />
@@ -363,7 +366,14 @@ function Application() {
       {screen.kind === 'result' && (
         <Result
           key={screen.record.id}
-          vault={health.vault}
+          vault={screen.scenario ? makeDemoVault() : health.vault}
+          scenario={screen.scenario}
+          onUpdateDiary={(entry) =>
+            health.update((old) => ({
+              ...old,
+              diary: old.diary.map((item) => (item.id === entry.id ? entry : item)),
+            }))
+          }
           apiUrl={device.apiUrl}
           token={effectiveToken}
           onProfile={() => push({ kind: 'profile' })}

@@ -19,6 +19,7 @@ export function Home({
   onCamera,
   onGallery,
   onDemo,
+  onScenario,
   recent,
   onRecent,
 }: {
@@ -33,6 +34,7 @@ export function Home({
   onCamera: () => void;
   onGallery: () => void;
   onDemo: () => void;
+  onScenario: () => void;
   recent?: ScanRecord;
   onRecent: (record: ScanRecord) => void;
 }) {
@@ -79,6 +81,7 @@ export function Home({
         </View>
         <Icon name="arrow" size={22} />
       </Pressable>
+      <Button label="Örnek profille kişisel yorumu dene" secondary onPress={onScenario} />
       <Button label="Hesabım" secondary onPress={onAccount} />
       <Button label="Kullanım profilim" secondary onPress={onProfile} />
       <Button label="Öğün ve belirti günlüğüm" secondary onPress={onDiary} />

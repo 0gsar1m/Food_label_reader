@@ -67,15 +67,13 @@ describe('menu, meal and catalogue HTTP boundaries', () => {
       body: JSON.stringify(payload),
     });
   it('validates mode and image, requires authentication and makes only one provider call', async () => {
-    const transport = vi
-      .fn<typeof fetch>()
-      .mockResolvedValue(
-        Response.json({
-          candidates: [
-            { finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(menu) }] } },
-          ],
-        }),
-      );
+    const transport = vi.fn<typeof fetch>().mockResolvedValue(
+      Response.json({
+        candidates: [
+          { finishReason: 'STOP', content: { parts: [{ text: JSON.stringify(menu) }] } },
+        ],
+      }),
+    );
     const base = await serve({ fetcher: transport, accessToken: 'test-access-token' });
     const input = { image, mimeType: 'image/jpeg', mode: 'menu' };
     expect((await foodPost(base, input)).status).toBe(401);
@@ -89,18 +87,16 @@ describe('menu, meal and catalogue HTTP boundaries', () => {
   });
   it('rejects fabricated menu evidence without a synthetic fallback', async () => {
     const base = await serve({
-      fetcher: vi
-        .fn<typeof fetch>()
-        .mockResolvedValue(
-          Response.json({
-            candidates: [
-              {
-                finishReason: 'STOP',
-                content: { parts: [{ text: JSON.stringify({ ...menu, visibleText: '' }) }] },
-              },
-            ],
-          }),
-        ),
+      fetcher: vi.fn<typeof fetch>().mockResolvedValue(
+        Response.json({
+          candidates: [
+            {
+              finishReason: 'STOP',
+              content: { parts: [{ text: JSON.stringify({ ...menu, visibleText: '' }) }] },
+            },
+          ],
+        }),
+      ),
     });
     const response = await foodPost(base, { image, mimeType: 'image/jpeg', mode: 'menu' });
     expect(response.status).toBe(502);
@@ -285,7 +281,7 @@ describe('health-data endpoint', () => {
     const base = await serve();
     const response = await healthPost(base, {
       consent: true,
-      profile: { ...emptyProfile, cloudConsent: true },
+      profile: { ...emptyProfile, geminiConsent: true },
       diary: [],
       analysis: demoAnalysis,
       task: 'interpret',
@@ -311,7 +307,7 @@ describe('health-data endpoint', () => {
       (
         await healthPost(base, {
           consent: true,
-          profile: { ...emptyProfile, cloudConsent: true },
+          profile: { ...emptyProfile, geminiConsent: true },
           diary: [],
           analysis: null,
           task: 'interpret',

@@ -17,7 +17,8 @@ export async function requestPersonal(
   input: z.infer<typeof personalRequestSchema>,
 ) {
   const parsed = personalRequestSchema.parse(input);
-  if (!parsed.profile.cloudConsent) throw new Error('Kişisel yorum için profil aktarım iznini aç.');
+  if (!parsed.profile.geminiConsent)
+    throw new Error('Kişisel yorum için profil aktarım iznini aç.');
   let response: Response;
   try {
     response = await fetch(`${validateApiUrl(url)}/api/personalize`, {
@@ -35,7 +36,7 @@ export async function requestPersonal(
   if (!response.ok)
     throw new Error(
       response.status === 503
-        ? 'Sunucuda kişisel yorum için Anthropic anahtarı eksik. Profilin cihazda kullanılabilir.'
+        ? 'Sunucuda kişisel yorum için Google Gemini anahtarı eksik. Profilin cihazda kullanılabilir.'
         : response.status === 401
           ? 'Sunucu erişim anahtarı eşleşmedi.'
           : 'Kişisel yorum tamamlanamadı. Biraz sonra tekrar dene.',

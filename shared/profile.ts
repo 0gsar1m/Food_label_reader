@@ -26,7 +26,7 @@ export const profileSchema = z.object({
   breakfast: z.string().max(600),
   timing: z.string().max(400),
   routine: z.string().max(600),
-  cloudConsent: z.boolean(),
+  geminiConsent: z.boolean().default(false),
   answers: z.partialRecord(
     z.enum(['portion', 'protein', 'timing', 'context', 'skin', 'routine']),
     z.string().max(600),
@@ -43,7 +43,7 @@ export const emptyProfile: Profile = {
   breakfast: '',
   timing: '',
   routine: '',
-  cloudConsent: false,
+  geminiConsent: false,
   answers: {},
 };
 /** Validated local profile. */
@@ -113,10 +113,17 @@ export const personalRequestSchema = z
     diary: z.array(diarySchema).max(20),
     analysis: analysisSchema.nullable(),
     task: z.enum(['questions', 'interpret']),
+    scenario: z.literal(true).optional(),
   })
   .strict();
 /** Findings point to provided evidence IDs; unsupported IDs are rejected by the API. */
 export const personalResponseSchema = z.object({
+  followUp: z
+    .object({
+      diaryId: z.string().regex(/^diary:\d+$/),
+      question: z.string().trim().min(1).max(200),
+    })
+    .optional(),
   summary: z.string().min(1).max(1000),
   findings: z
     .array(

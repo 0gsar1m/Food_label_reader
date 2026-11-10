@@ -2,7 +2,7 @@
 
 ## Profil, kişisel yorum ve Google giriş eki
 Profil/günlük native cihazda ayrı şifreli depoda; webde sekme oturumundadır. Google, misafir ve diğer hesaplar ayrı kayıt alanları kullanır.
-Kişisel yorum için `ANTHROPIC_API_KEY` ve `PERSONAL_MODEL=claude-sonnet-5-5`; kullanıcıdan açık aktarım izni gerekir.
+Kişisel yorum için aynı `GEMINI_API_KEY` ve varsayılan `PERSONAL_MODEL=gemini-3.1-flash-lite` kullanılır. Gerçek profil için Gemini’ye açık aktarım izni gerekir.
 Google giriş ortamı ve native yapılandırması GOOGLE_AUTH.md içinde. Google native SDK Expo Go'da bulunmaz; gerçek giriş için APK/development build gerekir.
 `npm run test:e2e` derlenmiş web önizlemesini 8082'de sınar. Tek Playwright çalıştırması kullan; geliştirme sunucusu HMR çıktısı test kanıtı değildir.
 Yatırımcı gider tablosu INVESTOR_COSTS.md, tekrar üretim `npm run costs`, demo akışı DEMO_SCRIPT.md içinde.
@@ -73,7 +73,7 @@ Google Play veri güvenliği ve Apple gizlilik formlarını gerçek veri akış�
 Ürün adı/modeli başarı ve gecikme garantisi vermez. Model sürümü değişince etiket kabul setini yeniden çalıştır.
 Bu adımlar bu oturumda yapılmış veya hesap açılmış gibi raporlanmaz.
 
-Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yerel profil değerlendirmesi ve isteğe bağlı Haiku bulut ayrıntısı. Eski premium gider rakamları varsayılan değildir; INVESTOR_COSTS.md esas alınır.
+Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yerel profil değerlendirmesi ve isteğe bağlı Gemini Flash-Lite bulut ayrıntısı. Eski premium gider rakamları varsayılan değildir; INVESTOR_COSTS.md esas alınır.
 # Faz 14 ek kabulü
 
 - `docs/GUTIQ_RESEARCH.md` ürün karşılaştırmasını ve bilinmeyenleri kaydeder. Yeni ekranlar: Gözlemler, Dışarıda yemek, Menü ve tabak, Barkod.
@@ -82,3 +82,5 @@ Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yer
 - Native: EAN8/EAN13/UPC-A barkod kamerasını, reddedilen izni ve elle girişi test edin. Expo Print/Sharing/FileSystem yeni paketleri development/APK build'ine dahil edin. Her iki platformda PDF paylaşma, iptal, Türkçe metin ve normal geçici dosya temizliğini kontrol edin.
 - Canlı model seti: en az 5 menü, 5 tabak, 10 etiket; kırpık/bulanık/gizli sos/alerjen eksikliği ve görsel talimat enjeksiyonu dahil. Gerçek usage, p50/p95, bozuk yanıt oranı ölçülmeden ucuz model eşdeğerliği iddia etmeyin.
 - Menü/tabak sonucu saklanmaz; teyit edilen öğün günlükte saklanır. Uzun dönem için 100 kayıt sınırı/senkronizasyon ve abonelik bütçesi ayrıca tasarlanır.
+
+Üretim ayarıyla yerel kabul provası ve gerçek durumlar: [PROD_FLOW_LOG.md](PROD_FLOW_LOG.md).

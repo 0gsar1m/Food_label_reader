@@ -1,4 +1,4 @@
-> Güncel demo ayarı: `npm run api` Gemini 3.8 Flash + Claude Sonnet 5.5 kullanır. Ekonomik sunucu `npm run api:economy`. Yerel profil yorumu API çağırmaz; model yorumu ayrı bulut düğmesidir. Maliyetler docs/INVESTOR_COSTS.md içinde.
+> Güncel ayar: Fotoğraf Gemini 3.8 Flash, isteğe bağlı kişisel yorum Gemini 3.1 Flash-Lite. İkisi aynı sunucu anahtarını kullanır.
 
 # Nazif
 
@@ -57,7 +57,7 @@ Gerçek fotoğraf gönderiminde anahtar yoksa yapılandırma hatası gösterilir
 
 İlk açılışta altı adımlı amaç, yakınma, bildirilen tanı/şüphe, rutin ve koşullu takip soruları akışı vardır. Atlanabilir ve sonradan düzenlenebilir. Profil/günlük native cihazda AES-256-GCM ile şifrelenir; web önizlemesinde yalnız sekme oturumunda tutulur.
 
-Kişisel yorum ve soru sıralama için sunucu `.env` dosyasına `ANTHROPIC_API_KEY` ekle. Demo varsayılanı `PERSONAL_MODEL=claude-sonnet-5-5`; bütçe alternatifi `claude-sonnet-5-5`. Kullanıcı aktarım iznini açmadan sağlık verisi modele gönderilmez. Anahtar yokken yerel profil, günlük ve porsiyon hesabı kullanılabilir; model yorumu yerine sahte yanıt gösterilmez.
+Kişisel yorum ve soru seçimi fotoğraf okumasıyla aynı sunucu tarafı Gemini anahtarını kullanır. `PERSONAL_MODEL` varsayılanı `gemini-3.1-flash-lite`. Gerçek profil için Gemini aktarım izni ve yorum düğmesi gerekir. Ana ekrandan **Örnek profille kişisel yorumu dene** ile kurgu kayıtlar üzerinde deneyebilirsin.
 
 Besin tablosu için önizlemede ikinci fotoğraf eklenebilir. Sonuçta porsiyon miktarı girilince görünen kalori/makro değerleri kodla ölçeklenir; eksik mikrobesin tahmin edilmez.
 
@@ -106,4 +106,4 @@ ve [aktif bağlam](docs/ACTIVE_CONTEXT.md) okunur. [Faz planı](docs/MASTER_PLAN
 
 Tarayıcı kabulü `npm run test:e2e` ile önce web export üretir, sonra 8082 üzerinde statik önizlemeyi açar. Aynı çıktı klasöründe eşzamanlı iki Playwright çalıştırması başlatma.
 
-Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yerel profil değerlendirmesi ve isteğe bağlı Haiku bulut ayrıntısı. Eski premium gider rakamları varsayılan değildir; INVESTOR_COSTS.md esas alınır.
+Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yerel profil değerlendirmesi ve isteğe bağlı Gemini Flash-Lite bulut ayrıntısı. Eski premium gider rakamları varsayılan değildir; INVESTOR_COSTS.md esas alınır.

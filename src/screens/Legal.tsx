@@ -21,7 +21,7 @@ const privacy = [
   ],
   [
     'Kişisel model yorumu',
-    'Yalnız aktarım iznini açıp ilgili yorum veya soru özelleştirme düğmesine bastığında profil özeti, yorum için son 20 öğün kaydı ve etiket metni sunucu üzerinden Anthropic hizmetine gönderilir. Soru özelleştirmesinde öğün ve etiket gönderilmez. Alerjen tercihleri Google görsel isteğine eklenmez. Sunucu sağlık içeriğini kaydetmez. Sağlayıcının saklama koşulları kendi hesabının sözleşmesine bağlıdır. İzni kapatmak yeni aktarımı durdurur; daha önce sağlayıcıya aktarılan veriyi bu uygulamadan geri çekmez.',
+    'Yalnız aktarım iznini açıp ilgili yorum veya soru özelleştirme düğmesine bastığında profil özeti, yorum için son 20 öğün kaydı ve etiket metni sunucu üzerinden Google Gemini hizmetine gönderilir. Soru özelleştirmesinde öğün ve etiket gönderilmez. Alerjen tercihleri Google görsel isteğine eklenmez. Sunucu sağlık içeriğini kaydetmez. Sağlayıcının saklama koşulları kendi hesabının sözleşmesine bağlıdır. İzni kapatmak yeni aktarımı durdurur; daha önce sağlayıcıya aktarılan veriyi bu uygulamadan geri çekmez.',
   ],
   [
     'İşlenen veriler',
@@ -37,7 +37,7 @@ const privacy = [
   ],
   [
     'Üçüncü taraflar',
-    'Google ve Anthropic tarafından veri işleme ve saklama, kullanılan Gemini hesabının planına ve geçerli şartlarına tabidir. Ücretsiz ve ücretli hizmet koşulları farklı olabilir. Barındırma sağlayıcısı IP ve teknik bağlantı günlükleri tutabilir. Yurt dışı işleme söz konusu olabilir.',
+    'Google tarafından veri işleme ve saklama, kullanılan Gemini hesabının planına ve geçerli şartlarına tabidir. Ücretsiz ve ücretli hizmet koşulları farklı olabilir. Barındırma sağlayıcısı IP ve teknik bağlantı günlükleri tutabilir. Yurt dışı işleme söz konusu olabilir.',
   ],
   [
     'İzinler ve erişim',

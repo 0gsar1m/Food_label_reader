@@ -68,7 +68,8 @@
     "costs": "tsx scripts/costs.ts",
     "preview": "tsx scripts/preview.ts",
     "build:web": "expo export --platform web",
-    "api:economy": "tsx scripts/api-economy.ts"
+    "api:economy": "tsx scripts/api-economy.ts",
+    "test:live-demo": "tsx scripts/live-demo.ts"
   },
   "private": true
 }

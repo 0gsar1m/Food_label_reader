@@ -47,3 +47,7 @@ Mobil ve web görünen adı, API servis adı ve rapor başlıkları güncellendi
 ## Faz 16 / Yerel öğün eşleşmesi
 
 Etiket ve geçmiş öğün bileşeni eşleşmesi uygulandı. Verify, 88 birim/API testi ve üç platformun paketlemesi geçti. Fiziksel cihazda canlı okuma sırada.
+
+## Faz 17 / Gemini yorum ve takip
+
+Gemini fotoğraf ve yorum aynı anahtarı kullanır. Kurgu senaryo, takip cevabı ve ikinci istek tarayıcıda kontrollü yanıtla doğrulandı. Canlı yorum kısmen çalıştı. Model fotoğrafı ve cevap sonrası canlı yorum sağlayıcı 503 nedeniyle açık. Ayrıntı PROD_FLOW_LOG.md dosyasında.
