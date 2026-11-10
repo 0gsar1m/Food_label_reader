@@ -9,21 +9,21 @@ describe('offline personal interpretation', () => {
     profile: {
       ...emptyProfile,
       completed: true,
-      goals: ['protein', 'weight'],
+      goals: ['symptoms', 'awareness'],
       symptoms: ['bloating'],
     },
     diary: [],
   };
-  it('provides goal-based label context without cloud consent or a provider', () => {
+  it('shows symptom observation without nutrition values', () => {
     const result = localInterpretation(demoAnalysis, vault);
-    expect(result.findings.some((f) => f.text.includes('8 g protein'))).toBe(true);
-    expect(result.findings.some((f) => f.text.includes('400 kcal'))).toBe(true);
     expect(result.findings.some((f) => f.text.includes('neden olduğunu göstermez'))).toBe(true);
+    expect(result.findings.some((f) => f.text.includes('8 g protein'))).toBe(false);
+    expect(result.findings.some((f) => f.text.includes('400 kcal'))).toBe(false);
   });
-  it('does not invent nutrition when the label table is missing', () => {
-    const result = localInterpretation({ ...demoAnalysis, nutrition: null }, vault);
-    expect(result.findings.some((f) => f.text.includes('henüz bilinmiyor'))).toBe(true);
-    expect(result.findings.some((f) => f.text.includes('400'))).toBe(false);
+  it('does not display nutrition values regardless of label data', () => {
+    const result = localInterpretation(demoAnalysis, vault);
+    expect(result.findings.some((f) => f.text.includes('kcal'))).toBe(false);
+    expect(result.findings.some((f) => f.text.includes('protein var'))).toBe(false);
   });
   it('counts symptom-free diary entries as observations, not causal triggers', () => {
     const entry = {

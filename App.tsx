@@ -20,7 +20,6 @@ import { IconButton } from './src/components/Controls';
 import { useDeviceData } from './src/hooks/useDeviceData';
 import { pickPhoto, type PreparedPhoto } from './src/lib/photo';
 import { requestAnalysis, ScanError } from './src/lib/api';
-import { readOfflineLabel } from './src/lib/offlineOcr';
 import { makeDemoVault } from './shared/demoScenario';
 import { demoAnalysis } from './src/data/demo';
 import type { ScanRecord } from './shared/analysis';
@@ -92,7 +91,6 @@ function Application() {
   const device = { ...connection, ...library, ready: connection.ready && library.ready };
   const health = useHealth(account.session?.user.id ?? 'guest');
   const effectiveToken = account.session?.token ?? device.token;
-  const [nutritionPhoto, setNutritionPhoto] = useState<PreparedPhoto | null>(null);
   const [stack, setStack] = useState<Screen[]>([{ kind: 'home' }]);
   const [busy, setBusy] = useState(false);
   const [preparing, setPreparing] = useState(false);
@@ -131,7 +129,6 @@ function Application() {
   }, [screen.kind, back, confirmClear]);
   async function gallery(): Promise<void> {
     if (preparing) return;
-    setNutritionPhoto(null);
     setPreparing(true);
     try {
       const photo = await pickPhoto();
@@ -156,16 +153,12 @@ function Application() {
       controller.abort();
     }, 40_000);
     try {
-      const analysis =
-        Platform.OS === 'android'
-          ? await readOfflineLabel(photo, nutritionPhoto)
-          : await requestAnalysis(
-              device.apiUrl,
-              photo.base64,
-              effectiveToken,
-              controller.signal,
-              nutritionPhoto?.base64,
-            );
+      const analysis = await requestAnalysis(
+        device.apiUrl,
+        photo.base64,
+        effectiveToken,
+        controller.signal,
+      );
       if (controller.signal.aborted) return;
       const record: ScanRecord = {
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
@@ -348,15 +341,6 @@ function Application() {
       )}
       {screen.kind === 'review' && (
         <Review
-          nutritionPhoto={nutritionPhoto}
-          onNutrition={() => {
-            void pickPhoto()
-              .then((photo) => {
-                if (photo) setNutritionPhoto(photo);
-              })
-              .catch(() => device.setNotice('Besin tablosu fotoğrafı açılamadı.'));
-          }}
-          onRemoveNutrition={() => setNutritionPhoto(null)}
           photo={screen.photo}
           busy={busy}
           error={scanError}

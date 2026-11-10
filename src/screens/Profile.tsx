@@ -28,14 +28,16 @@ export function Choice({
   label,
   checked,
   onPress,
+  radio = false,
 }: {
   label: string;
   checked: boolean;
   onPress: () => void;
+  radio?: boolean;
 }) {
   return (
     <Pressable
-      accessibilityRole="checkbox"
+      accessibilityRole={radio ? 'radio' : 'checkbox'}
       accessibilityLabel={label}
       accessibilityState={{ checked }}
       aria-checked={checked}
@@ -45,8 +47,15 @@ export function Choice({
         { minHeight: 52, borderBottomWidth: 1, borderColor: theme.color.line, paddingVertical: 12 },
       ]}
     >
-      <Text style={[ui.body, { flex: 1 }]}>{label}</Text>
-      <Text style={ui.strong}>{checked ? 'Seçili' : 'Seç'}</Text>
+      <Text style={[ui.body, { flex: 1, paddingRight: 12 }]}>{label}</Text>
+      <Text
+        style={[
+          ui.strong,
+          { fontSize: 18, color: checked ? theme.color.green : theme.color.muted },
+        ]}
+      >
+        {radio ? (checked ? '●' : '○') : (checked ? '✓' : '□')}
+      </Text>
     </Pressable>
   );
 }
@@ -256,6 +265,7 @@ export function ProfileScreen({
                 key={id}
                 label={label}
                 checked={draft.diagnosisSource === id}
+                radio
                 onPress={() => change('diagnosisSource', id)}
               />
             ))}

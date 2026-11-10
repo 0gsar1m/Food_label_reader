@@ -74,7 +74,7 @@ export function healthReport(vault: HealthVault, days: number, now = Date.now())
     `Nazif / Son ${days} gün gözlem raporu`,
     `Oluşturulma: ${new Date(now).toLocaleDateString('tr-TR')}`,
     'Kişinin kendi kayıtlarıdır. Tanı, tetikleyici kanıtı veya tüketim güvenliği değerlendirmesi içermez.',
-    `Amaçlar: ${vault.profile.goals.map((id) => goals[id]).join(', ') || 'Belirtilmedi'}`,
+    `Amaçlar: ${vault.profile.goals.map((id) => (id in goals ? goals[id as keyof typeof goals] : id)).join(', ') || 'Belirtilmedi'}`,
     `Sağlık bağlamı (${{ none: 'Tanı bilgisi yok', reported_diagnosis: 'Hekim tanısı aldığını bildiriyor', suspected: 'Kendi şüphesi veya gözlemi' }[vault.profile.diagnosisSource]}): ${vault.profile.conditions || 'Belirtilmedi'}`,
     `${stats.total} öğün / ${stats.completed} tamamlanan kontrol / ${stats.pending} bekleyen / ${stats.symptomFree} belirtisiz. Örnek kayıtlar dışlandı.`,
     ...entries.map(

@@ -4,8 +4,6 @@ import { analysisSchema } from './analysis';
 /** Goal choices affect presentation, never create a diagnosis. */
 export const goals = {
   awareness: 'İçeriği anlamak',
-  weight: 'Kilo yönetimi',
-  protein: 'Protein takibi',
   symptoms: 'Belirtilerimi anlamak',
 } as const;
 /** Symptom choices remain self-reported observations. */
@@ -22,6 +20,7 @@ const questionText = z.string().trim().min(1).max(180);
 /** A bounded sensitive profile; diagnosis provenance is explicit. */
 export const profileSchema = z.object({
   completed: z.boolean(),
+  // weight/protein kept in enum for backward compat with stored data; not shown in UI
   goals: z.array(z.enum(['awareness', 'weight', 'protein', 'symptoms'])).max(4),
   symptoms: z.array(z.enum(['bloating', 'constipation', 'reflux', 'indigestion', 'eczema'])).max(5),
   conditions: z.string().max(600),

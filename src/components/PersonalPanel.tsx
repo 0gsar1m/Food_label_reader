@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Linking, Text, TextInput, View } from 'react-native';
 import type { Analysis } from '../../shared/analysis';
 import { type DiaryEntry, type HealthVault } from '../../shared/profile';
-import { portionValues } from '../../shared/nutrition';
 import { localInterpretation } from '../../shared/localInterpretation';
 import { requestPersonal } from '../lib/personalApi';
 import { Choice } from '../screens/Profile';
@@ -46,20 +45,10 @@ export function PersonalPanel({
   const [answer, setAnswer] = useState('');
   const [savedAnswer, setSavedAnswer] = useState('');
   const diary = scenario ? scenarioDiary : vault.diary;
-  const [amount, setAmount] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [reply, setReply] = useState<Awaited<ReturnType<typeof requestPersonal>> | null>(null);
-  const nutrition = analysis.nutrition;
   const local = localInterpretation(analysis, { ...vault, diary }, scenario);
-  let values: ReturnType<typeof portionValues> | null = null;
-  if (nutrition && amount) {
-    try {
-      values = portionValues(nutrition, Number(amount.replace(',', '.')), nutrition.basisUnit);
-    } catch {
-      values = null;
-    }
-  }
   async function interpret(records = diary): Promise<void> {
     if (!hasConsent || busy) return;
     setRehearsal(false);
@@ -143,70 +132,13 @@ export function PersonalPanel({
   return (
     <View style={{ gap: 18, borderTopWidth: 1, borderColor: theme.color.line, paddingTop: 24 }}>
       <Text style={ui.h2}>Senin amacın açısından</Text>
-      <Text style={ui.body}>{local.title}</Text>
-      <Text style={ui.eyebrow}>YEREL DEĞERLENDİRME / API ÇAĞRISI YOK</Text>
+      {local.title ? <Text style={ui.body}>{local.title}</Text> : null}
       {local.findings.map((finding, index) => (
         <View key={index} style={{ gap: 6 }}>
           <Text style={ui.body}>{finding.text}</Text>
           <Text style={ui.small}>Dayanak: {finding.basis}</Text>
         </View>
       ))}
-      {nutrition ? (
-        <>
-          <Text style={ui.strong}>
-            Besin tablosu / {nutrition.basisAmount} {nutrition.basisUnit}
-          </Text>
-          <Text style={ui.small}>Etikette: {nutrition.evidence}</Text>
-          <Text style={ui.strong}>Tüketeceğin porsiyon ({nutrition.basisUnit})</Text>
-          <TextInput
-            accessibilityLabel={`Porsiyon (${nutrition.basisUnit})`}
-            value={amount}
-            onChangeText={setAmount}
-            keyboardType="decimal-pad"
-            maxLength={12}
-            placeholder="Örn. 40"
-            style={ui.input}
-          />
-          {amount && !values ? (
-            <Notice>Porsiyon 0 ile 10000 arasında pozitif bir sayı olmalı.</Notice>
-          ) : null}
-          {(values || nutrition) && (
-            <View style={{ gap: 8 }}>
-              {(
-                [
-                  ['energyKcal', 'Enerji', 'kcal'],
-                  ['proteinG', 'Protein', 'g'],
-                  ['carbohydrateG', 'Karbonhidrat', 'g'],
-                  ['fatG', 'Yağ', 'g'],
-                  ['fiberG', 'Lif', 'g'],
-                  ['saltG', 'Tuz', 'g'],
-                ] as const
-              ).map(([id, label, unit]) => (
-                <Text key={id} style={ui.body}>
-                  {label}: {(values ?? nutrition)[id] ?? 'Bilinmiyor'}{' '}
-                  {(values ?? nutrition)[id] === null ? '' : unit}
-                  {values ? ' / seçtiğin porsiyon' : ''}
-                </Text>
-              ))}
-              {(values ?? nutrition).micros.map((m, i) => (
-                <Text key={i} style={ui.body}>
-                  {m.name}: {m.value} {m.unit}
-                </Text>
-              ))}
-            </View>
-          )}
-          <Text style={ui.small}>
-            Değerler{' '}
-            {values ? 'seçtiğin porsiyona kodla ölçeklendi' : 'etiketteki temel miktara aittir'}.
-            Eksik mikrobesinler hesaplanmaz. Tek ürün günlük enerji dengesini göstermez.
-          </Text>
-        </>
-      ) : (
-        <Text style={ui.body}>
-          Besin tablosu okunmadı. Kalori, makro veya mikro miktarı tahmin edilmedi. Yeni okumada
-          besin tablosunun fotoğrafını da ekleyebilirsin.
-        </Text>
-      )}
       {scenario ? (
         <View style={{ gap: 10 }}>
           <Notice>Kurgu profil ve öğünler. Bu deneme kişisel günlüğüne yazılmaz.</Notice>

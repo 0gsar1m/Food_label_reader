@@ -26,8 +26,8 @@ test('detailed onboarding, encrypted persistence, portion scaling and diary CRUD
     return route.abort();
   });
   await start(page);
-  await page.getByRole('checkbox', { name: 'Kilo yönetimi', exact: true }).click();
-  await page.getByRole('checkbox', { name: 'Protein takibi', exact: true }).click();
+  await page.getByRole('checkbox', { name: 'İçeriği anlamak', exact: true }).click();
+  await page.getByRole('checkbox', { name: 'Belirtilerimi anlamak', exact: true }).click();
   await page.screenshot({ path: 'docs/screenshots/onboarding-goals.png' });
   await next(page);
   await page.getByRole('checkbox', { name: 'Şişkinlik', exact: true }).click();
@@ -35,16 +35,15 @@ test('detailed onboarding, encrypted persistence, portion scaling and diary CRUD
   await page
     .getByRole('textbox', { name: 'Paylaşmak istediğin sağlık durumu veya hassasiyet' })
     .fill('Tanı konmamış şişkinlik');
-  await page.getByRole('checkbox', { name: 'Kendi şüphem / gözlemim' }).click();
+  await page.getByRole('radio', { name: 'Kendi şüphem / gözlemim' }).click();
   await next(page);
   await page
     .getByRole('textbox', { name: 'Genellikle kahvaltıda ne yersin?' })
     .fill('Yulaf ve yoğurt');
   await next(page);
   await expect(
-    page.getByRole('textbox', { name: /Porsiyonunu ayarlarken en çok hangi öğünde/ }),
+    page.getByRole('textbox', { name: /Seni en çok rahatsız eden belirti/ }),
   ).toBeVisible();
-  await expect(page.getByRole('textbox', { name: /Belirtisiz tükettiğin/ })).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Profilime göre soru öner' })).toBeDisabled();
   await page.screenshot({ path: 'docs/screenshots/onboarding-questions.png' });
   await next(page);
@@ -57,14 +56,10 @@ test('detailed onboarding, encrypted persistence, portion scaling and diary CRUD
   expect(await page.evaluate(() => localStorage.getItem('etiket.health.v1'))).toBeNull();
   await page.reload({ waitUntil: 'domcontentloaded' });
   await page.getByRole('button', { name: 'Örnek etiketi incele' }).click();
-  await page.getByRole('textbox', { name: 'Porsiyon (g)' }).fill('40');
-  await expect(
-    page.getByText('Enerji: 160 kcal / seçtiğin porsiyon', { exact: true }),
-  ).toBeVisible();
   await expect(page.getByRole('button', { name: 'Bulut modeliyle ayrıntılandır' })).toBeDisabled();
-  await expect(page.getByText('YEREL DEĞERLENDİRME / API ÇAĞRISI YOK')).toBeVisible();
+  await expect(page.getByText('Şişkinlik')).toBeVisible();
   expect(localCloudCalls).toBe(0);
-  await page.screenshot({ path: 'docs/screenshots/personal-portion.png' });
+  await page.screenshot({ path: 'docs/screenshots/personal-local.png' });
   await page.getByRole('button', { name: 'Bu öğünü günlüğe ekle' }).click();
   await expect(page.getByRole('textbox', { name: 'Ne yedin?' })).toHaveValue(
     'Kakaolu yulaflı bisküvi',

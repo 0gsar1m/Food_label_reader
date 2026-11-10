@@ -6,22 +6,6 @@ import { outcomeOf } from './observations';
 export function localInterpretation(analysis: Analysis, vault: HealthVault, scenario = false) {
   const findings: { text: string; basis: string }[] = [];
   const profile = vault.profile;
-  if (profile.goals.includes('protein'))
-    findings.push({
-      text:
-        analysis.nutrition?.proteinG != null
-          ? `Etiketin ${analysis.nutrition.basisAmount} ${analysis.nutrition.basisUnit} temelinde ${analysis.nutrition.proteinG} g protein var. Tüketeceğin miktarı porsiyon alanında hesaplayabilirsin.`
-          : 'Protein hedefin için ürünün miktarı henüz bilinmiyor; okunmuş bir besin tablosu gerekli.',
-      basis: 'Seçtiğin amaç ve etiket tablosu',
-    });
-  if (profile.goals.includes('weight'))
-    findings.push({
-      text:
-        analysis.nutrition?.energyKcal != null
-          ? `Etiketin ${analysis.nutrition.basisAmount} ${analysis.nutrition.basisUnit} temelinde ${analysis.nutrition.energyKcal} kcal var. Değerlendirmede kendi porsiyonunu kullan; tek ürün günlük enerji dengesini göstermez.`
-          : 'Kilo yönetimi amacın için kalori tahmini yapılmadı. Besin tablosunu ekleyebilirsin.',
-      basis: 'Seçtiğin amaç ve etiket tablosu',
-    });
   if (profile.symptoms.length)
     findings.push({
       text: `Takip ettiğin yakınmalar: ${profile.symptoms.map((id) => symptoms[id]).join(', ')}. Bu bildirimler, etiketteki herhangi bir içeriğin sende belirtiye neden olduğunu göstermez.`,
@@ -71,10 +55,11 @@ export function localInterpretation(analysis: Analysis, vault: HealthVault, scen
       text: 'Amaçlarını ve kendi gözlemlerini profiline ekleyerek etiketi kişisel bağlamında inceleyebilirsin.',
       basis: 'Cihazdaki profil',
     });
+  const goalLabels = profile.goals
+    .map((id) => (id in goals ? goals[id as keyof typeof goals] : undefined))
+    .filter((v): v is (typeof goals)[keyof typeof goals] => v !== undefined);
   return {
-    title: profile.goals.length
-      ? profile.goals.map((id) => goals[id]).join(' · ')
-      : 'Kendi amaçlarına göre oku',
+    title: goalLabels.length ? goalLabels.join(' · ') : 'Kendi amaçlarına göre oku',
     findings,
   };
 }

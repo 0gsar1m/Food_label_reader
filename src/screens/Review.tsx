@@ -1,15 +1,12 @@
-import { ActivityIndicator, Image, Platform, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
 import { Button, Notice, ScreenHeader } from '../components/Controls';
 import { ui, theme } from '../theme';
 import { copy } from '../content';
 import type { PreparedPhoto } from '../lib/photo';
 
-/** Explicit transmission action follows a local-only preview; retries use the same image. */
+/** Explicit cloud transmission action follows a local-only preview; retries use the same image. */
 export function Review({
   photo,
-  nutritionPhoto,
-  onNutrition,
-  onRemoveNutrition,
   busy,
   error,
   onBack,
@@ -19,9 +16,6 @@ export function Review({
   onPrivacy,
 }: {
   photo: PreparedPhoto;
-  nutritionPhoto: PreparedPhoto | null;
-  onNutrition: () => void;
-  onRemoveNutrition: () => void;
   busy: boolean;
   error: string;
   onBack: () => void;
@@ -59,9 +53,7 @@ export function Review({
               </Text>
             </View>
             <Text style={ui.small}>
-              {Platform.OS === 'android'
-                ? 'Fotoğraf cihazında okunuyor.'
-                : 'Bağlantıya ve görselin okunabilirliğine göre biraz sürebilir.'}
+              Fotoğraf buluta gönderildi. Bağlantıya ve görselin okunabilirliğine göre biraz sürebilir.
             </Text>
             <Button label="Okumayı iptal et" secondary onPress={onCancel} />
           </View>
@@ -71,32 +63,8 @@ export function Review({
               İçindekiler listesi ve alerjen uyarısının tamamı görünsün. Bulanık veya kesik alan
               varsa tekrar çek.
             </Text>
-            <Button
-              label={
-                nutritionPhoto
-                  ? 'Besin tablosu fotoğrafını değiştir'
-                  : 'Besin tablosu fotoğrafı ekle'
-              }
-              secondary
-              onPress={onNutrition}
-            />
-            {nutritionPhoto && (
-              <>
-                <Image
-                  source={{ uri: nutritionPhoto.uri }}
-                  style={{ width: '100%', height: 160 }}
-                  resizeMode="contain"
-                  accessibilityLabel="Besin tablosu fotoğrafı"
-                />
-                <Button label="Ek fotoğrafı kaldır" secondary onPress={onRemoveNutrition} />
-              </>
-            )}
             <View style={{ gap: 8 }}>
-              <Text style={ui.small}>
-                {Platform.OS === 'android'
-                  ? 'Etiket fotoğrafı cihazında işlenir ve sunucuya gönderilmez.'
-                  : copy.photoConsent}
-              </Text>
+              <Text style={ui.small}>{copy.photoConsent}</Text>
               <Text
                 accessibilityRole="link"
                 onPress={onPrivacy}
@@ -113,7 +81,7 @@ export function Review({
               </Text>
             </View>
             <Button
-              label={Platform.OS === 'android' ? 'Etiketi cihazda oku' : 'Fotoğrafı gönder ve oku'}
+              label="Fotoğrafı buluta gönder ve oku"
               icon="scan"
               onPress={onScan}
             />
