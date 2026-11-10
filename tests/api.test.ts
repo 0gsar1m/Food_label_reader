@@ -139,6 +139,15 @@ describe('HTTP API', () => {
     expect(response.status).toBe(503);
     expect(await response.json()).toEqual({ error: 'NOT_CONFIGURED' });
   });
+  it('retries a temporary Gemini failure once within the original deadline', async () => {
+    const fetcher = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(new Response(null, { status: 503 }))
+      .mockResolvedValueOnce(providerSuccess());
+    expect((await post(await serve({ fetcher }))).status).toBe(200);
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(fetcher.mock.calls[1]?.[1]?.signal).toBe(fetcher.mock.calls[0]?.[1]?.signal);
+  });
   it('requires a long service token in production', () => {
     expect(() => createApi({ apiKey: '', model: 'test', origins: [], production: true })).toThrow(
       'APP_ACCESS_TOKEN',

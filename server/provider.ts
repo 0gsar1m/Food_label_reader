@@ -1,3 +1,4 @@
+import { setTimeout as delay } from 'node:timers/promises';
 import { z } from 'zod';
 import { analysisSchema, validateAnalysis, type Analysis } from '../shared/analysis';
 import { labelPrompt } from './prompt';
@@ -44,7 +45,17 @@ export type VisionConfig = {
   reportUsage?: (usage: { inputTokens: number; outputTokens: number }) => void;
 };
 
-/** A single bounded multimodal call; invalid/blocked/truncated responses fail closed. */
+// Gemini can reject the label schema when nested lists and strings carry length
+// bounds. Keep the output shape here and enforce those bounds in validateAnalysis.
+const labelResponseSchema = z.toJSONSchema(analysisSchema, {
+  override: ({ jsonSchema }) => {
+    delete jsonSchema.minLength;
+    delete jsonSchema.maxLength;
+    delete jsonSchema.maxItems;
+  },
+});
+
+/** Bounded multimodal extraction; invalid/blocked/truncated responses fail closed. */
 export async function analyzeImage(
   image: string,
   mimeType: string,
@@ -60,7 +71,7 @@ export async function analyzeImage(
         config,
         signal,
         labelPrompt,
-        z.toJSONSchema(analysisSchema),
+        labelResponseSchema,
         nutritionImage,
       ),
     );
@@ -103,24 +114,29 @@ export async function geminiJson(
   schema: object,
   maxOutputTokens: number,
 ): Promise<unknown> {
-  const response = await (config.fetcher ?? fetch)(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(config.model)}:generateContent`,
-    {
-      method: 'POST',
-      signal,
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': config.apiKey },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: prompt }] },
-        contents: [{ role: 'user', parts }],
-        generationConfig: {
-          responseMimeType: 'application/json',
-          responseJsonSchema: schema,
-          maxOutputTokens,
-          thinkingConfig: { thinkingLevel: 'low' },
-        },
-      }),
-    },
-  );
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(config.model)}:generateContent`;
+  const request: RequestInit = {
+    method: 'POST',
+    signal,
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': config.apiKey },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: prompt }] },
+      contents: [{ role: 'user', parts }],
+      generationConfig: {
+        responseMimeType: 'application/json',
+        responseJsonSchema: schema,
+        maxOutputTokens,
+        thinkingConfig: { thinkingLevel: 'low' },
+      },
+    }),
+  };
+  const fetcher = config.fetcher ?? fetch;
+  let response = await fetcher(url, request);
+  if (response.status === 503) {
+    await response.body?.cancel();
+    await delay(500, undefined, { signal });
+    response = await fetcher(url, request);
+  }
   if (!response.ok)
     throw new ProviderError(response.status === 429 ? 'RATE_LIMITED' : 'PROVIDER_UNAVAILABLE');
   try {

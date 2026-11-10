@@ -65,3 +65,7 @@ Kullanım profilinin açık uçlu adımlarında kısa ve gündelik yazma yönlen
 Profil soru seçimi için düğmenin yanında bekleme, hata, boş yanıt ve başarı geri bildirimi gösterilir. Servis hatasında mevcut sorularla devam edilebilir.
 
 Kullanım profilinde başlangıç süresi, sıklık, öğün saati ve son belirtili öğün ayrı sorulur. Gemini izinle yalnızca yanıtlanmamış konularda yeni soru metni önerebilir. Soru metni cevabıyla birlikte saklanır. Fotoğraf, soru önerisi ve ayrıntılı yorumun veri kapsamı profil ekranında ayrı anlatılır.
+
+Faz 18: kullanıcı bağımsız kurulan normal Android APK ve canlı Gemini istiyor. Vision ve kişisel yorum varsayılanı Gemini 3.5 Flash-Lite. Modelin fotoğraf şeması hafifletildi, sunucu doğrulaması korundu. Geçici HTTPS üzerinden test etiketinin normal okuma ve kişisel yorum istekleri 200 döndü. Kalıcı HTTPS barındırması, yapılandırılmış Google hesabı girişi ve fiziksel cihaz kabulü ayrı adımlardır.
+
+Yerel Gradle release derlemesi başarılı. Nazif APK ARM64 ve Android 7.0+ için, geliştirme imzası ve gömülü uygulama paketiyle doğrulandı. Geçici HTTPS servisi sunucu bilgisayarının ve tünelin açık kalmasına bağlı. APK için servis adresi ve erişim anahtarı Tercihler ekranında bir kez girilir.

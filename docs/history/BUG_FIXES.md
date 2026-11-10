@@ -22,3 +22,9 @@
 - Öğün kaydından sonra yeni form eski tarama kimliği ve demo işaretini taşımıyor. Bekleyen kontrol kısa yolu formun üstüne alındı.
 - Kullanıcıya ISO formatı yazdıran alan yerel gün.ay.yıl saat:dakika biçimine dönüştürüldü; hatalı takvim günleri reddedilir.
 - Profil kaçınma alanında virgül yazarken metni kırpan erken normalizasyon kaldırıldı; doğrulama kaydetmede yapılır.
+
+## Faz 18 kabul düzeltmeleri
+
+- Gemini’nin etiket JSON şemasını HTTP 400 ile reddetmesi, model şemasındaki iç içe uzunluk kısıtları kaldırılarak giderildi. Sunucu, Zod sınırlarını ve etiket kanıtı doğrulamasını aynı şekilde uygular.
+- Fotoğraf ve kişisel yorum için canlı test edilen Flash-Lite modeli varsayılan oldu. Takip cevabının getirdiği yeni ayrıntıyı açıkça kullanması model talimatına eklendi.
+- Gemini 503 verdiğinde mevcut süre sınırı içinde bir kez aynı model çağrılır. 503 ardından başarılı yanıtın API'den geçmesi test edildi.

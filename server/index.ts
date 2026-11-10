@@ -9,11 +9,11 @@ const environment = z
     GEMINI_MODEL: z
       .string()
       .regex(/^[a-zA-Z0-9._-]+$/)
-      .default('gemini-3.8-flash'),
+      .default('gemini-3.5-flash-lite'),
     PERSONAL_MODEL: z
       .string()
       .regex(/^[a-zA-Z0-9._-]+$/)
-      .default('gemini-3.1-flash-lite'),
+      .default('gemini-3.5-flash-lite'),
     GOOGLE_CLIENT_IDS: z.string().default(''),
     SESSION_SECRET: z.string().min(32).optional(),
     REQUIRE_GOOGLE_AUTH: z.enum(['true', 'false']).default('false'),

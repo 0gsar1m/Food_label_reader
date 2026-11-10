@@ -2,7 +2,7 @@
 
 ## Profil, kişisel yorum ve Google giriş eki
 Profil/günlük native cihazda ayrı şifreli depoda; webde sekme oturumundadır. Google, misafir ve diğer hesaplar ayrı kayıt alanları kullanır.
-Kişisel yorum için aynı `GEMINI_API_KEY` ve varsayılan `PERSONAL_MODEL=gemini-3.1-flash-lite` kullanılır. Gerçek profil için Gemini’ye açık aktarım izni gerekir.
+Kişisel yorum için aynı `GEMINI_API_KEY` ve varsayılan `PERSONAL_MODEL=gemini-3.5-flash-lite` kullanılır. Gerçek profil için Gemini’ye açık aktarım izni gerekir.
 Google giriş ortamı ve native yapılandırması GOOGLE_AUTH.md içinde. Google native SDK Expo Go'da bulunmaz; gerçek giriş için APK/development build gerekir.
 `npm run test:e2e` derlenmiş web önizlemesini 8082'de sınar. Tek Playwright çalıştırması kullan; geliştirme sunucusu HMR çıktısı test kanıtı değildir.
 Yatırımcı gider tablosu INVESTOR_COSTS.md, tekrar üretim `npm run costs`, demo akışı DEMO_SCRIPT.md içinde.
@@ -16,12 +16,12 @@ create-expo-app başlangıç mesajı SDK 57 dese de çıkarılan gerçek paket S
 ## Gerçek Vision
 1. Google AI Studio üzerinden sunucu hesabına ait API anahtarı oluştur.
 2. `.env` içindeki `GEMINI_API_KEY` değerini doldur. Anahtarı mobil ayarlara yazma.
-3. `GEMINI_MODEL=gemini-3.8-flash` varsayılan. Model erişimini kendi hesap/bölgenle doğrula.
+3. `GEMINI_MODEL=gemini-3.5-flash-lite` varsayılan. Model erişimini kendi hesap/bölgenle doğrula.
 4. API'yi başlat; `/health` configured=true olmalı. Bu yalnız anahtarın tanımlı olduğunu gösterir, geçerli olduğunu doğrulamaz.
 5. Düz, net ve tam bir etiketle gerçek okuma yap; her alerjen kanıtını ambalajla karşılaştır.
 6. Bulanık fotoğraf, kesik alerjen bölümü, yabancı dil, uzun içerik ve aynı ürünün değişmiş etiketini dene.
 7. En az 20 gerçek etiket için alerjen kaçırma/hatalı ekleme ve gecikme p50/p95 kaydı tut.
-Canlı anahtar bu oturumda mevcut değildi. Sahte benchmark/başarı yüzdesi yok.
+10 Kasım canlı API kabulü PROD_FLOW_LOG.md dosyasındadır. Fiziksel ürün karşılaştırması ve 20 etiketlik örneklem henüz yapılmadı.
 
 ## Üretim API
 `npm run build:api`, ardından `node dist-api/server.cjs` veya çok aşamalı Dockerfile.
@@ -46,6 +46,12 @@ Bu sürümün elle girilen erişim token'ı kişisel/iç test içindir. Herkese 
 Sağlayıcı hesabında bütçe ve kota belirle. Görsel veya model yanıtı loglama. Proxy gövde limiti uygulamadan düşük olmamalı.
 
 ## Android APK, Android Studio olmadan
+Windows'ta Android SDK komut satırı araçları ve JDK ile bağımsız Android APK derlenebilir. Expo config native proje kaynağıdır. ANDROID_HOME tanımlanır ve SDK 58 için Android 37 platformu, build-tools, NDK 27.1.12297006 ve CMake 3.31.6 kurulur.
+
+Expo prebuild ile Android projesi üretildikten sonra android klasöründe Gradle görevi :app:assembleRelease çalıştırılır. Windows'ta -Pandroid.cmakeVersion=3.31.6 kullanılabilir. Yalnız modern ARM telefonları hedeflemek için -PreactNativeArchitectures=arm64-v8a eklenir.
+
+Çıktı android/app/build/outputs/apk/release altındadır. Yerel Expo şablonu bu APK için geliştirme imzası kullanır. HTTPS adresi ve iç kullanım erişim anahtarı uygulamadaki **Tercihler → Okuma hizmeti bağlantısı** bölümüne girilebilir. Sunucunun Gemini anahtarı APK'ya girmez.
+
 EAS hesabıyla kendi terminalinde:
 
 ```powershell
@@ -57,7 +63,7 @@ npx eas-cli build --platform android --profile preview
 Build ortamında `EXPO_PUBLIC_API_URL=https://gercek-api-adresin` tanımla. API anahtarı EAS public değişkenlerine konmaz.
 `preview` iç dağıtım APK üretir. `production` Play Store AAB üretir.
 Paket adı `com.ogsarim.etiket`. Hesap sahibi değiştirirse bundle ID ve mağaza kaydı birlikte güncellenir.
-Bu oturumda EAS hesabı/proje ID yoktu; imzalı APK oluşturulmadı. EAS build ücret/kota sınırları hesabına bağlıdır.
+EAS hesabı/proje ID bulunmadığından bulut derlemesi yapılmadı. EAS build ücret/kota sınırları hesabına bağlıdır.
 
 ## Fiziksel cihaz kabulü
 - Expo Go/development build açılışı; geri tuşu, çentik ve alt güvenli alan.

@@ -57,3 +57,9 @@ Profil metni: 390 px web önizlemesinde açık uçlu adımlar ve kahvaltı örne
 Profil soru özelleştirme: tarayıcıda 503 mesajı, yerel sorularla devam ve tekrar denemede başarı doğrulandı. Verify geçti.
 
 Profil soru metni ve veri açıklaması: 89 birim/API, verify ve 3 profil ekran testi geçti. Kontrollü model yanıtı yeni soru olarak gösterildi. Canlı Gemini provası 502 PROVIDER_UNAVAILABLE döndürdü.
+
+## Faz 18 / Android APK ve canlı okuma
+
+Gemini 3.5 Flash-Lite ile korumalı HTTPS üzerinden etiket okuma, kişisel yorum ve cevap sonrası yeniden yorum 200 döndü. Etiket fotoğrafı ve günlük verileri test girdisiydi, normal API yolu kullanıldı. Fiziksel telefon, Google giriş ortamı ve kalıcı API barındırması dış kabulde.
+
+Lint, strict typecheck, 90 test, üç platform export ve derlenmiş API smoke geçti. Windows Gradle release APK, geliştirme imzası v2, ARM64 hedefi, Nazif adı ve gömülü Android bundle doğrulandı. Geçici HTTPS üzerinden APK yanıtı 200 döndü.

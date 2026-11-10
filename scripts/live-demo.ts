@@ -9,10 +9,10 @@ import { demoAnalysis } from '../src/data/demo';
 import { personalEnvelope } from '../src/lib/personalApi';
 
 const key = process.env.GEMINI_API_KEY ?? '';
-const model = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
+const model = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 const personalModel = process.env.PERSONAL_MODEL?.startsWith('gemini-')
   ? process.env.PERSONAL_MODEL
-  : 'gemini-3.1-flash-lite';
+  : 'gemini-3.5-flash-lite';
 const token = randomUUID();
 const origin = 'http://localhost:8082';
 const provider: typeof fetch = async (input, init) => {

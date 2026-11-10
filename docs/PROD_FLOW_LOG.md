@@ -4,7 +4,7 @@
 
 ## Çalıştırma sırası
 
-1. Sunucuya `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.8-flash` ve `PERSONAL_MODEL=gemini-3.1-flash-lite` verilir. İki model aynı anahtarı kullanır. Üretim açılışında geçerli Google oturumu veya sunucu erişim belirteci gerekir. HTTPS ve izin verilen web origin’leri yayın ortamında yapılandırılır.
+1. İlk provada sunucuya `GEMINI_API_KEY`, `GEMINI_MODEL=gemini-3.8-flash` ve `PERSONAL_MODEL=gemini-3.1-flash-lite` verildi. İki model aynı anahtarı kullandı. Üretim açılışında geçerli Google oturumu veya sunucu erişim belirteci gerekir. HTTPS ve izin verilen web origin’leri yayın ortamında yapılandırılır.
 2. Kullanıcı **Hesapsız dene** yoluyla yerel demo açabilir. Canlı üretim API’sinde bulut rotalarının erişim yetkisi ayrıca kontrol edilir. `GET /health` yapılandırma durumunu gösterir. Bir anahtarın tanımlı görünmesi sağlayıcının yanıt vereceğini garanti etmez.
 3. Fotoğraf önizlemesi kullanıcıya gösterilir. Onayla `POST /api/analyze` çağrılır. API görseli Gemini’ye yollar ve şema ile etiket kanıtını kontrol eder. Görsel çağrıya profil veya öğün geçmişi eklenmez. Menü/tabak `POST /api/food-context` kullanır. Barkod `GET /api/barcode/:code` üzerinden kataloğa gider.
 4. Cihazdaki yorum, ortak bileşen ve tamamlanmış öğün kayıtlarını eşleştirir. Ek model çağrısı yapmaz.
@@ -39,3 +39,21 @@
 Son kabul: `npm run verify` geçti (88 test, üç platform export, API bundle ve smoke). `EXPO_PUBLIC_API_URL=http://localhost:8787` ile web paketinde 15 ekran testi geçti. Hazır prova yolu iki model çağrısı yerine sıfır sağlayıcı çağrısıyla ilk soru, cevap ve ikinci değerlendirmeyi gösterdi. İlk ekran koşusundaki hesap testi, testin beklediği localhost ile LAN adresi farklı olduğu için zaman aşımına girmişti. Web test paketi localhost adresiyle yeniden oluşturulunca geçti.
 
 Bu canlı provada 429 gözlenmedi. Google, kota/istek sınırı için 429 ve geçici servis erişilemezliği için 503 belgeler. [Google hata kodları](https://ai.google.dev/gemini-api/docs/generate-content/api-errors?hl=en)
+
+## 10 Kasım ek kabulü
+
+Normal etiket ve kişisel yorum uçları, korumalı HTTPS üzerinden Gemini 3.5 Flash-Lite ile test edildi. Girdiler test etiket fotoğrafı ve sentetik öğün kayıtlarıydı. Yorum isteğinde kurgu senaryo işareti kullanılmadı ve yorum, fotoğraftan yeni çıkarılan analizi aldı.
+
+| Adım | Sonuç |
+| --- | --- |
+| HTTPS servis durumu | 200, erişim anahtarı zorunlu |
+| Anahtarsız analiz isteği | 401 |
+| Etiket fotoğrafından içerik çıkarımı | 200, 1.617 giriş ve 803 çıkış tokenı |
+| İlk kişisel yorum ve öğüne bağlı takip sorusu | 200, 1.616 giriş ve 292 çıkış tokenı |
+| Yanıt sonrası yeniden yorum | 200, 1.621 giriş ve 300 çıkış tokenı. Bu yanıtta süt ayrıntısı açıkça yer almadı, model talimatı ardından güncellendi. |
+
+Farklı çağrılarda sağlayıcı 503 döndürdü. Tam canlı provada etiket, yorum, takip cevabı, profil sorusu ve menü 200 döndü, ayrı barkod kataloğu 502 verdi. Geçici HTTPS uç noktasında profil sorusu isteği JSON yerine HTML hata yanıtı aldı. Bu gözlemler kalıcı servis sürekliliği veya fiziksel kamera kabulü sayılmaz.
+
+Sonraki canlı cevap testi 200 döndü ve model 60 g yulaf ile 200 ml süt içeren öğünü 30 g yulaf ve su ile hazırlanan belirtisiz öğünle karşılaştırdı. Gemini 503 için ilk isteğin süre sınırı içinde tek tekrar eklendi.
+
+Öncelikli Gemini isteği mevcut anahtarla 200 döndü, yanıt başlığındaki gerçekleşen hizmet seviyesi standard oldu. Mevcut anahtarla öncelikli işleme doğrulanmadı. Ölçülen 4.854 giriş ve 1.395 çıkış tokenı, 10 Kasım standart ücretli tarifesiyle (milyonda 0,30 ve 2,50 USD) tam akış başına yaklaşık 0,00494 USD eder. Bu rakam tek örneklemden hesaplandı ve barındırma dahil değildir. [Gemini ücretleri](https://ai.google.dev/gemini-api/docs/pricing)

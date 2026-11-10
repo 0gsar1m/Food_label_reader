@@ -73,7 +73,7 @@ export function createApi(config: ApiConfig): express.Express {
       configured: Boolean(config.apiKey),
       model: config.model,
       personalConfigured: Boolean(config.personalKey),
-      personalModel: config.personalModel ?? 'gemini-3.1-flash-lite',
+      personalModel: config.personalModel ?? 'gemini-3.5-flash-lite',
       authenticationRequired: Boolean(config.accessToken) || requireAccount,
       googleConfigured: googleConfigured(config),
     }),

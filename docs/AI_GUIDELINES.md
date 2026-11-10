@@ -11,7 +11,7 @@
 
 ## Mühendislik
 Şema uygulama ve sunucu arasında ortaktır. Sunucu istemci ve model yanıtını ayrı doğrular.
-Görsel boyutu sınırlı; tek istek, kontrollü zaman aşımı, iptal, hata kodları ve kota koruması bulunur.
+Görsel boyutu sınırlı; kontrollü zaman aşımı, iptal, hata kodları ve kota koruması bulunur. Gemini 503 döndürürse aynı zaman sınırı içinde bir kez yeniden denenir.
 Model/sağlayıcı yapılandırılabilir; sessizce başka modele geçiş yok. Anahtar sunucu ortamındadır.
 Kamera/galeri izni gerektiğinde istenir. Aktarım öncesi kullanıcıya Google işleme bilgisi verilir.
 Kullanıcı alerjen tercihleri modele gönderilmez; cihazda sonuç üzerine uygulanır.

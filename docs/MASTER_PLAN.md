@@ -91,3 +91,6 @@ Etiket bileşenini teyit edilmiş öğün bileşenleriyle cihazda eşleştir. Ku
 
 ## Faz 17 / Gemini yorum ve takip sorusu
 Fotoğraf ve metin aynı Gemini anahtarını kullanır. Kurgu senaryo gerçek veriden ayrılır. Ayrıntılı yorum, dayanakları, bir takip sorusu ve cevap sonrası yeniden değerlendirmeyi kapsar. Üretim provası ve canlı/denetimli test ayrımı PROD_FLOW_LOG.md dosyasında.
+
+## Faz 18 / Android APK ve canlı okuma
+Normal Android paketini bağımsız kurulum için derle, imzayı ve gömülü uygulama paketini doğrula. Korumalı HTTPS üzerinden normal etiket, profil yorumu ve takip cevabı akışını canlı Gemini ile sına. Fiziksel cihaz, kalıcı barındırma ve Google oturumu kabulünü ayrı kaydet.
