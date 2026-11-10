@@ -7,7 +7,7 @@ Etkin faz: 22. v11, otomatik kişisel yorum ve ilk profil akışı.
 
 ## Claude Code için devam noktası
 
-- v11, izinli Luna yorumunu Özet sekmesinde otomatik gösterir. Örnek okuma ana ekrandaki Öğretici penceresinde. v10 taraması fiziksel telefonda kullanıcı tarafından onaylandı.
+- [Nazif v11 APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v11/Nazif.apk), commit cd4ffef. v11 izinli Luna yorumunu Özet sekmesinde otomatik gösterir. Örnek okuma ana ekrandaki Öğretici penceresinde. v10 taraması fiziksel telefonda kullanıcı tarafından onaylandı.
 - Android: Etiket fotoğrafı GPT-6 Luna üzerinden `/api/analyze` ile okunuyor. Offline OCR kaldırıldı. Review ekranında gönder düğmesi yerine yerleşik spinner + "Etiket okunuyor…" gösteriliyor; gövde ve onay metni yükleme sırasında gizli. İkinci fotoğraf yerine iptal düğmesi çıkıyor. Çift gönderim engellendi.
 - shared/analysis.ts `normalized()` işlevi noktalama işaretlerini de temizleyecek şekilde güncellendi (`[^\p{L}\p{N}]+` → boşluk). Bu INVALID_RESULT hatasını çözdü; hem server hem APK etkilendiğinden v10 gerekli oldu.
 - server/personal.ts Luna yorum istemi yeniden yazıldı: ilk cümle bulunan kaçınılan içeriği adlandırır, süt gibi faktörler günlükteki o öğüne atfedilir, tüketim bilinmiyorsa "Yediysen…" koşullu çerçevesi, "buradan anlayamıyorum" ve benzeri hedge ifadeler engellendi.

@@ -107,3 +107,5 @@ Derleme zorunluluğu: Kök dizinde `.env` → `EXPO_PUBLIC_API_URL=https://nazif
 ## Faz 22 / v11
 
 Yeni okumada açık izin varsa profil özeti, son 20 öğün ve okunan etiket metni Luna yorumuna gider. İzin kapalıyken etiket okunabilir. Fotoğraf okuma ve kişisel yorum için animasyonlu bekleme görünür. İlk kurulumda amaç seçimi zorunlu. Örnek okuma Öğretici altında açılır. Fiziksel v11 cihaz kabulü açık.
+
+Yayın kanıtı: Railway 7ef12fbe başarılı. Canlı Luna, gerçek noodle fotoğrafında glüten ve kereviz çıkardı. Yeni istemle sentetik yulaf günlüğü kişisel yorum ve iki profil sorusu döndürdü. Lint, typecheck, 95 birim/API testi, üç platform export, API smoke ve otomatik yorum tarayıcı senaryosu geçti. Android v11 derlendi, önceki sertifika, Railway adresi ve herkese açık APK özeti doğrulandı. Fiziksel klavye testi açık.
