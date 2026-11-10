@@ -44,49 +44,43 @@ export function Review({
           accessibilityLabel="Seçilen etiket fotoğrafı"
         />
         {error ? <Notice>{error}</Notice> : null}
-        {busy ? (
-          <View style={{ gap: 20 }}>
-            <View accessibilityLiveRegion="polite" style={ui.row}>
-              <ActivityIndicator color={theme.color.green} />
-              <Text style={[ui.body, { flex: 1 }]}>
-                Etiket okunuyor ve açıklamalar hazırlanıyor.
-              </Text>
-            </View>
-            <Text style={ui.small}>
-              Fotoğraf buluta gönderildi. Bağlantıya ve görselin okunabilirliğine göre biraz sürebilir.
+        {!busy && (
+          <Text style={ui.body}>
+            İçindekiler listesi ve alerjen uyarısının tamamı görünsün. Bulanık veya kesik alan
+            varsa tekrar çek.
+          </Text>
+        )}
+        {!busy && (
+          <View style={{ gap: 8 }}>
+            <Text style={ui.small}>{copy.photoConsent}</Text>
+            <Text
+              accessibilityRole="link"
+              onPress={onPrivacy}
+              style={[
+                ui.small,
+                { color: theme.color.green, textDecorationLine: 'underline', paddingVertical: 12 },
+              ]}
+            >
+              Gizlilik politikasını oku
             </Text>
-            <Button label="Okumayı iptal et" secondary onPress={onCancel} />
+          </View>
+        )}
+        {busy ? (
+          <View
+            accessibilityLiveRegion="polite"
+            accessibilityLabel="Etiket okunuyor"
+            style={[ui.row, { gap: 10, paddingVertical: 14 }]}
+          >
+            <ActivityIndicator color={theme.color.green} />
+            <Text style={[ui.body, { flex: 1 }]}>Etiket okunuyor…</Text>
           </View>
         ) : (
-          <>
-            <Text style={ui.body}>
-              İçindekiler listesi ve alerjen uyarısının tamamı görünsün. Bulanık veya kesik alan
-              varsa tekrar çek.
-            </Text>
-            <View style={{ gap: 8 }}>
-              <Text style={ui.small}>{copy.photoConsent}</Text>
-              <Text
-                accessibilityRole="link"
-                onPress={onPrivacy}
-                style={[
-                  ui.small,
-                  {
-                    color: theme.color.green,
-                    textDecorationLine: 'underline',
-                    paddingVertical: 12,
-                  },
-                ]}
-              >
-                Gizlilik politikasını oku
-              </Text>
-            </View>
-            <Button
-              label="Fotoğrafı buluta gönder ve oku"
-              icon="scan"
-              onPress={onScan}
-            />
-            <Button label="Başka fotoğraf çek" secondary onPress={onRetake} />
-          </>
+          <Button label="Fotoğrafı buluta gönder ve oku" icon="scan" onPress={onScan} />
+        )}
+        {busy ? (
+          <Button label="Okumayı iptal et" secondary onPress={onCancel} />
+        ) : (
+          <Button label="Başka fotoğraf çek" secondary onPress={onRetake} />
         )}
       </ScrollView>
     </View>

@@ -179,7 +179,7 @@ export function PersonalPanel({
           ? 'Yorum isteğinde profil özeti, son 20 öğün kaydı ve bu etiket metni sunucu üzerinden OpenAI’e gönderilir.'
           : scenario
             ? 'OpenAI yanıtını görmek için örnek verinin gönderimine izin ver.'
-            : 'Kişisel LLM yorumu için profilinde aktarım iznini aç. Yerel porsiyon hesabı izin gerektirmez.'}
+            : 'Kişisel yorum için profilinde aktarım iznini aç.'}
       </Text>
       <Button
         label={busy ? 'Kişisel yorum hazırlanıyor' : 'Bulut modeliyle ayrıntılandır'}
@@ -253,11 +253,6 @@ export function PersonalPanel({
             </View>
           )}
           <Text style={ui.small}>Bu yorum tanı veya kişisel tetikleyici kanıtı değildir.</Text>
-          {!rehearsal && (
-            <Text style={[ui.small, { opacity: 0.5 }]}>
-              {reply.model} · {reply.usage.input_tokens} giriş / {reply.usage.output_tokens} çıkış token
-            </Text>
-          )}
         </View>
       )}
     </View>
