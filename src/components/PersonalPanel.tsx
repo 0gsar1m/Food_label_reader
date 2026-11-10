@@ -9,6 +9,16 @@ import { Choice } from '../screens/Profile';
 import { Button, Notice } from './Controls';
 import { ui, theme } from '../theme';
 
+function labelForEvidence(id: string): string {
+  if (id.startsWith('profile:')) return 'Profil bildirimin';
+  if (id.startsWith('diary:')) return 'Öğün günlüğün';
+  if (id.startsWith('label:')) return 'Etiket metni';
+  if (id === 'source:diary') return 'NIH – Günlük tutma bilgisi';
+  if (id === 'source:bloating') return 'NHS – Şişkinlik';
+  if (id === 'source:eczema') return 'ASCIA – Egzama ve gıda';
+  return '';
+}
+
 /** Local numbers and profile goals remain distinct from an explicitly requested LLM interpretation. */
 export function PersonalPanel({
   analysis,
@@ -252,39 +262,43 @@ export function PersonalPanel({
         <View style={{ gap: 16 }}>
           {rehearsal && <Notice>Hazır kurgu yanıt. Bu prova OpenAI’ye istek göndermez.</Notice>}
           <Text style={ui.body}>{reply.result.summary}</Text>
-          {reply.result.findings.map((f, i) => (
-            <View key={i} style={{ gap: 8 }}>
-              <Text style={ui.body}>{f.text}</Text>
-              {f.evidenceIds.map((id) => {
-                const e = reply.evidence.find((e) => e.id === id);
-                return (
-                  <View key={id}>
-                    <Text style={ui.small}>
-                      Dayanak:{' '}
-                      {id.startsWith('profile:')
-                        ? 'Profil bildirimin'
-                        : id.startsWith('diary:')
-                          ? 'Öğün günlüğün'
-                          : id.startsWith('label:')
-                            ? 'Etiket metni'
-                            : id}
+          {reply.result.findings.map((f, i) => {
+            const seenLabels = new Set<string>();
+            const uniqueEvidence = f.evidenceIds
+              .map((id) => ({
+                id,
+                label: labelForEvidence(id),
+                item: reply.evidence.find((e) => e.id === id),
+              }))
+              .filter(({ label }) => {
+                if (!label || seenLabels.has(label)) return false;
+                seenLabels.add(label);
+                return true;
+              });
+            return (
+              <View key={i} style={{ gap: 6 }}>
+                <Text style={ui.body}>{f.text}</Text>
+                {uniqueEvidence.map(({ id, label, item }) =>
+                  item?.url ? (
+                    <Text
+                      key={id}
+                      accessibilityRole="link"
+                      style={[ui.small, { textDecorationLine: 'underline', paddingVertical: 4 }]}
+                      onPress={() => {
+                        void Linking.openURL(item.url!).catch(() => setError('Kaynak açılamadı.'));
+                      }}
+                    >
+                      Kaynak: {label}
                     </Text>
-                    {e?.url && (
-                      <Text
-                        accessibilityRole="link"
-                        style={[ui.small, { textDecorationLine: 'underline', paddingVertical: 12 }]}
-                        onPress={() => {
-                          void Linking.openURL(e.url!).catch(() => setError('Kaynak açılamadı.'));
-                        }}
-                      >
-                        {e.url}
-                      </Text>
-                    )}
-                  </View>
-                );
-              })}
-            </View>
-          ))}
+                  ) : (
+                    <Text key={id} style={ui.small}>
+                      Dayanak: {label}
+                    </Text>
+                  ),
+                )}
+              </View>
+            );
+          })}
           {reply.result.followUp && (hasConsent || rehearsal) && (
             <View style={{ gap: 10 }}>
               <Text style={ui.strong}>{reply.result.followUp.question}</Text>
@@ -306,11 +320,12 @@ export function PersonalPanel({
               />
             </View>
           )}
-          <Text style={ui.small}>
-            Model: {reply.model} · Girdi: {reply.usage.input_tokens} / çıktı:{' '}
-            {reply.usage.output_tokens} token. Bu yorum tanı veya kişisel tetikleyici kanıtı
-            değildir.
-          </Text>
+          <Text style={ui.small}>Bu yorum tanı veya kişisel tetikleyici kanıtı değildir.</Text>
+          {!rehearsal && (
+            <Text style={[ui.small, { opacity: 0.5 }]}>
+              {reply.model} · {reply.usage.input_tokens} giriş / {reply.usage.output_tokens} çıkış token
+            </Text>
+          )}
         </View>
       )}
     </View>
