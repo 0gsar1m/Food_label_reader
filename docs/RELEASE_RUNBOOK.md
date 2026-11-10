@@ -1,5 +1,7 @@
 # Çalıştırma ve yayın rehberi
 
+Faz 20 üretim hattı Android etiketi için gömülü ML Kit ve bulut kişisel yorum için GPT-6 Luna kullanır. Railway değişkeni ve yerel gizli ayar `OPENAI_API_KEY`, model `OPENAI_MODEL=gpt-6-luna`. Android fotoğrafı sunucuya gitmez. Önceki Gemini izni OpenAI için geçerli sayılmaz. Aşağıdaki eski Gemini kabul adımları önceki sürümlere aittir.
+
 ## Profil, kişisel yorum ve Google giriş eki
 Profil/günlük native cihazda ayrı şifreli depoda; webde sekme oturumundadır. Google, misafir ve diğer hesaplar ayrı kayıt alanları kullanır.
 Kişisel yorum için aynı `GEMINI_API_KEY` ve varsayılan `PERSONAL_MODEL=gemini-3.5-flash-lite` kullanılır. Gerçek profil için Gemini’ye açık aktarım izni gerekir.

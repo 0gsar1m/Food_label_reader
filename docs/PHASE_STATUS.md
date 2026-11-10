@@ -77,3 +77,5 @@ Android profil sonucu düzeltmesinde 92 birim/API testi ve üç profil tarayıc�
 ## Faz 20 / Çevrimdışı OCR ve GPT-6 Luna
 
 Gerçek noodle fotoğrafı masaüstü OCR ile işlendi. Aynı metin ayrıştırıcı glüten ve kereviz beyanını etiket kanıtıyla çıkardı. Railway'de GPT-6 Luna 200 ile yorum ve üç soru döndürdü. Android derlemesi ve fiziksel cihaz kabulü ayrı izlenir. Besin tablosunda doğrulanmamış sütunlardan miktar hesaplanmaz.
+
+Android sürüm kodu 5 derlendi ve GitHub Releases üzerinden yayınlandı. APK imzası, paketlenmiş çevrimdışı model ve sunucu adresi doğrulandı. Lint, typecheck, 95 birim/API, üç profil tarayıcı testi, üç platform export ve API smoke geçti.

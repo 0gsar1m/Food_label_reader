@@ -85,3 +85,5 @@ Faz 20 etkin. Android etiket okuması için yerel Expo modülü ve APK'ya gömü
 OpenAI projesinde Responses yazma kapsamlı, yedi günlük Nazif anahtarı oluşturuldu ve git dışında .env'e yazıldı. Kullanıcı 5 USD API kredisi yükledi. Üretim hedefi GPT-6 Luna ve bağımsız OpenAI aktarım izni. APK sürüm kodu 5. Bulut kabulü, fiziksel Android OCR ve APK yayın durumu ayrı doğrulanacak. Devam edecek agent .env değerlerini yazdırmadan Railway servisini ve Gradle çıktısını doğrulamalı.
 
 Railway üretim API'sinde gerçek noodle etiketinden masaüstünde çıkarılan metinle GPT-6 Luna kişisel yorum ve soru seçimi ayrı ayrı HTTP 200 döndürdü. Yeni API başlangıç yapılandırması yalnız OpenAI kullanır. OCR'ın Android cihaz kabulü ve APK teslimini aşağıdaki faz kaydından takip et.
+
+APK v5 GitHub Releases `nazif-android-v5` altında yayınlandı. Aynı geliştirme imzası, ARM64, gömülü ML Kit Latin modeli ve Railway adresi doğrulandı. 95 birim/API ve üç profil tarayıcı testi, üç platform export ve API smoke geçti. Fiziksel telefonun uçak modunda OCR kabulü açık.
