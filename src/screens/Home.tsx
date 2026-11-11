@@ -5,7 +5,6 @@ import { copy } from '../content';
 import { Button } from '../components/Controls';
 import { LabelIllustration } from '../components/LabelIllustration';
 import { Icon } from '../components/Icon';
-import type { ScanRecord } from '../../shared/analysis';
 
 /** The primary action stays focused on photographing the label rather than product marketing. */
 export function Home({
@@ -21,7 +20,6 @@ export function Home({
   onGallery,
   onDemo,
   onScenario,
-  recent,
   onRecent,
 }: {
   onAccount: () => void;
@@ -36,8 +34,7 @@ export function Home({
   onGallery: () => void;
   onDemo: () => void;
   onScenario: () => void;
-  recent?: ScanRecord;
-  onRecent: (record: ScanRecord) => void;
+  onRecent: () => void;
 }) {
   const [tutorial, setTutorial] = useState(false);
   return (
@@ -70,6 +67,7 @@ export function Home({
         <Button label={copy.scan} icon="scan" onPress={onCamera} />
         <Button label={copy.gallery} icon="gallery" secondary onPress={onGallery} />
         <Button label="Barkoddan ürün bul" secondary onPress={onBarcode} />
+        <Button label="Son okumaların" icon="history" secondary onPress={onRecent} />
       </View>
       <Pressable
         accessibilityRole="button"
@@ -79,7 +77,7 @@ export function Home({
       >
         <View style={{ gap: 4, flex: 1 }}>
           <Text style={ui.eyebrow}>ÖĞRETİCİ</Text>
-          <Text style={ui.strong}>Bir okuma nasıl görünür?</Text>
+          <Text style={ui.strong}>Uygulamayı nasıl kullanırsın?</Text>
         </View>
         <Icon name="arrow" size={22} />
       </Pressable>
@@ -143,17 +141,6 @@ export function Home({
         <Button label="Dışarıda yemek / restoran kartım" secondary onPress={onRestaurant} />
         <Button label="Menü ve tabak incele" secondary onPress={onFoodPhoto} />
       </View>
-      {recent && (
-        <Pressable accessibilityRole="button" onPress={() => onRecent(recent)} style={{ gap: 8 }}>
-          <Text style={ui.eyebrow}>SON OKUMAN</Text>
-          <View style={ui.between}>
-            <Text style={[ui.body, { flex: 1 }]}>
-              {recent.analysis.productName ?? 'Gıda etiketi'}
-            </Text>
-            <Icon name="arrow" size={18} />
-          </View>
-        </Pressable>
-      )}
       <View style={[ui.row, { alignItems: 'flex-start', gap: 9 }]}>
         <Icon name="shield" size={16} color={theme.color.muted} />
         <Text style={[ui.small, { flex: 1 }]}>

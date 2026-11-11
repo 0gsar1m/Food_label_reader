@@ -19,6 +19,7 @@ import {
   type ProfileDraft,
 } from '../../shared/profile';
 import { Button, Notice, ScreenHeader } from '../components/Controls';
+import { DemoEntry } from '../components/DemoEntry';
 import { theme, ui } from '../theme';
 import { PersonalConnectionError, requestPersonal } from '../lib/personalApi';
 
@@ -64,11 +65,13 @@ export function Field({
   value,
   onChange,
   max = 600,
+  disabled = false,
 }: {
   label: string;
   value: string;
   onChange: (text: string) => void;
   max?: number;
+  disabled?: boolean;
 }) {
   return (
     <View style={{ gap: 8 }}>
@@ -78,8 +81,10 @@ export function Field({
         multiline
         value={value}
         onChangeText={onChange}
+        editable={!disabled}
+        accessibilityState={{ disabled }}
         maxLength={max}
-        style={ui.input}
+        style={[ui.input, disabled && { opacity: 0.55 }]}
       />
     </View>
   );
@@ -95,6 +100,7 @@ export function ProfileScreen({
   exportData,
   apiUrl,
   token,
+  onDemo,
 }: {
   initial: ProfileData;
   initialDraft?: ProfileDraft;
@@ -105,6 +111,7 @@ export function ProfileScreen({
   exportData: () => string;
   apiUrl: string;
   token: string;
+  onDemo?: () => void;
 }) {
   const [draft, setDraft] = useState(initialDraft?.profile ?? initial);
   const [avoidedText, setAvoidedText] = useState(
@@ -119,12 +126,12 @@ export function ProfileScreen({
   >('idle');
   const questionLoading = questionStatus === 'loading';
   const titles = [
-    'Sana ne iyi gelir?',
+    'Etikette neye bakarsın?',
     'Neleri takip edelim?',
     'Sağlık bağlamın.',
     'Bir gününü tanıyalım.',
-    'Biraz daha yakından.',
-    'Verinin kontrolü sende.',
+    'Sana birkaç sorum var',
+    'Paylaşım izinlerin',
   ];
   const change = <K extends keyof ProfileData>(key: K, value: ProfileData[K]): void =>
     setDraft((old) => ({ ...old, [key]: value }));
@@ -135,6 +142,7 @@ export function ProfileScreen({
       await onSave(
         profileSchema.parse({
           ...draft,
+          conditions: draft.diagnosisSource === 'none' ? '' : draft.conditions,
           goals: draft.goals.filter((goal) => goal === 'awareness' || goal === 'symptoms'),
           avoidedFoods: avoidedText
             .split(',')
@@ -150,6 +158,10 @@ export function ProfileScreen({
     }
   }
   async function adapt(): Promise<void> {
+    if (followUps(draft).every((id) => draft.answers[id]?.trim())) {
+      setQuestionStatus('empty');
+      return;
+    }
     setBusy(true);
     setQuestionStatus('loading');
     try {
@@ -251,11 +263,6 @@ export function ProfileScreen({
               Örnekler: IBS-D / IBS-C / IBS-M, reflü, laktoz hassasiyeti, çölyak, SIBO, Crohn veya
               ülseratif kolit. Yalnız kendi bildiğin durumu yaz.
             </Text>
-            <Field
-              label="Paylaşmak istediğin sağlık durumu veya hassasiyet"
-              value={draft.conditions}
-              onChange={(v) => change('conditions', v)}
-            />
             {(
               [
                 ['none', 'Tanı bilgisi paylaşmıyorum'],
@@ -271,6 +278,12 @@ export function ProfileScreen({
                 onPress={() => change('diagnosisSource', id)}
               />
             ))}
+            <Field
+              label="Paylaşmak istediğin sağlık durumu veya hassasiyet"
+              value={draft.diagnosisSource === 'none' ? '' : draft.conditions}
+              disabled={draft.diagnosisSource === 'none'}
+              onChange={(v) => change('conditions', v)}
+            />
             <Text style={ui.small}>
               Uygulama tanıyı doğrulamaz. Gerekmeyen kişisel bilgileri paylaşma.
             </Text>
@@ -370,7 +383,7 @@ export function ProfileScreen({
               >
                 {questionStatus === 'ready'
                   ? 'Soru önerileri hazır. Yukarıdaki soruları yanıtlayabilirsin.'
-                  : 'Yeni soru önerisi bulunamadı. Mevcut sorularla devam edebilirsin.'}
+                  : 'Şimdilik ek bir sorum yok. Yukarıdaki sorularla devam edebilirsin.'}
               </Text>
             )}
           </>
@@ -379,8 +392,8 @@ export function ProfileScreen({
           <>
             <Text style={ui.body}>
               Profilin ve öğün günlüğün cihazında şifreli saklanır. İzin verirsen her yeni etiket
-              okumasında profilin ve son öğünlerin kişisel yoruma dahil edilir. İzni dilediğin
-              zaman profilinden değiştirebilirsin.
+              okumasında profilin ve son öğünlerin kişisel yoruma dahil edilir. İzni dilediğin zaman
+              profilinden değiştirebilirsin.
             </Text>
             {Platform.OS === 'web' && (
               <Notice>
@@ -439,6 +452,7 @@ export function ProfileScreen({
             else void finish();
           }}
         />
+        {onDemo && !initial.completed && <DemoEntry onPress={onDemo} />}
       </ScrollView>
     </View>
   );

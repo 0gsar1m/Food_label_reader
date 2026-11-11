@@ -21,7 +21,7 @@ export const personalEnvelope = z.object({
   ),
   usage: z.object({ input_tokens: z.number(), output_tokens: z.number() }),
 });
-/** Explicit button action only: caller must pass the independently stored health-data consent. */
+/** The caller must pass the independently stored health-data consent. */
 export async function requestPersonal(
   url: string,
   token: string,
@@ -30,6 +30,7 @@ export async function requestPersonal(
   const parsed = personalRequestSchema.parse(input);
   if (!parsed.profile.openaiConsent)
     throw new Error('Kişisel yorum için profil aktarım iznini aç.');
+  if (parsed.profile.diagnosisSource === 'none') parsed.profile.conditions = '';
   let response: Response;
   try {
     response = await fetchWithTimeout(

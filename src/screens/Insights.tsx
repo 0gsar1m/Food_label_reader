@@ -35,7 +35,6 @@ export function Insights({
     <View style={ui.page}>
       <ScreenHeader title="Gözlemlerim" onBack={onBack} />
       <ScrollView contentContainerStyle={ui.content}>
-        <Text style={ui.eyebrow}>CİHAZINDA / MODEL ÇAĞRISI YOK</Text>
         <Text style={ui.title}>{'Yediklerin ve\nnasıl hissettiğin.'}</Text>
         <View style={[ui.row, { flexWrap: 'wrap' }]}>
           {[7, 30].map((value) => (

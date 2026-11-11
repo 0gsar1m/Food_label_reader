@@ -21,6 +21,7 @@ import { useDeviceData } from './src/hooks/useDeviceData';
 import { pickPhoto, type PreparedPhoto } from './src/lib/photo';
 import { requestAnalysis, ScanError } from './src/lib/api';
 import { makeDemoVault } from './shared/demoScenario';
+import { demoWeekOwner } from './shared/demoWeek';
 import { demoAnalysis } from './src/data/demo';
 import type { ScanRecord } from './shared/analysis';
 import { theme, ui } from './src/theme';
@@ -87,9 +88,11 @@ export default function App() {
 function Application() {
   const connection = useDeviceData();
   const account = useAccount(connection.apiUrl);
-  const library = useLibrary(account.session?.user.id ?? 'guest', connection.setNotice);
+  const [demoWeek, setDemoWeek] = useState(false);
+  const owner = demoWeek ? demoWeekOwner : (account.session?.user.id ?? 'guest');
+  const library = useLibrary(owner, connection.setNotice);
   const device = { ...connection, ...library, ready: connection.ready && library.ready };
-  const health = useHealth(account.session?.user.id ?? 'guest');
+  const health = useHealth(owner);
   const effectiveToken = account.session?.token ?? device.token;
   const [stack, setStack] = useState<Screen[]>([{ kind: 'home' }]);
   const [busy, setBusy] = useState(false);
@@ -108,6 +111,13 @@ function Application() {
     setScanError('');
     setStack([{ kind }]);
   };
+  const openDemoWeek =
+    process.env.EXPO_PUBLIC_DEMO_WEEK === 'true' && !demoWeek
+      ? () => {
+          reset('home');
+          setDemoWeek(true);
+        }
+      : undefined;
   const back = useCallback((): void => {
     inFlight.current?.abort();
     setBusy(false);
@@ -187,6 +197,21 @@ function Application() {
     setScanError('Okuma iptal edildi. Fotoğrafı tekrar gönderebilirsin.');
   }
   const camera = (): void => push({ kind: 'camera' });
+  const recordedScans = new Set(health.vault.diary.map((entry) => entry.scanId));
+  const addScannedMeal = (record: ScanRecord, notes = ''): void => {
+    if (recordedScans.has(record.id)) return;
+    push({
+      kind: 'diary',
+      meal: record.analysis.productName ?? 'Etiketi okunan ürün',
+      seed: {
+        scanId: record.id,
+        ingredients: record.analysis.ingredients.map((item) => item.name),
+        notes,
+        outcome: 'pending',
+        demo: record.demo,
+      },
+    });
+  };
   const demo = (scenario = false): void =>
     push({
       kind: 'result',
@@ -225,9 +250,10 @@ function Application() {
         reset('home');
       }}
       onBack={() => reset('home')}
+      onDemo={openDemoWeek}
     />
   );
-  if (!account.session && !account.guest) return accountView;
+  if (!account.session && !account.guest && !demoWeek) return accountView;
   const profileView = (
     <ProfileScreen
       initial={health.vault.profile}
@@ -235,6 +261,7 @@ function Application() {
       onCheckpoint={(profileDraft) => health.update((old) => ({ ...old, profileDraft }))}
       apiUrl={device.apiUrl}
       token={effectiveToken}
+      onDemo={openDemoWeek}
       onBack={() => reset('home')}
       onSave={async (profile) => {
         await health.update((old) => ({ ...old, profile, profileDraft: undefined }));
@@ -273,6 +300,19 @@ function Application() {
         borderColor: theme.color.line,
       }}
     >
+      {demoWeek && (
+        <View style={[ui.between, { padding: 12, gap: 8, backgroundColor: theme.color.pale }]}>
+          <Text style={[ui.small, { flex: 1 }]}>Demo · Kurgu profil ve öğünler</Text>
+          <Button
+            label="Demodan çık"
+            secondary
+            onPress={() => {
+              reset('home');
+              setDemoWeek(false);
+            }}
+          />
+        </View>
+      )}
       {device.notice ? (
         <View
           accessibilityRole="alert"
@@ -308,8 +348,7 @@ function Application() {
           }}
           onDemo={() => demo()}
           onScenario={() => demo(true)}
-          recent={device.records[0]}
-          onRecent={(record) => push({ kind: 'result', record })}
+          onRecent={() => reset('history')}
         />
       )}
       {screen.kind === 'history' && (
@@ -319,6 +358,8 @@ function Application() {
           onDelete={device.deleteRecord}
           onClear={() => setConfirmClear(true)}
           onScan={camera}
+          recordedScans={recordedScans}
+          onDiary={addScannedMeal}
         />
       )}
       {screen.kind === 'settings' && (
@@ -372,18 +413,8 @@ function Application() {
           }
           apiUrl={device.apiUrl}
           token={effectiveToken}
-          onDiary={() =>
-            push({
-              kind: 'diary',
-              meal: screen.record.analysis.productName ?? '',
-              seed: {
-                scanId: screen.record.id,
-                ingredients: screen.record.analysis.ingredients.map((item) => item.name),
-                outcome: 'pending',
-                demo: screen.record.demo,
-              },
-            })
-          }
+          mealRecorded={recordedScans.has(screen.record.id)}
+          onDiary={(notes) => addScannedMeal(screen.record, notes)}
           record={screen.record}
           preferences={device.preferences}
           onBack={back}

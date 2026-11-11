@@ -45,7 +45,7 @@ export function personalEvidence(input: z.infer<typeof personalRequestSchema>) {
     {
       id: 'profile:context',
       text: JSON.stringify({
-        conditions: input.profile.conditions,
+        conditions: input.profile.diagnosisSource === 'none' ? '' : input.profile.conditions,
         diagnosisSource: input.profile.diagnosisSource,
         breakfast: input.profile.breakfast,
         timing: input.profile.timing,
@@ -190,6 +190,7 @@ CONSUMPTION STATUS:
 CRITICAL RULES:
 - profile:context holds user DECLARATIONS (things they wrote in their profile), NOT diary meal logs. Only use "günlüğünde" or "kaydetmişsin" for actual diary: entries.
 - When a diary entry has multiple ingredients (e.g., oat porridge WITH milk), attribute specific factors (like milk) to THAT specific meal — never imply those extra ingredients are present in the current label product.
+- For a logged product with a reported reaction, match relevant ingredients against other meals when possible. Mention plausible matches as observations to compare, never as confirmed triggers. Use the user's actual notes and symptom-free records. A pending meal alone provides no symptom evidence.
 - Diary associations are observations, not causation. Symptom-free entries matter — always mention them when present.
 - Pending diary entries have no confirmed outcome — never count them as symptom-free or symptomatic.
 - When a follow-up answer has been given (look for "Takip sorusu:" in diary notes), start the summary by incorporating that new fact. Do not ask the same question again.

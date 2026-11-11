@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { emptyProfile, type HealthVault } from '../../shared/profile';
 import { loadHealth, saveHealth, deleteHealth } from '../lib/healthStorage';
+import { demoWeekOwner, makeDemoWeek } from '../../shared/demoWeek';
 const blank = (): HealthVault => ({ version: 1, profile: { ...emptyProfile }, diary: [] });
 /** Sensitive state is committed only after an authenticated encrypted write succeeds. */
 export function useHealth(owner = 'guest') {
@@ -19,7 +20,13 @@ export function useHealth(owner = 'guest') {
     current.current = blank();
     setVault(current.current);
     void queue.current
-      .then(() => loadHealth(owner))
+      .then(async () => {
+        const stored = await loadHealth(owner);
+        if (stored || owner !== demoWeekOwner) return stored;
+        const example = makeDemoWeek();
+        await saveHealth(example, owner);
+        return example;
+      })
       .then((value) => {
         if (active && value) {
           current.current = value;

@@ -16,7 +16,7 @@
     },
     "android": {
       "package": "com.ogsarim.etiket",
-      "versionCode": 11,
+      "versionCode": 12,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#F6F4ED"
@@ -28,6 +28,7 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "@react-native-community/datetimepicker",
       [
         "expo-camera",
         {

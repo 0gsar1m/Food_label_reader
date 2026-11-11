@@ -26,7 +26,6 @@ export function PersonalPanel({
   apiUrl,
   token,
   autoPersonal,
-  onDiary,
 }: {
   analysis: Analysis;
   vault: HealthVault;
@@ -35,7 +34,6 @@ export function PersonalPanel({
   apiUrl: string;
   token: string;
   autoPersonal?: boolean;
-  onDiary: () => void;
 }) {
   const [scenarioConsent, setScenarioConsent] = useState(false);
   const hasConsent = scenario ? scenarioConsent : vault.profile.openaiConsent;
@@ -253,7 +251,6 @@ export function PersonalPanel({
           <Text style={ui.small}>Bu yorum tanı veya kişisel tetikleyici kanıtı değildir.</Text>
         </View>
       )}
-      {!scenario && <Button label="Bu öğünü günlüğe ekle" secondary onPress={onDiary} />}
     </View>
   );
 }

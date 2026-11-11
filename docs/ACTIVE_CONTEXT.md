@@ -3,7 +3,7 @@
 11 Kasım 2026. Nazif: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
 Kullanıcı tüm fazları özerk uygulama, test ve sonunda https://github.com/0gsar1m/Food_label_reader.git repoya normal push yetkisi verdi. Fazlar arasında onay isteme.
 Son direktif: Android etiketi ve kişisel yorumu GPT-6 Luna ile hazırla. İlk profilde amaç seçimi zorunlu. Profil aktarımı açık izne bağlı.
-Etkin faz: 22. v11, otomatik kişisel yorum ve ilk profil akışı.
+Etkin faz: 23. V12 sağlık bağlamı, tüketim kaydı ve eğitim demosu. Demo APK derlemesinde EXPO_PUBLIC_DEMO_WEEK=true kullanılır.
 
 ## Claude Code için devam noktası
 

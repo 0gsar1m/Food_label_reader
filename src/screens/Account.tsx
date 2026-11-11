@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Button, ScreenHeader, Notice } from '../components/Controls';
 import { GoogleLogin } from '../components/GoogleLogin';
+import { DemoEntry } from '../components/DemoEntry';
 import { ui } from '../theme';
 import type { AuthSession } from '../../shared/auth';
 /** One identity flow covers sign-up and sign-in; no password or mailbox access is collected. */
@@ -11,12 +12,14 @@ export function AccountScreen({
   onGuest,
   onLogout,
   onBack,
+  onDemo,
 }: {
   session: AuthSession | null;
   onCredential: (token: string) => Promise<void>;
   onGuest: () => void;
   onLogout: () => Promise<void>;
   onBack?: () => void;
+  onDemo?: () => void;
 }) {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -62,6 +65,7 @@ export function AccountScreen({
             </Text>
           </>
         )}
+        {onDemo && <DemoEntry onPress={onDemo} />}
         {error ? <Notice>{error}</Notice> : null}
       </ScrollView>
     </View>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Pressable, ScrollView, Share, Text, View } from 'react-native';
+import { Pressable, ScrollView, Share, Text, TextInput, View } from 'react-native';
 import { allergenNames, type AllergenId, type ScanRecord } from '../../shared/analysis';
 import { Button, IconButton, Notice, ScreenHeader } from '../components/Controls';
 import { theme, ui } from '../theme';
@@ -16,6 +16,7 @@ export function Result({
   apiUrl,
   token,
   autoPersonal,
+  mealRecorded,
   onDiary,
   preferences,
   onBack,
@@ -28,13 +29,15 @@ export function Result({
   apiUrl: string;
   token: string;
   autoPersonal?: boolean;
-  onDiary: () => void;
+  mealRecorded: boolean;
+  onDiary: (notes: string) => void;
   preferences: AllergenId[];
   onBack: () => void;
   onScan: () => void;
 }) {
   const [tab, setTab] = useState<'summary' | 'ingredients' | 'label'>('summary');
   const [error, setError] = useState('');
+  const [mealNotes, setMealNotes] = useState('');
   const analysis = record.analysis;
   const matches = analysis.allergens.filter((item) => preferences.includes(item.id));
   async function share(): Promise<void> {
@@ -167,8 +170,38 @@ export function Result({
                   apiUrl={apiUrl}
                   token={token}
                   autoPersonal={autoPersonal}
-                  onDiary={onDiary}
                 />
+              )}
+              {!record.demo && (
+                <View style={{ gap: 8, paddingVertical: 16 }}>
+                  <Text style={ui.h2}>
+                    {mealRecorded ? 'Öğün günlüğüne eklendi' : 'Bu ürünü tükettin mi?'}
+                  </Text>
+                  {!mealRecorded && (
+                    <>
+                      <Text style={ui.body}>
+                        Tükettiysen sonrasında nasıl hissettin? Günlüğe eklediğin yanıtı sonraki
+                        kişisel yorumlarda kullanırım.
+                      </Text>
+                      <TextInput
+                        accessibilityLabel="Yedikten sonra nasıl hissettin?"
+                        placeholder="Örn. Bir saat sonra şişkinlik hissettim"
+                        placeholderTextColor={theme.color.muted}
+                        style={ui.input}
+                        multiline
+                        maxLength={600}
+                        value={mealNotes}
+                        onChangeText={setMealNotes}
+                      />
+                    </>
+                  )}
+                  <Button
+                    label={mealRecorded ? 'Öğün eklendi' : 'Öğün olarak ekle'}
+                    secondary
+                    disabled={mealRecorded}
+                    onPress={() => onDiary(mealNotes.trim())}
+                  />
+                </View>
               )}
             </View>
             {tab === 'summary' && (

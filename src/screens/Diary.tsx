@@ -6,6 +6,7 @@ import { Button, Notice, ScreenHeader } from '../components/Controls';
 import { ui } from '../theme';
 import { outcomeOf } from '../../shared/observations';
 import { formatMealTime, parseMealTime } from '../../shared/mealTime';
+import { MealTimeFields } from '../components/MealTimeFields';
 /** Editable observations include symptom-free meals and do not identify causal ingredients. */
 export function DiaryScreen({
   entries,
@@ -46,6 +47,7 @@ export function DiaryScreen({
         throw new Error('Select a symptom.');
       const entry = diarySchema.parse({
         ...draft,
+        delay: outcomeOf(draft) === 'symptoms' ? draft.delay.trim() : '',
         ingredients: ingredients
           .split(',')
           .map((v) => v.trim())
@@ -69,12 +71,16 @@ export function DiaryScreen({
     <View style={ui.page}>
       <ScreenHeader title="Öğün ve belirti günlüğü" onBack={onBack} />
       <ScrollView contentContainerStyle={ui.content} keyboardShouldPersistTaps="handled">
-        <Text style={ui.title}>Kendi deneyimini kaydet.</Text>
+        <Text style={ui.title}>
+          {seed?.scanId ? 'Bu ürünü tükettin mi?' : 'Ne yedin, nasıl hissettin?'}
+        </Text>
         <Text style={ui.body}>
-          Belirti yaşamadığın öğünleri de ekle. Kayıtlar bir gıdanın neden olduğunu kanıtlamaz.
+          {seed?.scanId
+            ? 'Tükettiysen nasıl hissettiğini kaydet. Sonraki kişisel yorumlarda bu öğün de dikkate alınır.'
+            : 'Belirti yaşamadığın öğünleri de ekleyebilirsin.'}
         </Text>
         {entries
-          .filter((entry) => outcomeOf(entry) === 'pending')
+          .filter((entry) => !seed?.scanId && outcomeOf(entry) === 'pending')
           .map((entry) => (
             <Button
               key={entry.id}
@@ -95,15 +101,7 @@ export function DiaryScreen({
           value={draft.meal}
           onChange={(meal) => setDraft({ ...draft, meal })}
         />
-        <Field label="Öğün tarihi ve saati" value={time} onChange={setTime} max={16} />
-        <Text style={ui.small}>
-          Gün.ay.yıl ve saat:dakika. Örnek: 01.11.2026 12:30. Cihazının saat dilimi kullanılır.
-        </Text>
-        <Button
-          label="Zamanı şimdi yap"
-          secondary
-          onPress={() => setTime(formatMealTime(new Date().toISOString()))}
-        />
+        <MealTimeFields value={time} onChange={setTime} />
         <Field
           label="Porsiyon / miktar"
           value={draft.amount}
@@ -162,12 +160,32 @@ export function DiaryScreen({
             ))}
           </View>
         )}
-        <Field
-          label="Ne kadar sonra başladı?"
-          value={draft.delay}
-          onChange={(delay) => setDraft({ ...draft, delay })}
-          max={100}
-        />
+        {outcomeOf(draft) === 'symptoms' && (
+          <View style={{ gap: 8 }}>
+            <Text style={ui.strong}>Belirti yemekten ne kadar sonra başladı?</Text>
+            {[
+              'Yemek sırasında',
+              'İlk 30 dakika',
+              '30–60 dakika',
+              '1–2 saat',
+              '2 saatten sonra',
+            ].map((delay) => (
+              <Choice
+                key={delay}
+                label={delay}
+                radio
+                checked={draft.delay === delay}
+                onPress={() => setDraft({ ...draft, delay: draft.delay === delay ? '' : delay })}
+              />
+            ))}
+            <Field
+              label="Yaklaşık süreyi yaz (isteğe bağlı)"
+              value={draft.delay}
+              onChange={(delay) => setDraft({ ...draft, delay })}
+              max={100}
+            />
+          </View>
+        )}
         <Field
           label="Birlikte yediklerin ve diğer gözlemlerin"
           value={draft.notes}

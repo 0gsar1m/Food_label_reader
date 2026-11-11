@@ -107,3 +107,7 @@ Durum: v5 yayınlandı, bulut Luna ve APK bütünlüğü doğrulandı. Açık ka
 ## Faz 22 / Otomatik kişisel yorum ve ilk profil
 
 Yeni etiket taraması, açık profil aktarım izniyle Luna yorumunu Özet sekmesinde hazırlar. İlk kurulumda amaç seçilir, örnek okuma Öğretici altında açılır. Canlı uç, tarayıcı ve fiziksel Android cihaz kabulü ayrı kaydedilir.
+
+## Faz 23 / Öğün kaydı ve son okumalar
+
+Sağlık durumunu yalnız tanı veya gözlem paylaşmayı seçen kullanıcı düzenleyebilir. Yeni tarama ve geçmiş sonucu aynı öğün kaydına bağlanır. Öğün tarih ve saati seçicilerle girilir. Günlük kaydı sonraki izinli Luna yorumlarına kaynak olur. Son okumalar etiket geçmişinde, Gözlemlerim ise öğün örüntülerinde kalır.

@@ -9,6 +9,8 @@ import {
   type AllergenId,
 } from '../../shared/analysis';
 import { validateApiUrl } from '../../shared/connection';
+import { demoWeekOwner, demoWeekScanId, makeDemoWeek } from '../../shared/demoWeek';
+import { demoAnalysis } from '../data/demo';
 
 const keys = {
   history: 'etiket.history.v1',
@@ -17,14 +19,21 @@ const keys = {
 };
 
 function scoped(key: string, owner: string): string {
-  if (!/^(guest|[0-9]{1,64})$/.test(owner)) throw new Error('Invalid library owner.');
+  if (owner !== demoWeekOwner && !/^(guest|[0-9]{1,64})$/.test(owner))
+    throw new Error('Invalid library owner.');
   return owner === 'guest' ? key : `${key}.${owner}`;
 }
 
 /** Restores only validated text records; one corrupted entry does not erase good entries. */
 export async function loadHistory(owner = 'guest'): Promise<ScanRecord[]> {
   const raw = await AsyncStorage.getItem(scoped(keys.history, owner));
-  if (!raw) return [];
+  if (!raw) {
+    if (owner !== demoWeekOwner) return [];
+    const sample = makeDemoWeek().diary.find((entry) => entry.scanId === demoWeekScanId);
+    return sample
+      ? [{ id: demoWeekScanId, createdAt: sample.at, demo: true, analysis: demoAnalysis }]
+      : [];
+  }
   const values: unknown = JSON.parse(raw);
   if (!Array.isArray(values)) throw new Error('Invalid history.');
   return values

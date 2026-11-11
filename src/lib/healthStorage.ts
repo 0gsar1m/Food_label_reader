@@ -5,8 +5,10 @@ import { Platform } from 'react-native';
 import { bytesToHex, hexToBytes } from '@noble/ciphers/utils.js';
 import { sealVault, openVault } from '../../shared/vaultCrypto';
 import type { HealthVault } from '../../shared/profile';
+import { demoWeekOwner } from '../../shared/demoWeek';
 function names(owner: string) {
-  if (!/^(guest|[0-9]{1,64})$/.test(owner)) throw new Error('Invalid storage owner.');
+  if (owner !== demoWeekOwner && !/^(guest|[0-9]{1,64})$/.test(owner))
+    throw new Error('Invalid storage owner.');
   const suffix = owner === 'guest' ? '' : `.${owner}`;
   return { dataKey: `etiket.health.v1${suffix}`, keyName: `etiket.health-key.v1${suffix}` };
 }

@@ -1,8 +1,41 @@
-import { ActivityIndicator, Image, ScrollView, Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, Easing, Image, Platform, ScrollView, Text, View } from 'react-native';
 import { Button, Notice, ScreenHeader } from '../components/Controls';
 import { ui, theme } from '../theme';
 import { copy } from '../content';
 import type { PreparedPhoto } from '../lib/photo';
+
+function ScanSpinner() {
+  const turn = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    const animation = Animated.loop(
+      Animated.timing(turn, {
+        toValue: 1,
+        duration: 900,
+        easing: Easing.linear,
+        useNativeDriver: Platform.OS !== 'web',
+        isInteraction: false,
+      }),
+    );
+    animation.start();
+    return () => animation.stop();
+  }, [turn]);
+  return (
+    <Animated.View
+      style={{
+        width: 30,
+        height: 30,
+        borderWidth: 3,
+        borderRadius: 15,
+        borderColor: theme.color.line,
+        borderTopColor: theme.color.green,
+        transform: [
+          { rotate: turn.interpolate({ inputRange: [0, 1], outputRange: ['0deg', '360deg'] }) },
+        ],
+      }}
+    />
+  );
+}
 
 /** Explicit cloud transmission action follows a local-only preview; retries use the same image. */
 export function Review({
@@ -34,13 +67,12 @@ export function Review({
       />
       <ScrollView contentContainerStyle={ui.content}>
         <View style={{ gap: 10 }}>
-          <Text style={ui.eyebrow}>02 / {busy ? 'OKUMA' : 'SON BİR BAKIŞ'}</Text>
           <Text style={ui.title}>
             {busy ? 'İçindekiler\naçıklanıyor.' : 'Yazılar net\ngörünüyor mu?'}
           </Text>
           {busy && (
             <View accessibilityLiveRegion="polite" style={[ui.row, { gap: 10 }]}>
-              <ActivityIndicator size="large" color={theme.color.green} />
+              <ScanSpinner />
               <Text style={ui.body}>Etiket okunuyor…</Text>
             </View>
           )}

@@ -12,12 +12,16 @@ export function History({
   onDelete,
   onClear,
   onScan,
+  recordedScans,
+  onDiary,
 }: {
   records: ScanRecord[];
   onOpen: (record: ScanRecord) => void;
   onDelete: (id: string) => void;
   onClear: () => void;
   onScan: () => void;
+  recordedScans: ReadonlySet<string | undefined>;
+  onDiary: (record: ScanRecord) => void;
 }) {
   const [query, setQuery] = useState('');
   const filtered = records.filter((record) =>
@@ -33,10 +37,7 @@ export function History({
       </View>
       <View style={{ gap: 12 }}>
         <Text accessibilityRole="header" style={ui.title}>
-          Okuma geçmişin.
-        </Text>
-        <Text style={ui.body}>
-          Daha önce baktığın etiketler, yeniden okumak istediğinde burada.
+          Son okumaların
         </Text>
       </View>
       {records.length ? (
@@ -54,35 +55,43 @@ export function History({
           {filtered.map((record) => (
             <View
               key={record.id}
-              style={[
-                ui.row,
-                { borderBottomWidth: 1, borderColor: theme.color.line, paddingBottom: 16 },
-              ]}
+              style={[{ borderBottomWidth: 1, borderColor: theme.color.line, paddingBottom: 16 }]}
             >
-              <Pressable
-                accessibilityRole="button"
-                accessibilityLabel={`${record.analysis.productName ?? 'Gıda etiketi'} okumasını aç`}
-                onPress={() => onOpen(record)}
-                style={{ flex: 1, gap: 7, paddingVertical: 6 }}
-              >
-                <Text style={ui.small}>
-                  {new Date(record.createdAt).toLocaleDateString('tr-TR', {
-                    day: 'numeric',
-                    month: 'long',
-                  })}
-                  {record.demo ? ' · Örnek' : ''}
-                </Text>
-                <Text style={ui.strong}>{record.analysis.productName ?? 'Gıda etiketi'}</Text>
-                <Text style={ui.small}>
-                  {record.analysis.allergens.length} alerjen beyanı ·{' '}
-                  {record.analysis.additives.length} katkı
-                </Text>
-              </Pressable>
-              <IconButton
-                label={`${record.analysis.productName ?? 'Etiket'} okumasını sil`}
-                icon="trash"
-                onPress={() => onDelete(record.id)}
-              />
+              <View style={ui.row}>
+                <Pressable
+                  accessibilityRole="button"
+                  accessibilityLabel={`${record.analysis.productName ?? 'Gıda etiketi'} okumasını aç`}
+                  onPress={() => onOpen(record)}
+                  style={{ flex: 1, gap: 7, paddingVertical: 6 }}
+                >
+                  <Text style={ui.small}>
+                    {new Date(record.createdAt).toLocaleDateString('tr-TR', {
+                      day: 'numeric',
+                      month: 'long',
+                    })}
+                    {record.demo ? ' · Örnek' : ''}
+                  </Text>
+                  <Text style={ui.strong}>{record.analysis.productName ?? 'Gıda etiketi'}</Text>
+                  <Text style={ui.small}>
+                    {record.analysis.allergens.length} alerjen beyanı ·{' '}
+                    {record.analysis.additives.length} katkı
+                  </Text>
+                </Pressable>
+                <IconButton
+                  label={`${record.analysis.productName ?? 'Etiket'} okumasını sil`}
+                  icon="trash"
+                  onPress={() => onDelete(record.id)}
+                />
+              </View>
+              {!record.demo && (
+                <Button
+                  label={recordedScans.has(record.id) ? 'Öğün eklendi' : 'Öğün olarak ekle'}
+                  secondary
+                  disabled={recordedScans.has(record.id)}
+                  onPress={() => onDiary(record)}
+                  style={{ alignSelf: 'flex-start', minHeight: 48, paddingVertical: 8 }}
+                />
+              )}
             </View>
           ))}
           <Button label="Tüm geçmişi sil" secondary icon="trash" onPress={onClear} />
@@ -92,7 +101,7 @@ export function History({
           style={{ gap: 24, paddingVertical: 40, borderTopWidth: 1, borderColor: theme.color.line }}
         >
           <Icon name="history" size={40} color={theme.color.green} />
-          <Text style={ui.h2}>İlk etiketin için hazır.</Text>
+          <Text style={ui.h2}>Henüz etiket okutmadın</Text>
           <Text style={ui.body}>
             Tamamladığın okumalar otomatik eklenir. Fotoğraflar kaydedilmez. Kayıtları dilediğin
             zaman silebilirsin.
