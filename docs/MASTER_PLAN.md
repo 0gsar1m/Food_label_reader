@@ -115,3 +115,7 @@ Sağlık durumunu yalnız tanı veya gözlem paylaşmayı seçen kullanıcı dü
 ## Faz 24 / Kişisel sonuç ve günlük deneyimi
 
 Luna etiket, izinli profil ve son 20 öğüne dayanan kısa sonucu ayrı bir alanda döndürür. Öğün listesi tarih, belirti ve düzenleme odağını görünür kılar. Demo geçmişi kurgusal ambalaj örnekleri içerir.
+
+## Faz 25 / Logo ve rapor düzeni
+
+Kullanıcının SVG logosu ana ekrana ve uygulama simgesine uygulanır. Rapor APA öğrenci düzeninde kapak, içindekiler, 20 otomatik test ve üç canlı API ölçümüyle hazırlanır. Ekran görüntüsü yerleri kullanıcı çekimleriyle tamamlanır.

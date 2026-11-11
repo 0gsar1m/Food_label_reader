@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254" role="img" aria-label="Circular golden ring surrounding green, black, and red leaves">
+<title>Leaf emblem</title>
+
+<!-- Golden outline -->
+<ellipse cx="623.5" cy="625.8" rx="329.2" ry="337.3" transform="rotate(-3 623.5 625.8)" fill="none" stroke="#cc9503" stroke-width="16" />
+
+<!-- Upper leaf: green left half and black right half -->
+<path fill="#028302" d="M 624 371 C 600 390 580 426 574 451 C 565 489 586 521 624 545 Z" />
+<path fill="#0c0c0a" d="M 624 371 C 652 395 672 425 679 452 C 687 492 669 515 627 545 L 627 374 Z" />
+
+<!-- Middle pair -->
+<path fill="#028302" d="M 485 513 C 514 510 537 510 559 518 C 601 532 616 567 620 616 C 585 622 564 625 543 617 C 513 603 491 567 485 513 Z" />
+<path fill="#0c0c0a" d="M 766 513 C 761 559 751 586 733 604 C 710 623 680 626 632 616 C 635 566 653 534 688 520 C 713 510 738 512 766 513 Z" />
+
+<!-- Lower pair -->
+<path fill="#028302" d="M 470 630 C 508 627 536 630 559 640 C 595 657 609 689 612 733 C 563 743 534 741 508 721 C 483 699 474 668 470 630 Z" />
+<path fill="#0c0c0a" d="M 781 630 C 782 673 768 706 740 726 C 711 743 675 742 637 734 C 639 690 657 658 690 641 C 716 628 746 629 781 630 Z" />
+
+<!-- Red base leaves -->
+<path fill="#d9010c" d="M 455 742 C 503 738 542 745 569 761 C 594 778 607 807 607 852 C 559 863 522 860 495 838 C 476 821 462 788 455 742 Z" />
+<path fill="#d9010c" d="M 796 742 C 746 740 716 742 691 756 C 659 775 644 805 643 852 C 687 864 719 860 746 837 C 772 816 790 780 796 742 Z" />
+</svg>

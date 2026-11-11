@@ -5,6 +5,7 @@ import { copy } from '../content';
 import { Button } from '../components/Controls';
 import { LabelIllustration } from '../components/LabelIllustration';
 import { Icon } from '../components/Icon';
+import { NazifLogo } from '../components/NazifLogo';
 
 /** The primary action stays focused on photographing the label rather than product marketing. */
 export function Home({
@@ -40,7 +41,10 @@ export function Home({
   return (
     <ScrollView contentContainerStyle={[ui.content, { gap: 22 }]}>
       <View style={[ui.between, { marginBottom: 9 }]}>
-        <Text style={s.brand}>{copy.brand}</Text>
+        <View style={[ui.row, { gap: 8 }]}>
+          <NazifLogo />
+          <Text style={s.brand}>{copy.brand}</Text>
+        </View>
         <View style={s.wordmark}>
           <View style={s.dot} />
           <Text style={ui.eyebrow}>DAHA ANLAŞILIR</Text>
