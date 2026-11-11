@@ -7,6 +7,8 @@ Etkin faz: 23. V12 sağlık bağlamı, tüketim kaydı ve eğitim demosu. Demo A
 
 ## Claude Code için devam noktası
 
+- [Nazif v12 Demo APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v12-demo/Nazif.apk), kod c3e81b2. Sunum kısayolu ayrı depoda 24 kurgu öğün açar. Railway 5dafd4fd başarıyla yayımlandı. Fiziksel Android kabulü açık.
+
 - [Nazif v11 APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v11/Nazif.apk), commit cd4ffef. v11 izinli Luna yorumunu Özet sekmesinde otomatik gösterir. Örnek okuma ana ekrandaki Öğretici penceresinde. v10 taraması fiziksel telefonda kullanıcı tarafından onaylandı.
 - Android: Etiket fotoğrafı GPT-6 Luna üzerinden `/api/analyze` ile okunuyor. Offline OCR kaldırıldı. Review ekranında gönder düğmesi yerine yerleşik spinner + "Etiket okunuyor…" gösteriliyor; gövde ve onay metni yükleme sırasında gizli. İkinci fotoğraf yerine iptal düğmesi çıkıyor. Çift gönderim engellendi.
 - shared/analysis.ts `normalized()` işlevi noktalama işaretlerini de temizleyecek şekilde güncellendi (`[^\p{L}\p{N}]+` → boşluk). Bu INVALID_RESULT hatasını çözdü; hem server hem APK etkilendiğinden v10 gerekli oldu.
