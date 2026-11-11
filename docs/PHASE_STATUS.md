@@ -127,3 +127,5 @@ Yayın kanıtı. V13 Demo Android derlemesi, önceki imza, sürüm kodu ve herke
 ## Faz 25 / v14
 
 Kullanıcı logosu kaynak SVG olarak korundu. Android simgeleri Expo yapılandırmasından üretildi. Raporun üç canlı API örneği önceki ölçümleri kullanır. Paket ve ekran görüntüsü kabulü ayrı izlenir.
+
+V14 kabulü. Android release derlemesi, v14 sürüm kodu, önceki sertifika, gömülü logo ve Railway adresi doğrulandı. Herkese açık GitHub APK özeti eşleşti. Lint, typecheck, 95 test, üç platform export ve API smoke geçti. APA raporunda kapak, güncel içindekiler, 20 otomatik test ve üç canlı ölçüm ile dört kullanıcı ekran görüntüsü bulunuyor. Word ve PDF üzerinden 11 sayfa görsel kontrol edildi. Android ana ekran simgesinin fiziksel cihaz kabulü açık.
