@@ -121,3 +121,5 @@ Yayın kanıtı. Android v12 Demo APK önceki imzayla derlendi ve GitHub ön sü
 ## Faz 24 / v13
 
 Öğünlerim ve etkileri bağlantısı, sade kartlar ve düzenleme vurgusu eklendi. Demo geçmişine iki etiket eklendi. Gözlem sayımları tek geçişte hesaplanıyor. Canlı sonuç ve paket kabulü ayrı kaydedilir.
+
+Yayın kanıtı. V13 Demo Android derlemesi, önceki imza, sürüm kodu ve herkese açık APK özeti doğrulandı. Lint, typecheck, 95 birim/API testi, üç platform export ve iki tarayıcı akışı geçti. Railway 550feef5 ile gerçek noodle etiketi 10,01 sn, vurgulu kişisel yorum 4,54 sn ve profil soruları 4,45 sn içinde 200 döndü. Gözlemler algoritması tek geçişe alındı. Fiziksel telefon geçiş süresi ölçülmedi.

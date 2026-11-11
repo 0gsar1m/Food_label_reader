@@ -3,9 +3,11 @@
 11 Kasım 2026. Nazif: Türkçe Expo SDK58 React Native Android/iOS, web kabul önizlemesi ve Node API.
 Kullanıcı tüm fazları özerk uygulama, test ve sonunda https://github.com/0gsar1m/Food_label_reader.git repoya normal push yetkisi verdi. Fazlar arasında onay isteme.
 Son direktif: Android etiketi ve kişisel yorumu GPT-6 Luna ile hazırla. İlk profilde amaç seçimi zorunlu. Profil aktarımı açık izne bağlı.
-Etkin faz: 23. V12 sağlık bağlamı, tüketim kaydı ve eğitim demosu. Demo APK derlemesinde EXPO_PUBLIC_DEMO_WEEK=true kullanılır.
+Etkin faz: 24. V13 demo yayımlandı. Kişisel sonuç, öğün kartları ve demo geçmişi güncellendi.
 
 ## Claude Code için devam noktası
+
+- [Nazif v13 Demo APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v13-demo/Nazif.apk), kod a4a8e8e. Railway 550feef5 canlı. Fiziksel cihazda sekme geçişi ve düzenleme vurgusu kabulü açık.
 
 - [Nazif v12 Demo APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v12-demo/Nazif.apk), kod c3e81b2. Sunum kısayolu ayrı depoda 24 kurgu öğün açar. Railway 5dafd4fd başarıyla yayımlandı. Fiziksel Android kabulü açık.
 
