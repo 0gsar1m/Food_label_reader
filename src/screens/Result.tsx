@@ -5,6 +5,7 @@ import { Button, IconButton, Notice, ScreenHeader } from '../components/Controls
 import { theme, ui } from '../theme';
 import { copy } from '../content';
 import { PersonalPanel } from '../components/PersonalPanel';
+import { demoWeekScanId } from '../../shared/demoWeek';
 import type { DiaryEntry, HealthVault } from '../../shared/profile';
 
 /** Evidence is visible next to every explanation, including personalized allergen highlights. */
@@ -154,13 +155,15 @@ export function Result({
             </View>
             <View style={{ display: tab === 'summary' ? 'flex' : 'none' }}>
               {record.demo && !scenario ? (
-                <View style={{ gap: 8 }}>
-                  <Text style={ui.h2}>Örnek kişisel yorum</Text>
-                  <Text style={ui.body}>
-                    Bu bisküvide yulaf var. Örnek günlüğünde sütlü yulaftan sonra şişkinlik kaydı
-                    var. Daha önce yulafı suyla yediğinde de şişkinlik olmuş muydu?
-                  </Text>
-                </View>
+                (record.id === 'example' || record.id === demoWeekScanId) && (
+                  <View style={{ gap: 8 }}>
+                    <Text style={ui.h2}>Örnek kişisel yorum</Text>
+                    <Text style={ui.body}>
+                      Bu bisküvide yulaf var. Örnek günlüğünde sütlü yulaftan sonra şişkinlik kaydı
+                      var. Daha önce yulafı suyla yediğinde de şişkinlik olmuş muydu?
+                    </Text>
+                  </View>
+                )
               ) : (
                 <PersonalPanel
                   analysis={analysis}

@@ -117,3 +117,7 @@ Tüketim sorusu Özet sekmesinde gösterilir ve yanıt ilgili öğün kaydına g
 Demo paketi, gerçek profilden ayrı bir cihaz deposunda yedi günlük 24 öğün açar. Normal kurulum adımlarını korur. Başlangıç süresi yalnız belirti kaydı için seçilir. Canlı dağıtım ve Android fiziksel cihaz kabulü ayrı izlenir.
 
 Yayın kanıtı. Android v12 Demo APK önceki imzayla derlendi ve GitHub ön sürüm olarak yayımlandı. İndirme ve SHA-256 doğrulandı. İki tarayıcı akışı ve 95 birim/API testi geçti. Canlı Luna, demo günlüğündeki belirtisiz bisküvi kaydını ve sütlü öğünlerdeki şişkinliği ayırdı. Açık profil konularıyla yapılan canlı istek üç soru döndürdü. Fiziksel telefon ve yerleşik takvim kabulü açık.
+
+## Faz 24 / v13
+
+Öğünlerim ve etkileri bağlantısı, sade kartlar ve düzenleme vurgusu eklendi. Demo geçmişine iki etiket eklendi. Gözlem sayımları tek geçişte hesaplanıyor. Canlı sonuç ve paket kabulü ayrı kaydedilir.

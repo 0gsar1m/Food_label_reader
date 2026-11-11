@@ -111,3 +111,7 @@ Yeni etiket taraması, açık profil aktarım izniyle Luna yorumunu Özet sekmes
 ## Faz 23 / Öğün kaydı ve son okumalar
 
 Sağlık durumunu yalnız tanı veya gözlem paylaşmayı seçen kullanıcı düzenleyebilir. Yeni tarama ve geçmiş sonucu aynı öğün kaydına bağlanır. Öğün tarih ve saati seçicilerle girilir. Günlük kaydı sonraki izinli Luna yorumlarına kaynak olur. Son okumalar etiket geçmişinde, Gözlemlerim ise öğün örüntülerinde kalır.
+
+## Faz 24 / Kişisel sonuç ve günlük deneyimi
+
+Luna etiket, izinli profil ve son 20 öğüne dayanan kısa sonucu ayrı bir alanda döndürür. Öğün listesi tarih, belirti ve düzenleme odağını görünür kılar. Demo geçmişi kurgusal ambalaj örnekleri içerir.

@@ -5,6 +5,8 @@ import { Button, IconButton } from '../components/Controls';
 import { Icon } from '../components/Icon';
 import { ui, theme } from '../theme';
 
+const readingDate = new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'long' });
+
 /** Search works offline against local transcriptions, including Turkish case variants. */
 export function History({
   records,
@@ -24,16 +26,19 @@ export function History({
   onDiary: (record: ScanRecord) => void;
 }) {
   const [query, setQuery] = useState('');
-  const filtered = records.filter((record) =>
-    `${record.analysis.productName ?? ''} ${record.analysis.rawText}`
-      .toLocaleLowerCase('tr-TR')
-      .includes(query.toLocaleLowerCase('tr-TR').trim()),
-  );
+  const term = query.toLocaleLowerCase('tr-TR').trim();
+  const filtered = term
+    ? records.filter((record) =>
+        `${record.analysis.productName ?? ''} ${record.analysis.rawText}`
+          .toLocaleLowerCase('tr-TR')
+          .includes(term),
+      )
+    : records;
   return (
     <ScrollView contentContainerStyle={ui.content} keyboardShouldPersistTaps="handled">
       <View style={ui.between}>
         <Text style={ui.eyebrow}>BU CİHAZDA</Text>
-        <Text style={ui.small}>{records.length} / 50 okuma</Text>
+        <Text style={ui.small}>{records.length} okuma</Text>
       </View>
       <View style={{ gap: 12 }}>
         <Text accessibilityRole="header" style={ui.title}>
@@ -65,10 +70,7 @@ export function History({
                   style={{ flex: 1, gap: 7, paddingVertical: 6 }}
                 >
                   <Text style={ui.small}>
-                    {new Date(record.createdAt).toLocaleDateString('tr-TR', {
-                      day: 'numeric',
-                      month: 'long',
-                    })}
+                    {readingDate.format(new Date(record.createdAt))}
                     {record.demo ? ' · Örnek' : ''}
                   </Text>
                   <Text style={ui.strong}>{record.analysis.productName ?? 'Gıda etiketi'}</Text>

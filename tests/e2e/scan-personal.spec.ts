@@ -32,7 +32,12 @@ test('new scans show the automatic profile comment and keep it across tabs', asy
         model: 'gpt-6-luna',
         evidence: [],
         usage: { input_tokens: 10, output_tokens: 10 },
-        result: { summary: 'Bu bisküvide yulaf var.', findings: [], questionIds: [] },
+        result: {
+          summary: 'Bu bisküvide yulaf var.',
+          decision: 'Günlüğünde yulaf tek başına öne çıkmıyor.',
+          findings: [],
+          questionIds: [],
+        },
       },
     });
   });
@@ -96,6 +101,7 @@ test('new scans show the automatic profile comment and keep it across tabs', asy
   releaseAnalysis();
   const summary = page.getByText('Bu bisküvide yulaf var.', { exact: true });
   await expect(summary).toBeVisible();
+  await expect(page.getByText('Günlüğünde yulaf tek başına öne çıkmıyor.')).toBeVisible();
   await page.getByRole('tab', { name: 'İçerik', exact: true }).click();
   await expect(summary).toBeHidden();
   await page.getByRole('tab', { name: 'Özet', exact: true }).click();
@@ -129,6 +135,12 @@ test('demo opens with a week of meals and keeps the real profile separate', asyn
   await page.goto('/');
   await page.getByRole('button', { name: 'Demo için kullanıcı profil sorularını atla' }).click();
   await expect(page.getByText('Demo · Kurgu profil ve öğünler')).toBeVisible();
+  await page.getByRole('tab', { name: 'Geçmiş' }).click();
+  await expect(page.getByRole('button', { name: 'Sade kraker okumasını aç' })).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Kuru üzümlü granola okumasını aç' }),
+  ).toBeVisible();
+  await page.getByRole('tab', { name: 'Tara' }).click();
   await page.getByRole('button', { name: 'Öğün ve belirti günlüğüm' }).click();
   await expect(page.getByText('Son kayıtlar / 24')).toBeVisible();
   await expect(page.getByText('Suyla pişmiş yulaf', { exact: true })).toBeVisible();

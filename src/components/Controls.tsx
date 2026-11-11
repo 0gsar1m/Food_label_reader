@@ -6,6 +6,7 @@ import type { ComponentProps, ReactNode } from 'react';
 /** Native buttons share a 52dp target and expose disabled/busy state to assistive technology. */
 export function Button({
   label,
+  accessibilityLabel = label,
   onPress,
   secondary = false,
   disabled = false,
@@ -13,6 +14,7 @@ export function Button({
   style,
 }: {
   label: string;
+  accessibilityLabel?: string;
   onPress: () => void;
   secondary?: boolean;
   disabled?: boolean;
@@ -22,7 +24,7 @@ export function Button({
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={accessibilityLabel}
       accessibilityState={{ disabled }}
       onPress={onPress}
       disabled={disabled}

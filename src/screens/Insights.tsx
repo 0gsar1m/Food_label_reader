@@ -61,7 +61,7 @@ export function Insights({
           </Text>
           <Text style={ui.body}>{stats.pending} öğün için kontrol bekliyor</Text>
         </View>
-        <Button label="Öğün sonrası kontrol yap" onPress={onDiary} />
+        <Button label="Öğünlerim ve etkileri" onPress={onDiary} />
         {!stats.total && (
           <Text style={ui.body}>
             Henüz bu dönemde gerçek kayıt yok. Yediğin bir öğünü ekle, ardından nasıl hissettiğini

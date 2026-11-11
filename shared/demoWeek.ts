@@ -2,6 +2,8 @@ import { emptyProfile, type DiaryEntry, type HealthVault } from './profile';
 
 export const demoWeekOwner = 'demo-week';
 export const demoWeekScanId = 'demo-week-biscuit';
+export const demoGranolaScanId = 'demo-week-granola';
+export const demoCrackerScanId = 'demo-week-cracker';
 
 type Meal = {
   name: string;
@@ -102,6 +104,7 @@ const week: Meal[][] = [
   [
     {
       name: 'Yoğurtlu granola',
+      scanId: demoGranolaScanId,
       ingredients: ['Yoğurt', 'Yulaf ezmesi', 'Kuru üzüm'],
       notes: 'Bu kez yarım kâse yedim.',
       symptom: 'bloating',
@@ -152,6 +155,7 @@ const week: Meal[][] = [
     },
     {
       name: 'Sütlü kahve ve kraker',
+      scanId: demoCrackerScanId,
       ingredients: ['Kahve', 'Süt', 'Buğday unu'],
       notes: 'Öğleden sonra bir kupa içtim.',
       symptom: 'bloating',

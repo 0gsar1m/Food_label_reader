@@ -12,29 +12,33 @@ export function observations(entries: DiaryEntry[], days: number, now = Date.now
     return !entry.demo && age >= 0 && age < days * 86_400_000;
   });
   const completed = recent.filter((entry) => outcomeOf(entry) !== 'pending');
-  const names = new Map<string, string>();
+  const counts = new Map<string, { name: string; total: number; symptoms: number }>();
   const normalize = (text: string): string => text.trim().toLocaleLowerCase('tr-TR');
-  for (const entry of completed)
-    for (const name of entry.ingredients ?? []) names.set(normalize(name), name.trim());
-  const ingredients = [...names]
-    .map(([key, name]) => {
-      const withFood = completed.filter((entry) =>
-        entry.ingredients?.some((item) => normalize(item) === key),
-      );
-      // Only records with explicitly supplied ingredients can form a comparison group.
-      const withoutFood = completed.filter(
-        (entry) =>
-          Boolean(entry.ingredients?.length) &&
-          !entry.ingredients?.some((item) => normalize(item) === key),
-      );
-      return {
+  let comparable = 0;
+  let symptomatic = 0;
+  for (const entry of completed) {
+    if (!entry.ingredients?.length) continue;
+    const hasSymptoms = Number(outcomeOf(entry) === 'symptoms');
+    comparable++;
+    symptomatic += hasSymptoms;
+    const ingredientsInMeal = new Map(
+      entry.ingredients.map((name) => [normalize(name), name.trim()]),
+    );
+    for (const [key, name] of ingredientsInMeal) {
+      const previous = counts.get(key);
+      counts.set(key, {
         name,
-        total: withFood.length,
-        symptoms: withFood.filter((entry) => outcomeOf(entry) === 'symptoms').length,
-        comparison: withoutFood.length,
-        comparisonSymptoms: withoutFood.filter((entry) => outcomeOf(entry) === 'symptoms').length,
-      };
-    })
+        total: (previous?.total ?? 0) + 1,
+        symptoms: (previous?.symptoms ?? 0) + hasSymptoms,
+      });
+    }
+  }
+  const ingredients = [...counts.values()]
+    .map((item) => ({
+      ...item,
+      comparison: comparable - item.total,
+      comparisonSymptoms: symptomatic - item.symptoms,
+    }))
     .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'tr'));
   return {
     total: recent.length,

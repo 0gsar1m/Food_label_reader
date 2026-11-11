@@ -9,8 +9,8 @@ import {
   type AllergenId,
 } from '../../shared/analysis';
 import { validateApiUrl } from '../../shared/connection';
-import { demoWeekOwner, demoWeekScanId, makeDemoWeek } from '../../shared/demoWeek';
-import { demoAnalysis } from '../data/demo';
+import { demoWeekOwner, demoWeekScanId } from '../../shared/demoWeek';
+import { makeDemoReadings } from '../data/demoHistory';
 
 const keys = {
   history: 'etiket.history.v1',
@@ -27,16 +27,9 @@ function scoped(key: string, owner: string): string {
 /** Restores only validated text records; one corrupted entry does not erase good entries. */
 export async function loadHistory(owner = 'guest'): Promise<ScanRecord[]> {
   const raw = await AsyncStorage.getItem(scoped(keys.history, owner));
-  if (!raw) {
-    if (owner !== demoWeekOwner) return [];
-    const sample = makeDemoWeek().diary.find((entry) => entry.scanId === demoWeekScanId);
-    return sample
-      ? [{ id: demoWeekScanId, createdAt: sample.at, demo: true, analysis: demoAnalysis }]
-      : [];
-  }
-  const values: unknown = JSON.parse(raw);
+  const values: unknown = raw ? JSON.parse(raw) : [];
   if (!Array.isArray(values)) throw new Error('Invalid history.');
-  return values
+  const records = values
     .flatMap((value: unknown) => {
       const entry = recordSchema.safeParse(value);
       if (!entry.success) return [];
@@ -48,6 +41,19 @@ export async function loadHistory(owner = 'guest'): Promise<ScanRecord[]> {
       }
     })
     .slice(0, 50);
+  if (owner !== demoWeekOwner) return records;
+  const marker = scoped('etiket.demo-readings.v2', owner);
+  if (await AsyncStorage.getItem(marker)) return records;
+  const newExamples = makeDemoReadings().filter(
+    (sample) =>
+      (!raw || sample.id !== demoWeekScanId) && !records.some((record) => record.id === sample.id),
+  );
+  const combined = [...records, ...newExamples]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, 50);
+  await saveHistory(combined, owner);
+  await AsyncStorage.setItem(marker, 'true');
+  return combined;
 }
 
 /** Saves a bounded history without photo URIs/base64 or access tokens. */

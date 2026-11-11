@@ -141,6 +141,7 @@ export async function personalize(
   let model = config.personalModel ?? 'gemini-3.5-flash-lite';
   const requestingQuestions = input.task === 'questions';
   const questionResponse = personalResponseSchema.pick({ questionSuggestions: true }).required();
+  const interpretationResponse = personalResponseSchema.required({ decision: true });
   let usage = { input_tokens: 0, output_tokens: 0 };
   try {
     const raw = await modelJson(
@@ -200,10 +201,12 @@ CRITICAL RULES:
 
 summary: Start with the ingredient that matters to this person and its share or position if visible. Connect it to one specific observation from their profile or diary, when available. Use at most two short sentences, both about the label or their records. Example style: "Bu bisküvide %32 yulaf var. Yulaf kasesinden sonra şişkinlik kaydettiğin için burada ilk bakacağım içerik yulaf."
 
+decision: Always give a bottom-line sentence or two in plain Turkish. Lead with what the evidence means for this product and name what to pay attention to. For mixed symptom records, say whether the diary supports singling out the ingredient and give one concrete observation to track if they have already eaten the product or choose to eat it. Example: "Günlüğünde yulaf tek başına öne çıkmıyor. Bu bisküviyi yediysen, yanında sütlü bir şey tüketip tüketmediğini ve sonrasında nasıl hissettiğini kaydet." If a declared ingredient conflicts with a stated avoidance preference, say so directly. If the label explicitly conflicts with a reported allergy, flag it first. Do not clear a product as safe, advise testing an allergen, or turn a trace warning into a claim about lactose content. An entry with a similar product name alone is not proof of the same package or recipe. When the evidence is limited, give one concrete next step rather than a generic caveat.
+
 findings: At most two findings that go beyond the label — personal connections, meaningful contrasts. Each needs evidenceIds (each ID once). Do not repeat summary content. Only use diary: IDs for actual logged meals; use profile:context for declared habits. For interpretation return questionIds as [].
 
 followUp: Only when one concrete missing fact — not already in diary notes or "Takip sorusu:" entries — would meaningfully change this interpretation. Ask a single short question using the specific meal name from the evidence. If the evidence already has the answer, omit this field entirely.`,
-      z.toJSONSchema(requestingQuestions ? questionResponse : personalResponseSchema),
+      z.toJSONSchema(requestingQuestions ? questionResponse : interpretationResponse),
       requestingQuestions ? 512 : 1536,
     );
     const result: z.infer<typeof personalResponseSchema> = requestingQuestions

@@ -189,6 +189,14 @@ export function PersonalPanel({
       {reply && (
         <View style={{ gap: 16 }}>
           {rehearsal && <Notice>Hazır kurgu yanıt. Bu prova OpenAI’ye istek göndermez.</Notice>}
+          {reply.result.decision && (
+            <View
+              style={{ backgroundColor: theme.color.pale, borderRadius: 6, padding: 16, gap: 6 }}
+            >
+              <Text style={[ui.strong, { color: theme.color.green }]}>Senin için sonuç</Text>
+              <Text style={ui.body}>{reply.result.decision}</Text>
+            </View>
+          )}
           <Text style={ui.body}>{reply.result.summary}</Text>
           {reply.result.findings.map((f, i) => {
             const seenLabels = new Set<string>();
