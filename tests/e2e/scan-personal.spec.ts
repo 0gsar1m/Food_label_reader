@@ -140,7 +140,17 @@ test('new scans show the automatic profile comment and keep it across tabs', asy
 
 test('demo opens with a week of meals and keeps the real profile separate', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Demo için kullanıcı profil sorularını atla' }).click();
+  await expect(page.getByRole('heading', { name: 'Bu demoda sizi ne bekliyor?' })).toBeVisible();
+  await page.getByRole('button', { name: 'İleri' }).click();
+  await expect(page.getByRole('heading', { name: 'Etiketi okut' })).toBeInViewport();
+  await page.getByRole('button', { name: 'Turu geç' }).click();
+  const demoEntry = page.getByRole('button', { name: 'Demo profiliyle devam et' });
+  await demoEntry.click();
+  await expect(page.getByText(/günlüğünde 24 öğün var/)).toBeVisible();
+  await page.getByRole('button', { name: 'Vazgeç' }).click();
+  await expect(page.getByRole('heading', { name: 'Demo profilimizle tanış' })).toBeHidden();
+  await demoEntry.click();
+  await page.getByRole('button', { name: 'Demoya devam et' }).click();
   await expect(page.getByText('Demo · Kurgu profil ve öğünler')).toBeVisible();
   await page.getByRole('tab', { name: 'Geçmiş' }).click();
   await expect(page.getByRole('button', { name: 'Sade kraker okumasını aç' })).toBeVisible();

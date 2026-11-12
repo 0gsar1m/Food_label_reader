@@ -16,6 +16,7 @@ import { Settings } from './src/screens/Settings';
 import { Legal } from './src/screens/Legal';
 import { Navigation } from './src/components/Navigation';
 import { ConfirmDialog } from './src/components/ConfirmDialog';
+import { DemoTour } from './src/components/DemoTour';
 import { IconButton } from './src/components/Controls';
 import { useDeviceData } from './src/hooks/useDeviceData';
 import { pickPhoto, type PreparedPhoto } from './src/lib/photo';
@@ -73,7 +74,10 @@ export default function App() {
       <StatusBar style="dark" />
       <SafeAreaView style={ui.page} edges={['top', 'bottom']}>
         {fontsLoaded || fontError ? (
-          <Application />
+          <>
+            <Application />
+            {process.env.EXPO_PUBLIC_DEMO_WEEK === 'true' && <DemoTour />}
+          </>
         ) : (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 14 }}>
             <ActivityIndicator color={theme.color.green} />
