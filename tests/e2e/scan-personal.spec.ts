@@ -35,7 +35,8 @@ test('new scans show the automatic profile comment and keep it across tabs', asy
         result: {
           summary: 'Bu bisküvide yulaf var.',
           decision: 'Günlüğünde yulaf tek başına öne çıkmıyor.',
-          findings: [],
+          recommendation: 'Sütle yiyeceksen şişkinlik olup olmadığını izle.',
+          findings: [{ text: 'Ayrıntılı günlük karşılaştırması.', evidenceIds: ['diary:0'] }],
           questionIds: [],
         },
       },
@@ -99,13 +100,19 @@ test('new scans show the automatic profile comment and keep it across tabs', asy
   await page.getByRole('button', { name: 'Fotoğrafı buluta gönder ve oku' }).click();
   await expect(page.getByText('Etiket okunuyor…', { exact: true })).toBeVisible();
   releaseAnalysis();
-  const summary = page.getByText('Bu bisküvide yulaf var.', { exact: true });
-  await expect(summary).toBeVisible();
-  await expect(page.getByText('Günlüğünde yulaf tek başına öne çıkmıyor.')).toBeVisible();
+  const decision = page.getByText('Günlüğünde yulaf tek başına öne çıkmıyor.');
+  const recommendation = page.getByText('Sütle yiyeceksen şişkinlik olup olmadığını izle.');
+  await expect(decision).toBeVisible();
+  await expect(page.getByText('Öneri', { exact: true })).toBeVisible();
+  await expect(recommendation).toBeVisible();
+  await expect(page.getByText('Bu bisküvide yulaf var.', { exact: true })).toBeHidden();
+  await expect(page.getByText('Ayrıntılı günlük karşılaştırması.')).toBeHidden();
   await page.getByRole('tab', { name: 'İçerik', exact: true }).click();
-  await expect(summary).toBeHidden();
+  await expect(decision).toBeHidden();
+  await expect(recommendation).toBeHidden();
   await page.getByRole('tab', { name: 'Özet', exact: true }).click();
-  await expect(summary).toBeVisible();
+  await expect(decision).toBeVisible();
+  await expect(recommendation).toBeVisible();
   expect(commentCalls).toBe(1);
   await page
     .getByRole('textbox', { name: 'Yedikten sonra nasıl hissettin?' })

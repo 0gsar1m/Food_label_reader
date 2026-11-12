@@ -8,6 +8,8 @@ export const theme = {
     muted: '#62685C',
     green: '#455B36',
     pale: '#E8EBDD',
+    paleBlue: '#E4EFF8',
+    blue: '#264B66',
     line: '#D7DACD',
     warning: '#775020',
     warningBg: '#F1E8D8',

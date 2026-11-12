@@ -405,12 +405,6 @@ function Application() {
           vault={screen.scenario ? makeDemoVault() : health.vault}
           scenario={screen.scenario}
           autoPersonal={screen.autoPersonal}
-          onUpdateDiary={(entry) =>
-            health.update((old) => ({
-              ...old,
-              diary: old.diary.map((item) => (item.id === entry.id ? entry : item)),
-            }))
-          }
           apiUrl={device.apiUrl}
           token={effectiveToken}
           mealRecorded={recordedScans.has(screen.record.id)}

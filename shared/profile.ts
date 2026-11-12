@@ -150,6 +150,7 @@ export const personalResponseSchema = z.object({
     .optional(),
   summary: z.string().min(1).max(1000),
   decision: z.string().trim().min(1).max(360).optional(),
+  recommendation: z.string().trim().min(1).max(360).optional(),
   findings: z
     .array(
       z.object({
