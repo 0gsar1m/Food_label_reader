@@ -1,5 +1,10 @@
 # Faz durumları
 
+## V17 demo ve belge güncellemesi
+
+- GitHub'daki `nazif-android-v17-demo` etiketi (`5e824c3`) turu, ayrı demo profiliyle açılan 24 kurgu öğünü ve ayrı sonuç/öneri alanlarını içerir.
+- README, V17 APK bağlantısı, GPT-6 Luna veri akışı, güncel ortam değişkenleri ve doğrulama komutlarıyla güncellendi. Railway `/health` çağrısı model yapılandırmasını doğruladı. Bu belge değişikliği kapsamında yeni canlı model veya fiziksel cihaz testi yapılmadı.
+
 | Faz | Durum | Kabul kanıtı |
 |---|---|---|
 | 00 Kararlar | Tamamlandı | Plan ve iki ayrı rehber yazıldı |

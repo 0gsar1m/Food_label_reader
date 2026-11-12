@@ -1,109 +1,73 @@
-> Güncel ayar: Fotoğraf Gemini 3.8 Flash, isteğe bağlı kişisel yorum Gemini 3.1 Flash-Lite. İkisi aynı sunucu anahtarını kullanır.
-
 # Nazif
 
-Gıda etiketi fotoğrafını okuyup içerik, alerjen ve katkı maddelerini Türkçe açıklayan Android öncelikli React Native uygulama.
+Nazif, gıda etiketi fotoğrafından içindekileri, alerjen beyanlarını ve katkı maddelerini okuyup Türkçe açıklayan bir mobil uygulama. Öğün ve belirti günlüğü tutabilir, izin verirsen yeni bir etiketi kendi kayıtlarınla birlikte yorumlatabilirsin.
 
-My GutIQ araştırması sonrasında menü/tabak incelemesi, barkod kataloğu, tüketim teyidi ve öğün sonrası kontrol, 7/30 günlük yerel gözlemler, restoran kartı ve PDF/metin raporu eklendi. Araştırma ve parite sınırları [GUTIQ_RESEARCH.md](docs/GUTIQ_RESEARCH.md), ekonomik senaryolar [INVESTOR_COSTS.md](docs/INVESTOR_COSTS.md) içinde. Gerçek model, OAuth, native PDF/barkod kamerası ve APK kabulü dış yapılandırma/cihaz bekler.
+- [Android V17 demo APK](https://github.com/0gsar1m/Food_label_reader/releases/download/nazif-android-v17-demo/Nazif-v17.apk)
+- [Canlı API durumunu kontrol et](https://nazif-api-production.up.railway.app/health)
 
-Kamera veya galeri → yerel önizleme → açık gönderim işlemi → kanıt metinleriyle açıklama.
-Her alerjen beyanı **içerir** veya **eser miktarda içerebilir** olarak ayrılır. Sağlık puanı ve tüketim güvenliği garantisi üretilmez.
+## Uygulama nasıl çalışıyor?
 
-<img src="docs/screenshots/home-390.png" width="280" alt="Nazif ana ekranı" /> <img src="docs/screenshots/result-summary.png" width="280" alt="Açıkça işaretli örnek etiket sonucu" />
+1. **Etiketi okut.** Kamerayla çektiğin veya galeriden seçtiğin fotoğrafı önizle ve gönder. Sunucu fotoğrafı GPT-6 Luna ile okur. Sonuçta içerikler, katkılar ve alerjenler için etiketten dayanak gösterilir. “İçerir” ile “eser miktarda içerebilir” ayrı gösterilir.
+2. **Öğününü kaydet.** Ne yediğini, ne zaman yediğini ve sonrasında nasıl hissettiğini yazabilirsin. Geçmiş okumalar ve günlük ayrı ekranlarda tutulur. Gözlemler ekranı 7 veya 30 günlük kayıtlarını özetler.
+3. **Kişisel yorumu gör.** Profil aktarım izni açıksa, yeni taramanın Özet ekranında GPT-6 Luna etiket metnini, profilini ve son 20 öğüne kadar olan kayıtlarını birlikte değerlendirir. Sonuç ve öneri ayrı gösterilir. Yorum tanı koymaz ve tüketim güvenliği garantisi vermez.
 
-## Çalıştırma
+Uygulamada ayrıca barkod sorgulama, menü ve tabak inceleme, restoran için alerjen kartı ve görüşmede paylaşılabilen gözlem raporu bulunur.
 
-Node.js 24 LTS ve Android telefonda Expo Go yeterlidir. Android Studio zorunlu değildir.
+## Teknik yapı
+
+- **İstemci:** Expo SDK 58, React Native 0.88 ve TypeScript. Android öncelikli, iOS ve web çıktısı da alınabiliyor.
+- **Sunucu:** Node.js 24 ve Express. İstemci ile sunucu ortak Zod şemaları kullanır. Sunucu model çıktısını ve etiket alıntılarını doğrular.
+- **Model:** Üretimde etiket okuma, menü ve tabak inceleme, kişisel yorum ve profil soru önerileri OpenAI Responses API üzerinden `gpt-6-luna` kullanır. Model anahtarı sunucu ortamında tutulur.
+- **Veri:** Etiket geçmişi ve alerjen tercihleri cihazda tutulur. Profil ve günlük, telefonda AES-256-GCM ile şifrelenir. Şifreleme anahtarı SecureStore'dadır. Web önizlemesinde profil ve günlük sekme oturumunda tutulur.
+- **İzinler:** Fotoğraf okuma isteği profil ve günlük taşımaz. Kişisel yorum için ayrı OpenAI aktarım izni gerekir. Google girişi ayrıca OAuth yapılandırması gerektirir.
+
+| Uç | İşlev |
+| --- | --- |
+| `GET /health` | Hizmet ve model yapılandırması |
+| `POST /api/analyze` | Etiket fotoğrafı okuma |
+| `POST /api/personalize` | İzinli kişisel yorum ve profil soru önerileri |
+| `POST /api/food-context` | Menü ve tabak fotoğrafı inceleme |
+| `GET /api/barcode/:code` | Open Food Facts barkod sorgusu |
+| `POST /api/auth/google` | Yapılandırılmışsa Google oturumu |
+
+## Yerelde çalıştırma
+
+Node.js 24 ile bağımlılıkları kur. İlk kurulumda ortam dosyasını örnekten oluştur.
 
 ```powershell
 npm ci
 Copy-Item .env.example .env
 ```
 
-`.env` içinde `GEMINI_API_KEY` değerini kendi sunucu anahtarınla doldur. Bu dosya git'e dahil edilmez.
-`EXPO_PUBLIC_API_URL` yalnız sunucu adresidir; buraya veya başka bir `EXPO_PUBLIC_` değişkenine API anahtarı koyma.
+Canlı model çağrıları için yerel `.env` dosyasında sunucuya ait `OPENAI_API_KEY` değerini ayarla. `OPENAI_MODEL` varsayılanı `gpt-6-luna`. `EXPO_PUBLIC_API_URL` yalnızca istemcinin bağlanacağı açık URL'yi taşır. Sağlayıcı anahtarını `EXPO_PUBLIC_` değişkenlerine koyma.
 
-İki ayrı terminal:
+Bir terminalde `npm run api`, ikinci terminalde hedefe göre şu komutlardan birini çalıştır.
 
-```powershell
-npm run api
-```
+| Komut | Hedef |
+| --- | --- |
+| `npm run web` | Tarayıcıda geliştirme |
+| `npm start` | Expo geliştirme sunucusu |
+| `npm run android` | Yerel Android derlemesi ve çalıştırma |
+| `npm run ios` | macOS ve Xcode ile yerel iOS derlemesi |
 
-```powershell
-npm start
-```
+Fiziksel telefondan yerel API'ye bağlanırken `EXPO_PUBLIC_API_URL` için bilgisayarının LAN adresini kullan. Örneğin `http://192.168.1.10:8787`. Adresi uygulamada **Tercihler → Okuma hizmeti bağlantısı** üzerinden de değiştirebilirsin.
 
-Telefonda Expo Go ile terminaldeki QR kodunu aç. Telefon ve bilgisayar aynı ağda olmalı.
-Fiziksel telefonda `.env` içindeki `EXPO_PUBLIC_API_URL` için bilgisayarın LAN IP adresini kullan:
-`http://192.168.1.10:8787` bir örnektir; kendi IP adresinle değiştir.
-`EXPO_PUBLIC_API_URL` hiç tanımlanmazsa development modunda Expo'nun LAN adresi otomatik kullanılır.
-Uygulamada **Tercihler → Okuma hizmeti bağlantısı** üzerinden de adresi değiştirebilirsin.
-Windows güvenlik duvarında Node bağlantısına yalnız özel ağda izin ver. Ortak Wi-Fi istemcileri birbirinden yalıtabilir.
+## V17 demo
 
-Web önizleme:
+Demo APK açılışta kısa bir tur gösterir. **Demo profiliyle devam et** seçeneği, gerçek profilden ayrı tutulan 24 kurgu öğün ve örnek etiket geçmişini açar. Web önizlemesinde bu akışı görmek için başlatmadan önce PowerShell'de `$env:EXPO_PUBLIC_DEMO_WEEK = 'true'` ayarla. Örnek okumaları API anahtarı olmadan inceleyebilirsin. Yeni fotoğraf taraması ve bulut yorumu için çalışan API erişimi gerekir.
+
+## Doğrulama ve yayın
 
 ```powershell
-npm run web
-```
-
-Örnek sonucu anahtarsız ve çevrimdışı inceleyebilirsin. Örnek kurgu olduğu her ekranda belirtilir.
-Gerçek fotoğraf gönderiminde anahtar yoksa yapılandırma hatası gösterilir; sahte analiz yapılmaz.
-
-## Google hesabıyla kayıt / giriş
-
-İlk ekranda Google hesabıyla devam veya hesapsız deneme bulunur. Sunucu imza/audience/süre doğrulaması yapıp uygulama oturumu oluşturur; Gmail kutusu okunmaz. Kurulum: [Google auth rehberi](docs/GOOGLE_AUTH.md). OAuth kimlikleri sağlanmadığı için gerçek Google giriş kabulü henüz yapılmadı. Google native girişi Expo Go içinde çalışmaz; APK veya development build gerekir. Profil, günlük, geçmiş ve alerjen tercihleri hesaplara göre ayrı tutulur.
-
-## Kişisel kullanım profili
-
-İlk açılışta altı adımlı amaç, yakınma, bildirilen tanı/şüphe, rutin ve koşullu takip soruları akışı vardır. Atlanabilir ve sonradan düzenlenebilir. Profil/günlük native cihazda AES-256-GCM ile şifrelenir; web önizlemesinde yalnız sekme oturumunda tutulur.
-
-Kişisel yorum ve soru seçimi fotoğraf okumasıyla aynı sunucu tarafı Gemini anahtarını kullanır. `PERSONAL_MODEL` varsayılanı `gemini-3.1-flash-lite`. Gerçek profil için Gemini aktarım izni ve yorum düğmesi gerekir. Ana ekrandan **Örnek profille kişisel yorumu dene** ile kurgu kayıtlar üzerinde deneyebilirsin.
-
-Besin tablosu için önizlemede ikinci fotoğraf eklenebilir. Sonuçta porsiyon miktarı girilince görünen kalori/makro değerleri kodla ölçeklenir; eksik mikrobesin tahmin edilmez.
-
-[Yatırımcı maliyet senaryoları](docs/INVESTOR_COSTS.md) ve [model seçimi](docs/MODEL_SELECTION.md) günceldir. `npm run costs` hesapları tekrar üretir.
-
-## İçerik
-
-- Gerçek kamera ekranı, fener, sistem galeri seçicisi, JPEG küçültme ve fotoğraf önizlemesi.
-- Gemini Flash Vision, tek istek ve doğrulanmış JSON sözleşmesi.
-- Sade özet, içerik açıklamaları, katkı işlevleri ve birebir etiket kanıtları.
-- İsteğe bağlı 14 alerjen tercihi ve kişisel eşleşme vurgusu; tercihler modele gönderilmez.
-- Son 50 metin okuması cihazda; Türkçe arama, tekil/tam silme ve paylaşma.
-- Gizlilik ve kullanım koşulları; işletmeci bilgileri eksik olduğundan hukuki metinler taslaktır.
-- API token koruması, istek sınırı, boyut kontrolü, timeout ve istemci iptali.
-
-## Doğrulama
-
-```powershell
-npm run lint
-npm run typecheck
-npm test
-npm run build
-npm run build:api
-npm run test:api-bundle
+npm run verify
 npx playwright install chromium
 npm run test:e2e
-npx expo-doctor
 ```
 
-`build`, Android/iOS/web JavaScript ve Hermes paketlerini üretir. İmzalı APK veya mağaza paketi değildir.
-Tarayıcı testlerinde sağlayıcı yanıtları test dublörüyle doğrulanır; canlı Vision kalitesi ölçülmüş sayılmaz.
-Gerçek test sonuçları ve sınırlar: [doğrulama raporu](docs/VERIFICATION.md).
+`verify` lint, TypeScript, birim ve API testleri, uygulama export'u ve sunucu paketi smoke testini çalıştırır. Playwright web export'unu 8082 portunda sınar. Canlı sağlayıcı çağrıları ve fiziksel cihaz kabulü ayrı kaydedilir.
 
-## APK ve sunucu yayını
+Üretim API'si Railway'deki `nazif-api` servisinde çalışır. Android yayın derlemesine açık HTTPS API adresini `EXPO_PUBLIC_API_URL` olarak ver. APK paketleme ve dağıtım adımları için [yayın rehberine](docs/RELEASE_RUNBOOK.md), kabul kayıtları için [doğrulama raporuna](docs/VERIFICATION.md) bak.
 
-Android Studio olmadan EAS bulut APK profili `eas.json` içinde hazırlanmıştır.
-EAS hesabı/proje bağlantısı ve gerçek HTTPS API adresi gerekir. Komutlar ve kabul adımları:
-[yayın rehberi](docs/RELEASE_RUNBOOK.md).
+## Geliştirme belgeleri
 
-## Projede devam etme
-
-Claude Code veya başka bir geliştirme oturumunda önce [CLAUDE.md](CLAUDE.md), [AGENTS.md](AGENTS.md)
-ve [aktif bağlam](docs/ACTIVE_CONTEXT.md) okunur. [Faz planı](docs/MASTER_PLAN.md),
-[faz durumları](docs/PHASE_STATUS.md), [AI rehberi](docs/AI_GUIDELINES.md),
-[AI Slop rehberi](docs/AI_SLOP_AVOIDANCE.md) ve [rakip araştırması](docs/COMPETITOR_RESEARCH.md) ayrı tutulur.
-
-Tarayıcı kabulü `npm run test:e2e` ile önce web export üretir, sonra 8082 üzerinde statik önizlemeyi açar. Aynı çıktı klasöründe eşzamanlı iki Playwright çalıştırması başlatma.
-
-Ekonomik alternatif: Gemini 3.1 Flash-Lite fotoğraf okuma, API çağrısız yerel profil değerlendirmesi ve isteğe bağlı Gemini Flash-Lite bulut ayrıntısı. Eski premium gider rakamları varsayılan değildir; INVESTOR_COSTS.md esas alınır.
+[Çalışma kuralları](AGENTS.md), [aktif bağlam](docs/ACTIVE_CONTEXT.md), [faz planı](docs/MASTER_PLAN.md) ve [faz durumları](docs/PHASE_STATUS.md).
