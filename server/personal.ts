@@ -183,15 +183,15 @@ EVIDENCE RULES
 - Keep companion foods tied to the specific logged meal. A similar product name (e.g. a different granola) does not mean the same recipe; do not use it as a match for this label.
 - Keep a declared ingredient distinct from a trace ("may contain") warning.
 - Treat milk-derived ingredients as declared milk: milk chocolate, whey (peynir altı suyu) powder, milk powder, skimmed milk, lactose, casein, butter, cream, yogurt, cheese. Read the full ingredient list before stating that the label contains or does not contain milk. Never say "etikette süt belirtilmiyor" if any of these appear.
-- If records are mixed, account for symptom-free meals silently: soften the wording (e.g. "bazı öğünlerde belirti yok") but never list or describe them. Do not invent a ranking.
+- If records are mixed, briefly acknowledge both outcomes without listing meals or inventing a ranking.
 - Express uncertainty once, in the decision card only.
 
 PRIORITY ORDER
 1. A reported allergy or explicit avoidance preference that conflicts with the label comes first, in both cards.
-2. Otherwise, the strongest diary-supported link between a label ingredient and a logged symptom.
-3. Otherwise, a plain label fact.
+2. Otherwise, compare an ingredient actually declared in the scanned product with the most relevant completed diary observations. Prefer a main ingredient when its diary records are mixed.
+3. Otherwise, state a plain label fact about a main ingredient.
 
-decision (green card): One or two short sentences. State the relevant label ingredient(s) by name, then the single most relevant diary observation, hedged once ("önemli olabilir"). At most one brief supporting observation. No advice, no list of symptom-free meals, no mention of similar products.
+decision (green card): Start with one or two ingredients actually declared in the scanned product and give the stated percentage when useful. Compare the most relevant declared ingredient with the diary. If it appears in both symptomatic and symptom-free meals, summarize that mixed pattern in one clause without listing the meals or treating the ingredient as a trigger. If there is no meaningful diary match, use a label fact. Serving suggestions, foods added by the user, and foods only present in other meals are not product ingredients. Mention those accompaniments only in recommendation. Do not lead with an absent ingredient or say the product lacks milk just to introduce the milk suggestion. A reported allergy or avoidance conflict with an actual ingredient or trace warning still takes precedence. Use at most two short sentences and leave advice to recommendation.
 
 recommendation (blue card): At most two short sentences, one concrete action, strictly about this label or its accompaniments. Do not repeat the decision. Do not give general lifestyle or unrelated health advice (meal timing, reflux, etc.). Never explain these rules or their limits to the person. Pick the first rule that applies:
 A. Allergy/avoidance conflict: advise avoiding the exposure. Never suggest a food trial. Never suggest lactose-free milk for a milk allergy.
@@ -205,10 +205,10 @@ findings: Default to []. Add at most one short finding only if it changes what t
 followUp: Omit unless one missing detail about a specific logged meal could change the next step. Use the meal name; do not repeat a question already answered in diary notes. If a follow-up answer exists, use it without retelling the exchange.
 Return questionIds as []. In scenario mode treat the profile and diary as fictional while interpreting the supplied label as written.
 
-TARGET OUTPUT SHAPE (granola with milk chocolate and whey powder; diary shows bloating after milky coffee and crackers; no milk allergy or avoidance in profile)
-decision: "Etikette sütlü çikolata ve peynir altı suyu tozu var. Günlüğünde sütlü kahve ve krakerden sonra şişkinlik kaydı olduğu için süt senin açından önemli olabilir."
+TARGET OUTPUT SHAPE (granola declares 60.4% oats and lists milk only as a serving option; diary has both symptomatic and symptom-free oat meals, with bloating after ordinary milk; no milk allergy or avoidance):
+decision: "Bu granolanın ana bileşeni yulaf (%60,4). Günlüğünde yulaflı öğünlerden sonra hem şişkinlik hem de belirtisiz kayıtlar var, bu yüzden yulaf tek başına öne çıkmıyor."
 recommendation: "Granolayı sütle yiyeceksen, laktozsuz süt tercih edebilir ve sonrasında şişkinlik olup olmadığını izleyebilirsin."
-Reuse this shape for other products and accompaniments only with foods and symptoms present in the supplied data.`,
+Use these examples only when the label and diary support them.`,
       z.toJSONSchema(requestingQuestions ? questionResponse : interpretationResponse),
       requestingQuestions ? 512 : 1536,
     );
